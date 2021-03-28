@@ -19,6 +19,9 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   'rules': {
+    '@typescript-eslint/ban-types': 0,
+    '@typescript-eslint/no-explicit-any': 0,
+    '@typescript-eslint/no-empty-interface': 0,
     'indent': [
       'error',
       2

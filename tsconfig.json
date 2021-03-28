@@ -17,5 +17,5 @@
       "start-editor-vue": ["packages/start-editor-vue/src"]
     }
   },
-  "include": ["packages/*/src", "./**/*.ts"]
+  "include": ["./**/*.ts", "packages/start-editor/src/index.d.ts"]
 }

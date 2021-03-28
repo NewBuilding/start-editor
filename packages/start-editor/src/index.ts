@@ -1,3 +1,3 @@
-export function add(a: number, b: number) {
-  return a + b  ;
-}
+import { Editor } from './Editor';
+
+export { Editor as StartEditor };
