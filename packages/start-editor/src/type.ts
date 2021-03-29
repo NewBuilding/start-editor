@@ -1,7 +1,7 @@
 import { Node, NodeSpec, Schema as ProseMirrorSchema } from 'prosemirror-model';
 import { Transaction, EditorState } from 'prosemirror-state';
-import { NodeName, NodeCommands } from './nodes';
-import { MarkName, MarkCommands } from './marks';
+import { NodeName, NodeCommandsMap } from './nodes';
+import { MarkName, MarkCommandMap } from './marks';
 
 interface Dispatch {
   (tr: Transaction): void;
@@ -13,6 +13,6 @@ interface Command<S extends Schema = any> {
   (state: EditorState<S>, dispatch: Dispatch): boolean;
 }
 
-type Commands = NodeCommands & MarkCommands;
+type CommandMap = NodeCommandsMap & MarkCommandMap;
 
-export { NodeSpec, Node as ProseMirrorNode, Dispatch, Schema, Command, Commands };
+export { NodeSpec, Node as ProseMirrorNode, Dispatch, Schema, Command, CommandMap };

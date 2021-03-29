@@ -1,4 +1,3 @@
-export * from './dom';
 export * from './util';
 export * from './mark';
 export * from './node';

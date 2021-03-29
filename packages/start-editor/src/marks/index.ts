@@ -1,11 +1,13 @@
 import { StyleMark, STYLE_MARK_NAME, StyleCommand } from './Style';
 
-const markNames = [STYLE_MARK_NAME];
+export const markNames = [STYLE_MARK_NAME] as const;
 
-export type MarkName = typeof markNames[number];
-
-export interface MarkCommands {
+export interface MarkCommandMap {
   [STYLE_MARK_NAME]: StyleCommand;
 }
+
+export type MarkName = keyof MarkCommandMap;
+
+export type MarkCommand = MarkCommandMap[MarkName];
 
 export const allMarks = [new StyleMark()];

@@ -104,7 +104,7 @@ export function parentHasNode(pos: ResolvedPos, typeName: string) {
 }
 
 export function getNodeAndPosByEvent(view: EditorView, event: MouseEvent): NodePos | null {
-  let pos = view.posAtCoords({
+  const pos = view.posAtCoords({
     left: event.clientX,
     top: event.clientY,
   });
@@ -118,7 +118,7 @@ export function getNodeAndPosByEvent(view: EditorView, event: MouseEvent): NodeP
     return null;
   }
 
-  let $pos = view.state.doc.resolve(pos.inside);
+  const $pos = view.state.doc.resolve(pos.inside);
 
   if (!$pos.nodeAfter) {
     return null;
@@ -140,4 +140,14 @@ export function rangeIsPartOfNode($from: ResolvedPos, $to: ResolvedPos, typeName
   const parent = $from.parent;
   const toParent = $to.parent;
   return parent === toParent && parent.type.name === typeName;
+}
+
+/**
+ * 是否为块级图片Element, display为block, width为100%为块级图片
+ * @param element 
+ */
+export function isBlockImage(element: HTMLElement): boolean {
+  return (
+    element.style.display === 'block' || [element.style.width, element.getAttribute('width')].includes('100%')
+  );
 }

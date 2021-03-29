@@ -1,7 +1,7 @@
 import { EditorView } from 'prosemirror-view';
 import { get } from 'lodash';
 
-function textRange(node: Node, from: number = 0, to: number | null = null) {
+function textRange(node: Node, from = 0, to: number | null = null) {
   const range = document.createRange();
   range.setEnd(node, to == null ? (node as any).nodeValue.length : to);
   range.setStart(node, from || 0);
@@ -20,7 +20,7 @@ function singleRect(object: Range, bias: number) {
  * @param pos
  * @param end 是否识别末尾位置
  */
-export function coordsAtPos(view: EditorView, pos: number, end: boolean = false) {
+export function coordsAtPos(view: EditorView, pos: number, end = false) {
   const { node, offset } = view.domAtPos(pos) as { node: Element; offset: number };
   let side;
   let rect: any;

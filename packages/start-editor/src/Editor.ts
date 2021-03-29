@@ -2,7 +2,7 @@ import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { DOMParser, Schema, MarkSpec, NodeSpec } from 'prosemirror-model';
 import OrderedMap from 'orderedmap';
-import { Commands } from './type';
+import { CommandMap } from './type';
 import { allNodes } from './nodes';
 import { allMarks } from './marks';
 
@@ -16,7 +16,7 @@ export class Editor {
   options: EditorOptions;
   view: EditorView;
   schema: Schema;
-  commands: Commands;
+  commands: CommandMap;
 
   constructor(options: EditorOptions) {
     this.options = options;
@@ -32,7 +32,7 @@ export class Editor {
 
   private createCommand() {
     const commands = {} as any;
-    const decorate = (command: Function, ...args: any) => {
+    const decorate = (command: Function) => (...args: any) => {
       const { view } = this;
       if (!view.editable) {
         return false;
@@ -41,7 +41,7 @@ export class Editor {
       return command(...args)(view.state, view.dispatch);
     };
     [...allNodes, ...allMarks].forEach((nm) => {
-      Object.entries(nm.commands).forEach(([key, val]) => {
+      Object.entries<Function>(nm.commands as Record<string, any>).forEach(([key, val]) => {
         commands[key] = decorate(val);
       });
     });

@@ -1,13 +1,38 @@
 import { LinkNode, LINK_NODE_NAME, LinkCommand } from './Link';
+import { ImageNode, IMAGE_NODE_NAME, ImageCommand } from './Image';
+import { SpanNode, SPAN_NODE_NAME, SpanCommand } from './Span';
+
 import { ParagraphNode, PARAGRAPH_NODE_NAME, ParagraphCommand } from './Paragraph';
+import { BlockImageNode, BLOCK_IMAGE_NODE_NAME, BlockImageCommand } from './BlockImage';
+import { HeadingNode, HEADING_NODE_NAME, HeadingCommand } from './Heading';
 
-const nodeNams = [LINK_NODE_NAME, PARAGRAPH_NODE_NAME];
+export const nodeNams = [
+  LINK_NODE_NAME,
+  PARAGRAPH_NODE_NAME,
+  IMAGE_NODE_NAME,
+  BLOCK_IMAGE_NODE_NAME,
+  SPAN_NODE_NAME,
+  HEADING_NODE_NAME,
+] as const;
 
-export type NodeName = typeof nodeNams[number];
-
-export interface NodeCommands {
+export interface NodeCommandsMap {
   [LINK_NODE_NAME]: LinkCommand;
   [PARAGRAPH_NODE_NAME]: ParagraphCommand;
+  [IMAGE_NODE_NAME]: ImageCommand;
+  [SPAN_NODE_NAME]: SpanCommand;
+  [BLOCK_IMAGE_NODE_NAME]: BlockImageCommand;
+  [HEADING_NODE_NAME]: HeadingCommand;
 }
 
-export const allNodes = [new LinkNode(), new ParagraphNode()];
+export type NodeName = keyof NodeCommandsMap;
+
+export type NodeCommand = NodeCommandsMap[NodeName];
+
+export const allNodes = [
+  new LinkNode(),
+  new ParagraphNode(),
+  new ImageNode(),
+  new BlockImageNode(),
+  new SpanNode(),
+  new HeadingNode(),
+];

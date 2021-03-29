@@ -7,6 +7,7 @@ export default defineConfig({
   // plugins: [vue()],
   alias: {
     'start-editor': '../packages/start-editor/src',
-    'start-editor-vue': '../packages/start-vue/src',
+    'start-editor-vue': '../packages/start-editor-vue/src',
+    'start-editor-utils': '../packages/start-editor-utils/src',
   },
 });
