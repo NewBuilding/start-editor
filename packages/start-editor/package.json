@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "@start/editor",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vuejs/vue-next.git",
+    "directory": "packages/compiler-core"
+  },
   "files": [
     "index.js",
     "dist"

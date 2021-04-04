@@ -1,4 +1,7 @@
+
+import { defineComponent } from 'vue';
 import { StartEditor } from 'start-editor';
+import {EditorCanvas} from 'start-editor-vue';
 
 const content = `
   <div>
@@ -31,13 +34,14 @@ const content = `
   <img src="/favion.ico" title="triceratops" style="display:block;">
 </div>
 `;
-
-const editor = new StartEditor({ content });
-
-const $el = editor.$el.firstChild as HTMLElement;
-$el.style.width = '500px';
-$el.style.height = '300px';
-$el.style.border = '1px solid black';
-$el.style.padding = '10px';
-
-document.body.appendChild($el);
+export default defineComponent({
+  name: 'editor',
+  setup() {
+    const editor = new StartEditor({ content });
+    return () =>(
+      <div class="start-vue-main-editor">
+        <EditorCanvas editor={editor} />
+      </div>
+    ); 
+  },
+});

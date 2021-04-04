@@ -18,5 +18,5 @@
       "start-editor-utils": ["packages/start-editor-utils/src"]
     }
   },
-  "include": ["./**/*.ts", "packages/start-editor/src/index.d.ts"]
+  "include": ["packages/global.d.ts", "packages/*/src", "examples"]
 }

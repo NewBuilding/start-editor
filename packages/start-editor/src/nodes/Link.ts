@@ -1,7 +1,7 @@
 import { Plugin, EditorState } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
 import { NodeSpec, Dispatch, Command } from '../type';
-import { getElementStyle, objToStyleString } from 'start-editor-utils';
+import { objToStyleString } from 'start-editor-utils';
 
 export const LINK_NODE_NAME = 'link';
 
@@ -42,7 +42,7 @@ export class LinkNode extends NodeInterface<LinkCommand<Command>> {
           getAttrs(dom) {
             const element = dom as HTMLElement;
             return {
-              style: getElementStyle(element),
+              style: objToStyleString(element.style.cssText),
               href: element.getAttribute('href'),
               target: element.getAttribute('target'),
             };
@@ -52,13 +52,19 @@ export class LinkNode extends NodeInterface<LinkCommand<Command>> {
       toDOM(node) {
         const style = objToStyleString(node.attrs.style);
         return [
-          'a',
+          'span',
           {
-            ...node.attrs,
-            style,
-            class: 'prosemirror-node prosemirror-link',
+            style: 'display:inline-flex;padding: 0 5px;',
+            class: 'start-editor-node start-editor-link',
           },
-          0,
+          [
+            'a',
+            {
+              ...node.attrs,
+              style,
+            },
+            0,
+          ],
         ];
       },
     };

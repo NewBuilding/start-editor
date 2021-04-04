@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
 import { NodeSpec, Command } from '../type';
-import { getElementStyle, objToStyleString } from 'start-editor-utils';
+import { objToStyleString } from 'start-editor-utils';
 
 export const SPAN_NODE_NAME = 'span';
 
@@ -13,7 +13,7 @@ export class SpanNode extends NodeInterface<SpanCommand<Command>> {
   }
 
   get nodeSpec(): NodeSpec {
-    const tags = ['s', 'strike', 'del', 'strong', 'b', 'i', 'em', 'u', 'span.prosemirror-span'];
+    const tags = ['s', 'strike', 'del', 'strong', 'b', 'i', 'em', 'u', 'span.start-editor-span'];
     return {
       content: 'text*',
       group: 'inline',
@@ -27,13 +27,14 @@ export class SpanNode extends NodeInterface<SpanCommand<Command>> {
       parseDOM: tags.map((tag) => ({
         tag,
         getAttrs(dom) {
-          const style = getElementStyle(dom as HTMLElement);
+          const ele = dom as HTMLElement;
+          const style = objToStyleString(ele.style.cssText);
           return { style };
         },
       })),
       toDOM: (node) => {
         const style = objToStyleString(node.attrs.style);
-        return ['span', { style, class: 'prosemirror-node-node prosemirror-span' }, 0];
+        return ['span', { style, class: 'start-editor-node-node start-editor-span' }, 0];
       },
     };
   }

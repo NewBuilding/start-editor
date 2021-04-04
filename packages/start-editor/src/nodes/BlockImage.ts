@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
 import { NodeSpec, Command } from '../type';
-import { getElementStyle, objToStyleString, isBlockImage } from 'start-editor-utils';
+import { objToStyleString, isBlockImage } from 'start-editor-utils';
 
 export const BLOCK_IMAGE_NODE_NAME = 'blockImage';
 
@@ -40,7 +40,7 @@ export class BlockImageNode extends NodeInterface<BlockImageCommand<Command>> {
             const element = dom as HTMLElement;
             if (!isBlockImage(element)) return false;
             return {
-              style: getElementStyle(element),
+              style: objToStyleString(element.style.cssText),
               href: element.getAttribute('href'),
               target: element.getAttribute('target'),
             };
@@ -54,7 +54,7 @@ export class BlockImageNode extends NodeInterface<BlockImageCommand<Command>> {
           {
             ...other,
             style: objToStyleString(style),
-            class: 'prosemirror-node prosemirror-block-image',
+            class: 'start-editor-node start-editor-block_image',
           },
         ];
       },

@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+}
+
+.start-vue {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+
+  &-header {
+    text-align: center;
+    height: 50px;
+    box-shadow: 0 3px 5px rgb(63 70 82 / 16%)
+  }
+
+  &-main {
+    flex: 1;
+    display: flex;
+    height: 100%;
+
+    &-aside {
+      box-shadow: 2px 0 12px rgb(0 0 0 / 16%);
+      width: 200px;
+      text-align: center;
+    }
+
+    &-editor {
+      flex: 1;
+
+      .start-editor-container {
+        height: calc(100% - 20px);
+
+        .start-editor {
+          width: calc(100% - 40px);
+          box-sizing: border-box;
+          margin: 20px;
+          padding: 10px;
+          box-shadow: 0px 0px 8px 2px #888888;
+        }
+      }
+    }
+
+    &-panel {
+      width: 100px;
+      background-color: #aaa;
+    }
+  }
+
+
+
+}

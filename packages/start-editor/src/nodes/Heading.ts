@@ -1,9 +1,9 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
 import { NodeSpec, Command } from '../type';
-import { getElementStyle, objToStyleString } from 'start-editor-utils';
+import { objToStyleString } from 'start-editor-utils';
 
-export const HEADING_NODE_NAME = 'paragraph';
+export const HEADING_NODE_NAME = 'heading';
 
 export interface HeadingCommand<T = boolean> {}
 
@@ -35,13 +35,13 @@ export class HeadingNode extends NodeInterface<HeadingCommand<Command>> {
         tag: `h${level}`,
         getAttrs(dom) {
           const element = dom as HTMLElement;
-          const style = getElementStyle(element);
+          const style = objToStyleString(element.style.cssText);
           return { style, level };
         },
       })),
       toDOM(node) {
         const style = objToStyleString(node.attrs.style);
-        return [`h${node.attrs.level}`, { style, class: 'prosemirror-node prosemirror-heading' }, 0];
+        return [`h${node.attrs.level}`, { style, class: 'start-editor-node start-editor-heading' }, 0];
       },
     };
   }

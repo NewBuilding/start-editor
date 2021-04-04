@@ -2,7 +2,7 @@ import { MarkSpec } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import { MarkInterface } from './MarkInterface';
 import { Command } from '../type';
-import { getElementStyle, objToStyleString } from 'start-editor-utils';
+import { objToStyleString } from 'start-editor-utils';
 
 export const STYLE_MARK_NAME = 'style';
 
@@ -33,18 +33,18 @@ export class StyleMark extends MarkInterface<StyleCommand<Command>> {
       },
       parseDOM: [
         {
-          tag: 'span.prosemirror-style',
+          tag: 'span.start-editor-style',
           getAttrs(dom) {
-            const style = getElementStyle(dom as HTMLElement);
+            const ele = dom as HTMLElement;
             return {
-              style,
+              style: objToStyleString(ele.style.cssText),
             };
           },
         },
       ],
       toDOM(node) {
         const style = objToStyleString(node.attrs.style);
-        return ['span', { style, class: 'prosemirror-mark prosemirror-style' }, 0];
+        return ['span', { style, class: 'start-editor-mark start-editor-style' }, 0];
       },
     };
   }

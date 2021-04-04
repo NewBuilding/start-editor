@@ -5,6 +5,13 @@ import OrderedMap from 'orderedmap';
 import { CommandMap } from './type';
 import { allNodes } from './nodes';
 import { allMarks } from './marks';
+import './styles/index.less';
+
+import { gapCursor } from 'prosemirror-gapcursor';
+import { dropCursor } from 'prosemirror-dropcursor';
+import { undo, redo } from 'prosemirror-history';
+import { keymap } from 'prosemirror-keymap';
+import { baseKeymap } from 'prosemirror-commands';
 
 interface EditorOptions {
   props?: DirectEditorProps;
@@ -21,9 +28,16 @@ export class Editor {
   constructor(options: EditorOptions) {
     this.options = options;
     this.$el = document.createElement('div');
+    this.$el.classList.add('start-editor');
     this.schema = this.createSchema();
     this.commands = this.createCommand();
-    this.view = new EditorView(this.$el, { ...options.props, state: this.createState() });
+    this.view = new EditorView(this.$el, {
+      ...options.props,
+      state: this.createState(),
+      attributes: {
+        class: 'start-editor-canvas',
+      },
+    });
   }
 
   get state(): EditorState {
@@ -93,6 +107,6 @@ export class Editor {
   }
 
   private getPlugins(): Plugin[] {
-    return [];
+    return [keymap({ 'Mod-z': undo, 'Mod-y': redo }), keymap(baseKeymap), dropCursor(), gapCursor()];
   }
 }
