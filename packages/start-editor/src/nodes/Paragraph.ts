@@ -1,7 +1,7 @@
 import { Plugin, EditorState } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
-import { NodeSpec, Dispatch, Command } from '../type';
-import { objToStyleString } from 'start-editor-utils';
+import { NodeSpec, StyleObject, Command } from '../type';
+import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
 export const PARAGRAPH_NODE_NAME = 'paragraph';
 
@@ -12,30 +12,40 @@ export class ParagraphNode extends NodeInterface<ParagraphCommand<Command>> {
     return PARAGRAPH_NODE_NAME;
   }
 
-  get nodeSpec(): NodeSpec {
+  get defaultStyle(): Partial<CSSStyleDeclaration> {
+    return {
+      color: 'red',
+    };
+  }
+
+  nodeSpec(defaultStyle: StyleObject = { color: 'red' }): NodeSpec {
     return {
       content: 'inline*',
       group: 'block',
       attrs: {
         style: {
-          default: {
-            textAlign: 'left',
-          },
+          default: defaultStyle,
         },
       },
       parseDOM: [
         {
           tag: 'p',
-          getAttrs(dom) {
+          getAttrs: (dom) => {
             const element = dom as HTMLElement;
-            const style = objToStyleString(element.style.cssText);
+            const style = styleStringToObj(element.style.cssText, this.defaultStyle);
             return { style };
           },
         },
       ],
-      toDOM(node) {
-        const style = objToStyleString(node.attrs.style);
-        return ['p', { style, class: 'start-editor-node start-editor-paragraph' }, 0];
+      toDOM: (node) => {
+        return [
+          'p',
+          {
+            style: objToStyleString(node.attrs.style),
+            class: 'start-editor-node start-editor-paragraph',
+          },
+          0,
+        ];
       },
     };
   }
@@ -44,6 +54,6 @@ export class ParagraphNode extends NodeInterface<ParagraphCommand<Command>> {
     return {};
   }
   plugins(): Plugin<any, any>[] {
-    throw [];
+    return [];
   }
 }

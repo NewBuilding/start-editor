@@ -15,4 +15,6 @@ interface Command<S extends Schema = any> {
 
 type CommandMap = NodeCommandsMap & MarkCommandMap;
 
+export type StyleObject = Partial<CSSStyleDeclaration>;
+
 export { NodeSpec, Node as ProseMirrorNode, Dispatch, Schema, Command, CommandMap };

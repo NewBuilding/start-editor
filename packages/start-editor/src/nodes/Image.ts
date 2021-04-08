@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
-import { NodeSpec, Command } from '../type';
-import { objToStyleString, isBlockImage } from 'start-editor-utils';
+import { NodeSpec, Command, StyleObject } from '../type';
+import { objToStyleString, isBlockImage, styleStringToObj } from 'start-editor-utils';
 
 export const IMAGE_NODE_NAME = 'image';
 
@@ -12,7 +12,7 @@ export class ImageNode extends NodeInterface<ImageCommand<Command>> {
     return IMAGE_NODE_NAME;
   }
 
-  get nodeSpec(): NodeSpec {
+  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
     return {
       group: 'inline',
       inline: true,
@@ -40,21 +40,21 @@ export class ImageNode extends NodeInterface<ImageCommand<Command>> {
             const element = dom as HTMLElement;
             if (isBlockImage(element)) return false;
             return {
-              style: objToStyleString(element.style.cssText),
+              style: styleStringToObj(element.style.cssText, defaultStyle),
               href: element.getAttribute('href'),
               target: element.getAttribute('target'),
             };
           },
         },
       ],
-      toDOM(node) {
-        const { style, other } = node.attrs;
+      toDOM: (node) => {
+        const { other } = node.attrs;
 
         return [
           'img',
           {
             ...other,
-            style: objToStyleString(style),
+            style: objToStyleString(node.attrs.style),
             class: 'start-editor-node start-editor-image',
           },
         ];
@@ -66,6 +66,6 @@ export class ImageNode extends NodeInterface<ImageCommand<Command>> {
     return {};
   }
   plugins(): Plugin<any, any>[] {
-    throw [];
+    return [];
   }
 }

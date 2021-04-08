@@ -1,8 +1,8 @@
 import { MarkSpec } from 'prosemirror-model';
 import { Plugin } from 'prosemirror-state';
 import { MarkInterface } from './MarkInterface';
-import { Command } from '../type';
-import { objToStyleString } from 'start-editor-utils';
+import { Command, StyleObject } from '../type';
+import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
 export const STYLE_MARK_NAME = 'style';
 
@@ -22,13 +22,13 @@ export class StyleMark extends MarkInterface<StyleCommand<Command>> {
     return STYLE_MARK_NAME;
   }
 
-  get markSpec(): MarkSpec {
+  markSpec(defaultStyle: StyleObject = {}): MarkSpec {
     return {
       group: 'inline',
       isinline: true,
       attrs: {
         style: {
-          default: {},
+          default: defaultStyle,
         },
       },
       parseDOM: [
@@ -37,12 +37,12 @@ export class StyleMark extends MarkInterface<StyleCommand<Command>> {
           getAttrs(dom) {
             const ele = dom as HTMLElement;
             return {
-              style: objToStyleString(ele.style.cssText),
+              style: styleStringToObj(ele.style.cssText, defaultStyle),
             };
           },
         },
       ],
-      toDOM(node) {
+      toDOM: (node) => {
         const style = objToStyleString(node.attrs.style);
         return ['span', { style, class: 'start-editor-mark start-editor-style' }, 0];
       },
@@ -50,7 +50,7 @@ export class StyleMark extends MarkInterface<StyleCommand<Command>> {
   }
 
   plugins(): Plugin[] {
-    throw new Error('Method not implemented.');
+    return [];
   }
 
   // addMark(attrs: StyleAttrs, action: StyleAction): Command {

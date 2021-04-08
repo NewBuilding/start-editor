@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
-import { NodeSpec, Command } from '../type';
-import { objToStyleString } from 'start-editor-utils';
+import { NodeSpec, Command, StyleObject } from '../type';
+import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
 export const DIVIDER_NODE_NAME = 'divider';
 
@@ -12,14 +12,21 @@ export class DividerNode extends NodeInterface<DividerCommand<Command>> {
     return DIVIDER_NODE_NAME;
   }
 
-  get nodeSpec(): NodeSpec {
+  get defaultStyle(): Partial<CSSStyleDeclaration> {
+    return {
+      height: '2px',
+      color: 'red',
+    };
+  }
+
+  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
     return {
       group: 'block',
       draggable: true,
       atom: true,
       attrs: {
         style: {
-          default: {},
+          default: defaultStyle,
         },
       },
       parseDOM: [
@@ -28,18 +35,16 @@ export class DividerNode extends NodeInterface<DividerCommand<Command>> {
           getAttrs(dom) {
             const element = dom as HTMLElement;
             return {
-              style: objToStyleString(element.style.cssText),
+              style: styleStringToObj(element.style.cssText, defaultStyle),
             };
           },
         },
       ],
-      toDOM(node) {
-        const { style } = node.attrs;
-
+      toDOM: (node) => {
         return [
-          'img',
+          'hr',
           {
-            style: objToStyleString(style),
+            style: objToStyleString(node.attrs.style),
             class: 'start-editor-node start-editor-divider',
           },
         ];
@@ -51,6 +56,6 @@ export class DividerNode extends NodeInterface<DividerCommand<Command>> {
     return {};
   }
   plugins(): Plugin<any, any>[] {
-    throw [];
+    return [];
   }
 }

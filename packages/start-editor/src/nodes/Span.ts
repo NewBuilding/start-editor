@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
-import { NodeSpec, Command } from '../type';
-import { objToStyleString } from 'start-editor-utils';
+import { NodeSpec, Command, StyleObject } from '../type';
+import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
 export const SPAN_NODE_NAME = 'span';
 
@@ -12,7 +12,7 @@ export class SpanNode extends NodeInterface<SpanCommand<Command>> {
     return SPAN_NODE_NAME;
   }
 
-  get nodeSpec(): NodeSpec {
+  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
     const tags = ['s', 'strike', 'del', 'strong', 'b', 'i', 'em', 'u', 'span.start-editor-span'];
     return {
       content: 'text*',
@@ -21,20 +21,26 @@ export class SpanNode extends NodeInterface<SpanCommand<Command>> {
       selectable: false,
       attrs: {
         style: {
-          default: {},
+          default: defaultStyle,
         },
       },
       parseDOM: tags.map((tag) => ({
         tag,
         getAttrs(dom) {
           const ele = dom as HTMLElement;
-          const style = objToStyleString(ele.style.cssText);
+          const style = styleStringToObj(ele.style.cssText, defaultStyle);
           return { style };
         },
       })),
       toDOM: (node) => {
-        const style = objToStyleString(node.attrs.style);
-        return ['span', { style, class: 'start-editor-node-node start-editor-span' }, 0];
+        return [
+          'span',
+          {
+            style: objToStyleString(node.attrs.style),
+            class: 'start-editor-node-node start-editor-span',
+          },
+          0,
+        ];
       },
     };
   }
@@ -43,6 +49,6 @@ export class SpanNode extends NodeInterface<SpanCommand<Command>> {
     return {};
   }
   plugins(): Plugin<any, any>[] {
-    throw [];
+    return [];
   }
 }

@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
-import { NodeSpec, Command } from '../type';
-import { objToStyleString } from 'start-editor-utils';
+import { NodeSpec, Command, StyleObject } from '../type';
+import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
 export const HEADING_NODE_NAME = 'heading';
 
@@ -14,7 +14,7 @@ export class HeadingNode extends NodeInterface<HeadingCommand<Command>> {
     return HEADING_NODE_NAME;
   }
 
-  get nodeSpec(): NodeSpec {
+  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
     const { HEADING_LEVELS } = this;
     return {
       content: 'inline*',
@@ -26,22 +26,26 @@ export class HeadingNode extends NodeInterface<HeadingCommand<Command>> {
           default: 1,
         },
         style: {
-          default: {
-            textAlign: 'left',
-          },
+          default: defaultStyle,
         },
       },
       parseDOM: HEADING_LEVELS.map((level) => ({
         tag: `h${level}`,
         getAttrs(dom) {
           const element = dom as HTMLElement;
-          const style = objToStyleString(element.style.cssText);
+          const style = styleStringToObj(element.style.cssText, defaultStyle);
           return { style, level };
         },
       })),
-      toDOM(node) {
-        const style = objToStyleString(node.attrs.style);
-        return [`h${node.attrs.level}`, { style, class: 'start-editor-node start-editor-heading' }, 0];
+      toDOM: (node) => {
+        return [
+          `h${node.attrs.level}`,
+          {
+            style: objToStyleString(node.attrs.style),
+            class: 'start-editor-node start-editor-heading',
+          },
+          0,
+        ];
       },
     };
   }
@@ -50,6 +54,6 @@ export class HeadingNode extends NodeInterface<HeadingCommand<Command>> {
     return {};
   }
   plugins(): Plugin<any, any>[] {
-    throw [];
+    return [];
   }
 }

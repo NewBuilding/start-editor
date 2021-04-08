@@ -1,7 +1,7 @@
 import { Plugin, EditorState } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
-import { NodeSpec, Dispatch, Command } from '../type';
-import { objToStyleString } from 'start-editor-utils';
+import { NodeSpec, Dispatch, Command, StyleObject } from '../type';
+import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
 export const LINK_NODE_NAME = 'link';
 
@@ -19,7 +19,7 @@ export class LinkNode extends NodeInterface<LinkCommand<Command>> {
     return LINK_NODE_NAME;
   }
 
-  get nodeSpec(): NodeSpec {
+  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
     return {
       content: 'text*',
       group: 'inline',
@@ -33,7 +33,7 @@ export class LinkNode extends NodeInterface<LinkCommand<Command>> {
           default: '_blank',
         },
         style: {
-          default: {},
+          default: defaultStyle,
         },
       },
       parseDOM: [
@@ -42,26 +42,25 @@ export class LinkNode extends NodeInterface<LinkCommand<Command>> {
           getAttrs(dom) {
             const element = dom as HTMLElement;
             return {
-              style: objToStyleString(element.style.cssText),
+              style: styleStringToObj(element.style.cssText, defaultStyle),
               href: element.getAttribute('href'),
               target: element.getAttribute('target'),
             };
           },
         },
       ],
-      toDOM(node) {
-        const style = objToStyleString(node.attrs.style);
+      toDOM: (node) => {
         return [
           'span',
           {
             style: 'display:inline-flex;padding: 0 5px;',
-            class: 'start-editor-node start-editor-link',
           },
           [
             'a',
             {
               ...node.attrs,
-              style,
+              style: objToStyleString(node.attrs.style),
+              class: 'start-editor-node start-editor-link',
             },
             0,
           ],
@@ -80,7 +79,7 @@ export class LinkNode extends NodeInterface<LinkCommand<Command>> {
     const { add } = this;
     return { add };
   }
-  plugins(): Plugin<any, any>[] {
-    throw [];
+  plugins(): Plugin[] {
+    return [];
   }
 }

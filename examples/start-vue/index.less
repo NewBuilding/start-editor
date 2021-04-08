@@ -12,7 +12,8 @@ body {
   &-header {
     text-align: center;
     height: 50px;
-    box-shadow: 0 3px 5px rgb(63 70 82 / 16%)
+    flex-shrink: 0;
+    box-shadow: 0 1px 5px rgb(63 70 82 / 16%)
   }
 
   &-main {
@@ -21,13 +22,15 @@ body {
     height: 100%;
 
     &-aside {
-      box-shadow: 2px 0 12px rgb(0 0 0 / 16%);
+      box-shadow: 3px 3px 5px rgb(0 0 0 / 16%);
       width: 200px;
       text-align: center;
     }
 
     &-editor {
       flex: 1;
+
+      margin-bottom: 20px;
 
       .start-editor-container {
         height: calc(100% - 20px);

@@ -5,14 +5,18 @@ export function objToStyleString(obj: Partial<CSSStyleDeclaration>): string {
   }, '');
 }
 
-export function styleStringToObj(cssStr: string): Partial<CSSStyleDeclaration> {
+export function styleStringToObj(
+  cssStr: string,
+  defaultStyle: Partial<CSSStyleDeclaration> = {},
+): Partial<CSSStyleDeclaration> {
+  if (!cssStr) return defaultStyle;
   return cssStr
     .split(';')
-    .map((str) => str.split(';'))
+    .map((str) => str.split(':'))
     .reduce((obj, [key, value]) => {
       key = kebabToCamel(key);
       return { ...obj, [key]: value };
-    }, {}) as Partial<CSSStyleDeclaration>;
+    }, defaultStyle) as Partial<CSSStyleDeclaration>;
 }
 
 export function camelToKebab(name: string): string {

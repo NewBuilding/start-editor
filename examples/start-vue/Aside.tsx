@@ -5,9 +5,11 @@ export default defineComponent({
   name: 'aside',
   setup() {
     return () => {
-      return (<aside class="start-vue-main-aside">
-        aside
-      </aside>);
+      return (
+        <aside class="start-vue-main-aside">
+        div
+        </aside>
+      );
     }; 
   }
 });

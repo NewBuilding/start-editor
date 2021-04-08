@@ -3,19 +3,21 @@ import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { DOMParser, Schema, MarkSpec, NodeSpec } from 'prosemirror-model';
 import OrderedMap from 'orderedmap';
 import { CommandMap } from './type';
-import { allNodes } from './nodes';
+import { allNodes, NodeName } from './nodes';
 import { allMarks } from './marks';
 import './styles/index.less';
 
 import { gapCursor } from 'prosemirror-gapcursor';
 import { dropCursor } from 'prosemirror-dropcursor';
-import { undo, redo } from 'prosemirror-history';
+import { undo, redo, history } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
+import { StyleObject } from './type';
 
 interface EditorOptions {
   props?: DirectEditorProps;
   content: Record<string, unknown> | string;
+  defaultStyles?: Record<NodeName, StyleObject>;
 }
 
 export class Editor {
@@ -73,10 +75,10 @@ export class Editor {
       },
     });
     allNodes.forEach((node) => {
-      nodes = nodes.addToEnd(node.name, node.nodeSpec);
+      nodes = nodes.addToEnd(node.name, node.nodeSpec(this.options.defaultStyles?.[node.name as NodeName]));
     });
     allMarks.forEach((mark) => {
-      marks = marks.addToEnd(mark.name, mark.markSpec);
+      marks = marks.addToEnd(mark.name, mark.markSpec({}));
     });
 
     return new Schema({ nodes, marks });
@@ -107,6 +109,17 @@ export class Editor {
   }
 
   private getPlugins(): Plugin[] {
-    return [keymap({ 'Mod-z': undo, 'Mod-y': redo }), keymap(baseKeymap), dropCursor(), gapCursor()];
+    const plugins: Plugin[] = [];
+    [...allNodes, ...allMarks].forEach((nm) => {
+      plugins.push(...nm.plugins());
+    });
+    return [
+      history(),
+      keymap({ 'Mod-z': undo, 'Mod-y': redo }),
+      keymap(baseKeymap),
+      dropCursor(),
+      gapCursor(),
+      ...plugins,
+    ];
   }
 }
