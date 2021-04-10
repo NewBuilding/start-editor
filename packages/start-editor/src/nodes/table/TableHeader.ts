@@ -4,16 +4,16 @@ import { NodeSpec, Command, StyleObject } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 import { TableRoleKey } from './Table';
 
-export const TABLE_HEADER_NODE_NAME = 'image';
+export const TABLE_HEADER_NODE_NAME = 'tableHeader';
 
 export interface TableHeaderCommand<T = boolean> {}
 
-export class TableNode extends NodeInterface<TableHeaderCommand<Command>> {
+export class TableHeaderNode extends NodeInterface<TableHeaderCommand<Command>> {
   get name(): string {
     return TABLE_HEADER_NODE_NAME;
   }
 
-  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
+  nodeSpec(defaultStyle: StyleObject = { border: '1px solid black' }): NodeSpec {
     return {
       attrs: {
         colspan: {

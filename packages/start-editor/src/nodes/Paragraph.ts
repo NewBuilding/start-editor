@@ -12,13 +12,16 @@ export class ParagraphNode extends NodeInterface<ParagraphCommand<Command>> {
     return PARAGRAPH_NODE_NAME;
   }
 
-  get defaultStyle(): Partial<CSSStyleDeclaration> {
-    return {
-      color: 'red',
-    };
-  }
-
-  nodeSpec(defaultStyle: StyleObject = { color: 'red' }): NodeSpec {
+  nodeSpec(
+    defaultStyle: StyleObject = {
+      maxWidth: '100%',
+      width: '100%',
+      whiteSpace: 'pre-wrap',
+      wordBreak: 'break-word',
+      padding: '3px 2px',
+      margin: '1px 0',
+    },
+  ): NodeSpec {
     return {
       content: 'inline*',
       group: 'block',
@@ -32,7 +35,7 @@ export class ParagraphNode extends NodeInterface<ParagraphCommand<Command>> {
           tag: 'p',
           getAttrs: (dom) => {
             const element = dom as HTMLElement;
-            const style = styleStringToObj(element.style.cssText, this.defaultStyle);
+            const style = styleStringToObj(element.style.cssText, defaultStyle);
             return { style };
           },
         },

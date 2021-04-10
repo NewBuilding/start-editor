@@ -13,6 +13,7 @@ import { undo, redo, history } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
 import { StyleObject } from './type';
+import { objToStyleString, DEFAULT_FONT_FAMILY, serializeToHTML } from 'start-editor-utils';
 
 interface EditorOptions {
   props?: DirectEditorProps;
@@ -36,14 +37,19 @@ export class Editor {
     this.view = new EditorView(this.$el, {
       ...options.props,
       state: this.createState(),
-      attributes: {
-        class: 'start-editor-canvas',
-      },
+      attributes: this.docAttributes,
     });
   }
 
   get state(): EditorState {
     return this.view.state;
+  }
+
+  private get docAttributes() {
+    return {
+      class: 'start-editor-canvas',
+      style: objToStyleString({ color: 'rgb(55, 53, 47)', fontFamily: DEFAULT_FONT_FAMILY }),
+    };
   }
 
   private createCommand() {
@@ -69,6 +75,9 @@ export class Editor {
     let nodes = OrderedMap.from<NodeSpec>({
       doc: {
         content: 'block+',
+        toDOM: () => {
+          return ['div', this.docAttributes, 0];
+        },
       },
       text: {
         group: 'inline',
@@ -121,5 +130,23 @@ export class Editor {
       gapCursor(),
       ...plugins,
     ];
+  }
+
+  /**
+   * 将编辑器中的内容导出为html string
+   */
+  exportHtml(): string {
+    return serializeToHTML(this.state.schema, this.state.doc);
+  }
+
+  /**
+   * 重新设置page中的内容
+   * @param content
+   */
+  setContent(content: EditorOptions['content']): void {
+    this.options.content = content;
+    this.view.setProps({
+      state: this.createState(),
+    });
   }
 }

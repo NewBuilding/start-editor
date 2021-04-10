@@ -4,7 +4,7 @@ import { StyleObject } from '../type';
 
 export abstract class NodeInterface<T> {
   abstract get name(): string;
-  abstract nodeSpec(defaultStyle?: StyleObject): NodeSpec;
+  abstract nodeSpec(defaultStyle?: StyleObject | StyleObject[]): NodeSpec;
   abstract plugins(): Plugin[];
   abstract commands(): T;
 }

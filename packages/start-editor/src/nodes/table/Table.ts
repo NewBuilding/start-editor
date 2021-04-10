@@ -5,7 +5,7 @@ import { TABLE_ROW_NODE_NAME } from './TableRow';
 import { styleStringToObj, objToStyleString } from 'start-editor-utils';
 import { NodeType, Fragment } from 'prosemirror-model';
 
-export const TABLE_NODE_NAME = 'image';
+export const TABLE_NODE_NAME = 'table';
 
 export enum TableRoleKey {
   tableCell = 'cell',
@@ -21,7 +21,12 @@ export class TableNode extends NodeInterface<TableCommand<Command>> {
     return TABLE_NODE_NAME;
   }
 
-  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
+  nodeSpec(
+    defaultStyle: StyleObject = {
+      width: '99%',
+      borderCollapse: 'collapse',
+    },
+  ): NodeSpec {
     return {
       attrs: {
         style: {
@@ -38,7 +43,7 @@ export class TableNode extends NodeInterface<TableCommand<Command>> {
           getAttrs(_dom) {
             const dom = _dom as HTMLElement;
 
-            return { style: styleStringToObj(dom.style.cssText) };
+            return { style: styleStringToObj(dom.style.cssText, defaultStyle) };
           },
         },
       ],

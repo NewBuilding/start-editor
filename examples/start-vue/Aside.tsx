@@ -1,15 +1,32 @@
-import {defineComponent} from 'vue';
+import { defineComponent } from 'vue';
+import { RouterLink } from 'vue-router';
 
-
+const links = [
+  {
+    title: 'table示例',
+    content: 'table',
+  },
+  {
+    title: 'list示例',
+    content: 'list',
+  },
+  {
+    title: '梦游天姥吟留别',
+    content: 'poem',
+  },
+];
 export default defineComponent({
   name: 'aside',
   setup() {
     return () => {
       return (
         <aside class="start-vue-main-aside">
-        div
+          {links.map(({ title, content }) => [
+            <RouterLink to={{ name: 'editor', query: { content } }}>{title}</RouterLink>,
+            <br />,
+          ])}
         </aside>
       );
-    }; 
-  }
+    };
+  },
 });

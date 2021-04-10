@@ -13,7 +13,7 @@ export class TableCellNode extends NodeInterface<TableCellCommand<Command>> {
     return TABLE_CELL_NODE_NAME;
   }
 
-  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
+  nodeSpec(defaultStyle: StyleObject = { border: '1px solid black' }): NodeSpec {
     return {
       attrs: {
         colspan: {
@@ -35,7 +35,7 @@ export class TableCellNode extends NodeInterface<TableCellCommand<Command>> {
           tag: 'td',
           getAttrs(_dom) {
             const dom = _dom as HTMLElement;
-            const style = styleStringToObj(dom.style.cssText);
+            const style = styleStringToObj(dom.style.cssText, defaultStyle);
             const colspan = parseInt(dom.getAttribute('colspan') || '') || 1;
             const rowspan = parseInt(dom.getAttribute('rowspan') || '') || 1;
 
@@ -49,7 +49,7 @@ export class TableCellNode extends NodeInterface<TableCellCommand<Command>> {
       ],
       toDOM: (node) => {
         const attrs = node.attrs;
-        return ['td', { style: objToStyleString(attrs.style) }, 0];
+        return ['td', { ...attrs, style: objToStyleString(attrs.style) }, 0];
       },
     };
   }

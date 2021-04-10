@@ -11,6 +11,10 @@ import { OrderedListNode, ORDERED_LIST_NODE_NAME, OrderedListCommand } from './l
 import { UnorderedListNode, UNORDER_LIST_NODE_NAME, UnorderedListCommand } from './list/UnorderedList';
 import { TodoItemNode, TODO_ITEM_NODE_NAME, TodoItemCommand } from './list/TodoItem';
 import { TodoListNode, TODO_LIST_NODE_NAME, TodoListCommand } from './list/TodoList';
+import { TableNode, TABLE_NODE_NAME, TableCommand } from './table/Table';
+import { TableRowNode, TABLE_ROW_NODE_NAME, TableRowCommand } from './table/TableRow';
+import { TableHeaderNode, TABLE_HEADER_NODE_NAME, TableHeaderCommand } from './table/TableHeader';
+import { TableCellNode, TABLE_CELL_NODE_NAME, TableCellCommand } from './table/TableCell';
 
 export const nodeNams = [
   LINK_NODE_NAME,
@@ -25,6 +29,10 @@ export const nodeNams = [
   ORDERED_LIST_NODE_NAME,
   TODO_ITEM_NODE_NAME,
   TODO_LIST_NODE_NAME,
+  TABLE_NODE_NAME,
+  TABLE_ROW_NODE_NAME,
+  TABLE_HEADER_NODE_NAME,
+  TABLE_CELL_NODE_NAME,
 ] as const;
 
 export interface NodeCommandsMap {
@@ -40,6 +48,10 @@ export interface NodeCommandsMap {
   [ORDERED_LIST_NODE_NAME]: OrderedListCommand;
   [TODO_LIST_NODE_NAME]: TodoListCommand;
   [TODO_ITEM_NODE_NAME]: TodoItemCommand;
+  [TABLE_NODE_NAME]: TableCommand;
+  [TABLE_ROW_NODE_NAME]: TableRowCommand;
+  [TABLE_HEADER_NODE_NAME]: TableHeaderCommand;
+  [TABLE_CELL_NODE_NAME]: TableCellCommand;
 }
 
 export type NodeName = keyof NodeCommandsMap;
@@ -59,4 +71,8 @@ export const allNodes = [
   new OrderedListNode(),
   new TodoItemNode(),
   new TodoListNode(),
+  new TableHeaderNode(),
+  new TableCellNode(),
+  new TableRowNode(),
+  new TableNode(),
 ];

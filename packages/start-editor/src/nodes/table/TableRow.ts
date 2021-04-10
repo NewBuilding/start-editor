@@ -6,7 +6,7 @@ import { TableRoleKey } from './Table';
 import { TABLE_CELL_NODE_NAME } from './TableCell';
 import { TABLE_HEADER_NODE_NAME } from './TableHeader';
 
-export const TABLE_ROW_NODE_NAME = 'image';
+export const TABLE_ROW_NODE_NAME = 'tableRow';
 
 export interface TableRowCommand<T = boolean> {}
 

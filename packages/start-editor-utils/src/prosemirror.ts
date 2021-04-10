@@ -1,4 +1,5 @@
 import { EditorView } from 'prosemirror-view';
+import { DOMSerializer, Node as ProseMirrorNode, Schema } from 'prosemirror-model';
 import { get } from 'lodash';
 
 function textRange(node: Node, from = 0, to: number | null = null) {
@@ -56,4 +57,38 @@ export function coordsAtPos(view: EditorView, pos: number, end = false) {
     left: x,
     right: x,
   };
+}
+
+function gatherToDOM(obj: Record<string, any>) {
+  const result: Record<string, any> = {};
+  for (const name in obj) {
+    const toDOM = obj[name].spec.toDOM;
+    if (toDOM) result[name] = toDOM;
+  }
+  return result;
+}
+
+function nodesFromSchema(schema: Schema) {
+  const result = gatherToDOM(schema.nodes);
+  if (!result.text) result.text = (node: ProseMirrorNode) => node.text;
+  return result;
+}
+
+function marksFromSchema(schema: Schema) {
+  return gatherToDOM(schema.marks);
+}
+
+/**
+ * 将 ProseMirror Node 导出为 HTML
+ */
+export function serializeToHTML(schema: Schema, doc: ProseMirrorNode): string {
+  const dom = new DOMSerializer(
+    {
+      // doc: (node) => ['div', { ...node.attrs }, 0],
+      ...nodesFromSchema(schema),
+    },
+    marksFromSchema(schema),
+  ).serializeNode(doc) as HTMLElement;
+
+  return dom.outerHTML;
 }

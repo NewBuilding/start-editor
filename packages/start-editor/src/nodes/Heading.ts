@@ -1,20 +1,56 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from './NodeInterface';
 import { NodeSpec, Command, StyleObject } from '../type';
-import { objToStyleString, styleStringToObj } from 'start-editor-utils';
+import { objToStyleString, styleStringToObj, DEFAULT_FONT_FAMILY } from 'start-editor-utils';
 
 export const HEADING_NODE_NAME = 'heading';
 
 export interface HeadingCommand<T = boolean> {}
 
+interface LevelAttr {
+  level: 1 | 2 | 3 | 4 | 5;
+  style: StyleObject;
+}
+
 export class HeadingNode extends NodeInterface<HeadingCommand<Command>> {
-  HEADING_LEVELS = [1, 2, 3, 4, 5, 6];
+  HEADING_LEVELS: LevelAttr[] = [
+    {
+      level: 1,
+      style: {
+        fontSize: '32px',
+      },
+    },
+    {
+      level: 2,
+      style: {
+        fontSize: '28px',
+      },
+    },
+    {
+      level: 3,
+      style: {
+        fontSize: '24px',
+      },
+    },
+    {
+      level: 4,
+      style: {
+        fontSize: '20px',
+      },
+    },
+    {
+      level: 5,
+      style: {
+        fontSize: '16px',
+      },
+    },
+  ];
 
   get name(): string {
     return HEADING_NODE_NAME;
   }
 
-  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
+  nodeSpec(defaultStyle: StyleObject = { marginBottom: '4px' }): NodeSpec {
     const { HEADING_LEVELS } = this;
     return {
       content: 'inline*',
@@ -29,12 +65,11 @@ export class HeadingNode extends NodeInterface<HeadingCommand<Command>> {
           default: defaultStyle,
         },
       },
-      parseDOM: HEADING_LEVELS.map((level) => ({
+      parseDOM: HEADING_LEVELS.map(({ level, style }) => ({
         tag: `h${level}`,
         getAttrs(dom) {
           const element = dom as HTMLElement;
-          const style = styleStringToObj(element.style.cssText, defaultStyle);
-          return { style, level };
+          return { style: styleStringToObj(element.style.cssText, { ...defaultStyle, ...style }), level };
         },
       })),
       toDOM: (node) => {
