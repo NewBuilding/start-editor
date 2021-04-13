@@ -14,11 +14,13 @@ import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
 import { StyleObject } from './type';
 import { objToStyleString, DEFAULT_FONT_FAMILY, serializeToHTML } from 'start-editor-utils';
+import { getPlugins } from './plugins';
 
 interface EditorOptions {
   props?: DirectEditorProps;
   content: Record<string, unknown> | string;
   defaultStyles?: Record<NodeName, StyleObject>;
+  plugins?: Plugin[];
 }
 
 export class Editor {
@@ -26,14 +28,14 @@ export class Editor {
   options: EditorOptions;
   view: EditorView;
   schema: Schema;
-  commands: CommandMap;
+  commandMap: CommandMap;
 
   constructor(options: EditorOptions) {
     this.options = options;
     this.$el = document.createElement('div');
     this.$el.classList.add('start-editor');
     this.schema = this.createSchema();
-    this.commands = this.createCommand();
+    this.commandMap = this.createCommand();
     this.view = new EditorView(this.$el, {
       ...options.props,
       state: this.createState(),
@@ -53,7 +55,7 @@ export class Editor {
   }
 
   private createCommand() {
-    const commands = {} as any;
+    const commands = {} as Record<string, Record<string, Function>>;
     const decorate = (command: Function) => (...args: any) => {
       const { view } = this;
       if (!view.editable) {
@@ -63,11 +65,12 @@ export class Editor {
       return command(...args)(view.state, view.dispatch);
     };
     [...allNodes, ...allMarks].forEach((nm) => {
-      Object.entries<Function>(nm.commands as Record<string, any>).forEach(([key, val]) => {
-        commands[key] = decorate(val);
+      const nmCommands = (commands[nm.name] = {} as Record<string, Function>);
+      Object.entries<Function>(nm.commands() as Record<string, any>).forEach(([key, val]) => {
+        nmCommands[key] = decorate(val);
       });
     });
-    return commands;
+    return (commands as any) as CommandMap;
   }
 
   private createSchema() {
@@ -122,6 +125,9 @@ export class Editor {
     [...allNodes, ...allMarks].forEach((nm) => {
       plugins.push(...nm.plugins());
     });
+    getPlugins(this, {}).forEach((instance) => {
+      plugins.push(...instance.plugins);
+    });
     return [
       history(),
       keymap({ 'Mod-z': undo, 'Mod-y': redo }),
@@ -129,6 +135,7 @@ export class Editor {
       dropCursor(),
       gapCursor(),
       ...plugins,
+      ...(this.options.plugins || []),
     ];
   }
 
@@ -140,11 +147,24 @@ export class Editor {
   }
 
   /**
-   * 重新设置page中的内容
+   * 重新设置内容
    * @param content
    */
   setContent(content: EditorOptions['content']): void {
     this.options.content = content;
+    this.view.setProps({
+      state: this.createState(),
+    });
+  }
+
+  /**
+   * 追加插件
+   * @param plugins
+   */
+  addPlugins(plugins: Plugin[]) {
+    if (!this.options.plugins) {
+      this.options.plugins = plugins;
+    }
     this.view.setProps({
       state: this.createState(),
     });

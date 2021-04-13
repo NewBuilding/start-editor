@@ -1,6 +1,7 @@
-import { onMounted, defineComponent, ref, PropType, watch } from 'vue';
-import { StartEditor } from 'start-editor';
+import { onMounted, defineComponent, ref, PropType } from 'vue';
 import './index.less';
+import { StartEditor, ProseMirrorPlugin } from 'start-editor';
+import { getPlugins } from '../../plugins';
 
 interface EditorCanvasProps {
   editor: StartEditor;
@@ -15,14 +16,15 @@ export default defineComponent({
   },
   setup(props) {
     const container = ref<HTMLDivElement | null>(null);
-
+    const plugins = getPlugins(props.editor).reduce(
+      (result, p) => [...result, ...p.plugins],
+      [] as ProseMirrorPlugin[],
+    );
+    props.editor.addPlugins(plugins);
     onMounted(() => {
       const editorEl = props.editor?.$el;
       editorEl && container.value?.appendChild(editorEl);
     });
-    return () => (
-      <div class="start-editor-container" ref={container}></div>
-    );
+    return () => <div class="start-editor-container" ref={container}></div>;
   },
 });
-

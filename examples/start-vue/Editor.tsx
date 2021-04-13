@@ -1,7 +1,8 @@
-import { defineComponent, watch } from 'vue';
+import { defineComponent, watch, onMounted } from 'vue';
 import { EditorCanvas } from 'start-editor-vue';
 import applyDevTools from 'prosemirror-dev-tools';
 import { StartEditor } from 'start-editor';
+import { Plugin } from 'prosemirror-state';
 import { useRoute } from 'vue-router';
 
 const contentMap = {
@@ -84,7 +85,20 @@ const contentMap = {
   `,
 };
 
-export const editor = new StartEditor({ content: '' });
+export const editor = new StartEditor({
+  content: '',
+  plugins: [
+    new Plugin({
+      view() {
+        return {
+          update() {
+            console.log('update');
+          },
+        };
+      },
+    }),
+  ],
+});
 
 export default defineComponent({
   name: 'editor',
@@ -99,7 +113,6 @@ export default defineComponent({
       },
       { immediate: true },
     );
-
     applyDevTools(editor.view);
 
     return () => (

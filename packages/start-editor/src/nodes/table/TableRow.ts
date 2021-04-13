@@ -1,5 +1,5 @@
 import { Plugin } from 'prosemirror-state';
-import { NodeInterface } from '../NodeInterface';
+import { NodeInterface } from '../../interface/NodeInterface';
 import { NodeSpec, Command, StyleObject } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 import { TableRoleKey } from './Table';

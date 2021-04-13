@@ -1,5 +1,5 @@
 import { Plugin } from 'prosemirror-state';
-import { NodeInterface } from '../NodeInterface';
+import { NodeInterface } from '../../interface/NodeInterface';
 import { NodeSpec, Command, ProseMirrorNode, Schema, StyleObject } from '../../type';
 import { TABLE_ROW_NODE_NAME } from './TableRow';
 import { styleStringToObj, objToStyleString } from 'start-editor-utils';

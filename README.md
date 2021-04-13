@@ -1,8 +1,8 @@
-# Vue 3 + Typescript + Vite
+# start-editor
 
-This template should help get you started developing with Vue 3 and Typescript in Vite.
+A rich editor which base on [ProseMirror](https://github.com/ProseMirror/prosemirror)
 
-## Recommended IDE Setup
+<!-- ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur). Make sure to enable `vetur.experimental.templateInterpolationService` in settings!
 
@@ -24,4 +24,4 @@ Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
 2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
 3. Open `src/main.ts` in VSCode
 4. Open the VSCode command palette
-5. Search and run "Select TypeScript version" -> "Use workspace version"
+5. Search and run "Select TypeScript version" -> "Use workspace version" -->

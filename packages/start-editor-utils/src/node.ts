@@ -1,37 +1,41 @@
-import { Node, NodeType, ResolvedPos } from 'prosemirror-model';
+import { Node, NodeType, ResolvedPos, Node as ProseMirrorNode } from 'prosemirror-model';
 import { EditorState, NodeSelection, Selection, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { Dictionary, NodePos, Range } from '../types';
 
 export interface nodePredicate {
   (node: Node): boolean;
 }
 
+/**
+ * 是否为NodeSelection
+ * @param selection
+ */
 export function isNodeSelection(selection: Selection) {
   return selection instanceof NodeSelection;
 }
 
+/**
+ * 是否为TextSelection
+ * @param selection
+ */
 export function isTextSelection(selection: Selection) {
   return selection instanceof TextSelection;
 }
 
-export function equalNodeType(nodeType: NodeType, node: Node) {
-  return Array.isArray(nodeType) && (nodeType.indexOf(node.type) > -1 || node.type === nodeType);
+export interface NodeInfo {
+  pos: number;
+  start: number;
+  end: number;
+  depth: number;
+  node: ProseMirrorNode;
 }
 
-export function findSelectedNodeOfType(nodeType: NodeType) {
-  return function (selection: NodeSelection) {
-    if (isNodeSelection(selection)) {
-      const { node, $from } = selection;
-
-      if (equalNodeType(nodeType, node)) {
-        return { node, pos: $from.pos, depth: $from.depth };
-      }
-    }
-  };
-}
-
-export function findParentNodeClosestToPos($pos: ResolvedPos, predicate: nodePredicate) {
+/**
+ * 逐级向祖先级节点查找符合要求node
+ * @param $pos
+ * @param predicate
+ */
+export function findParentNode($pos: ResolvedPos, predicate: nodePredicate): NodeInfo | null {
   for (let i = $pos.depth; i > 0; i -= 1) {
     const node = $pos.node(i);
 
@@ -45,29 +49,7 @@ export function findParentNodeClosestToPos($pos: ResolvedPos, predicate: nodePre
       };
     }
   }
-}
-
-export function findParentNode(predicate: nodePredicate) {
-  return (selection: Selection) => findParentNodeClosestToPos(selection.$from, predicate);
-}
-
-export function nodeIsActive(state: EditorState, type: NodeType, attrs: Dictionary = {}) {
-  const predicate: nodePredicate = (node) => node.type === type;
-  const node =
-    findSelectedNodeOfType(type)(state.selection as NodeSelection) || findParentNode(predicate)(state.selection);
-
-  if (!Object.keys(attrs).length || !node) {
-    return !!node;
-  }
-
-  return node.node.hasMarkup(type, { ...node.node.attrs, ...attrs });
-}
-
-export function nodeEqualsType(types: NodeType[] | NodeType, node: Node | null | undefined) {
-  if (!node) {
-    return false;
-  }
-  return (Array.isArray(types) && types.includes(node.type)) || node.type === types;
+  return null;
 }
 
 /**
@@ -75,7 +57,7 @@ export function nodeEqualsType(types: NodeType[] | NodeType, node: Node | null |
  * @param doc
  * @param targetNode
  */
-export function getNodeRange(doc: EditorState | Node, targetNode: Node): Range {
+export function getNodeRange(doc: EditorState | Node, targetNode: Node) {
   if (doc instanceof EditorState) {
     doc = doc.doc;
   }
@@ -103,7 +85,12 @@ export function parentHasNode(pos: ResolvedPos, typeName: string) {
   return false;
 }
 
-export function getNodeAndPosByEvent(view: EditorView, event: MouseEvent): NodePos | null {
+/**
+ * 根据dom event查找node
+ * @param view
+ * @param event
+ */
+export function getNodeByEvent(view: EditorView, event: MouseEvent) {
   const pos = view.posAtCoords({
     left: event.clientX,
     top: event.clientY,
@@ -144,10 +131,35 @@ export function rangeIsPartOfNode($from: ResolvedPos, $to: ResolvedPos, typeName
 
 /**
  * 是否为块级图片Element, display为block, width为100%为块级图片
- * @param element 
+ * @param element
  */
 export function isBlockImage(element: HTMLElement): boolean {
   return (
     element.style.display === 'block' || [element.style.width, element.getAttribute('width')].includes('100%')
   );
+}
+
+/**
+ * 获取满足条件的最近的父块节点，默认会返回 block node 或 行内image node
+ * @param state
+ * @param isTargetNode 目标节点判断，
+ */
+export function getClosestParent(
+  state: EditorState,
+  isTargetNode: (node: ProseMirrorNode) => boolean = (node: ProseMirrorNode) =>
+    node.isBlock || ['image'].includes(node.type.name),
+): NodeInfo | null {
+  const { selection, doc } = state;
+  if (selection instanceof NodeSelection && isTargetNode(selection.node)) {
+    const { $from } = selection;
+    return {
+      node: selection.node,
+      pos: selection.from,
+      depth: $from.depth,
+      start: selection.from,
+      end: selection.to,
+    };
+  }
+  const $from = isTextSelection(selection) ? selection.$from : doc.resolve(selection.from + 1);
+  return findParentNode($from, (node) => isTargetNode(node));
 }
