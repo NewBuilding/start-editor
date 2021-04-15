@@ -18,6 +18,10 @@ const links = [
     title: '快前拖拽菜单',
     content: 'beforeMenu',
   },
+  {
+    title: '媒体',
+    content: 'media',
+  },
 ];
 export default defineComponent({
   name: 'aside',

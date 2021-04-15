@@ -41,6 +41,7 @@ export class Editor {
       state: this.createState(),
       attributes: this.docAttributes,
     });
+    window.editor = this;
   }
 
   get state(): EditorState {

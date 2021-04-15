@@ -50,7 +50,7 @@ export class HeadingNode extends NodeInterface<HeadingCommand<Command>> {
     return HEADING_NODE_NAME;
   }
 
-  nodeSpec(defaultStyle: StyleObject = { marginBottom: '4px' }): NodeSpec {
+  nodeSpec(defaultStyle: StyleObject = { marginBottom: '4px', marginTop: '0.5em' }): NodeSpec {
     const { HEADING_LEVELS } = this;
     return {
       content: 'inline*',

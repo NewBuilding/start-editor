@@ -3,27 +3,29 @@ import { NodeInterface } from '../interface/NodeInterface';
 import { NodeSpec, Command, StyleObject } from '../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
-export const DIVIDER_NODE_NAME = 'divider';
+export const VIDEO_NODE_NAME = 'video';
 
-export interface DividerCommand<T = boolean> {}
+export interface VideoCommand<T = boolean> {}
 
-export class DividerNode extends NodeInterface<DividerCommand<Command>> {
+export class VideoNode extends NodeInterface<VideoCommand<Command>> {
   get name(): string {
-    return DIVIDER_NODE_NAME;
+    return VIDEO_NODE_NAME;
   }
 
-  get defaultStyle(): Partial<CSSStyleDeclaration> {
-    return {
-      height: '2px',
-      color: 'red',
-    };
-  }
-
-  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
+  nodeSpec(
+    defaultStyle: StyleObject = {
+      boxSizing: 'border-box',
+      display: 'block',
+      width: '100%',
+      margin: '10px 0',
+    },
+  ): NodeSpec {
     const getAttrs = (dom: Node | string) => {
       const element = dom as HTMLElement;
       return {
         style: styleStringToObj(element.style.cssText, defaultStyle),
+        src: element.getAttribute('src'),
+        controls: element.hasAttribute('controls'),
       };
     };
     return {
@@ -31,33 +33,41 @@ export class DividerNode extends NodeInterface<DividerCommand<Command>> {
       draggable: true,
       atom: true,
       attrs: {
+        src: {
+          default: '',
+        },
+        controls: {
+          default: true,
+        },
         style: {
           default: defaultStyle,
         },
       },
       parseDOM: [
         {
-          tag: '.start-editor-divider',
+          tag: '.start-editor-video',
           getAttrs,
         },
         {
-          tag: 'hr',
+          tag: 'video',
           getAttrs,
         },
       ],
       toDOM: (node) => {
+        const attrs = node.attrs.controls ? node.attrs : { src: node.attrs.src };
         return [
-          'hr',
+          node.attrs.src ? 'video' : 'span',
           {
+            ...attrs,
             style: objToStyleString(node.attrs.style),
-            class: 'start-editor-node start-editor-divider',
+            class: 'start-editor-node start-editor-video',
           },
         ];
       },
     };
   }
 
-  commands(): DividerCommand<Command> {
+  commands(): VideoCommand<Command> {
     return {};
   }
   plugins(): Plugin<any, any>[] {

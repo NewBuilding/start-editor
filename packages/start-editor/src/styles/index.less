@@ -1,7 +1,28 @@
 .start-editor {
   &-canvas {
+    padding: 10px;
+
     &:focus {
       outline: none;
+    }
+  }
+
+  .ProseMirror-selectednode {
+    outline: 2px solid red !important;
+    outline-offset: 0px;
+  }
+
+  .start-editor-node--empty {
+    position: relative;
+
+    &::before {
+      content: '请输入文字';
+      color: #aaa;
+      pointer-events: none;
+      top: 50%;
+      transform: translateY(-50%);
+      position: absolute;
+      font-size: 13px;
     }
   }
 }

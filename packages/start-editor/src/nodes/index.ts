@@ -4,6 +4,8 @@ import { SpanNode, SPAN_NODE_NAME, SpanCommand } from './Span';
 
 import { ParagraphNode, PARAGRAPH_NODE_NAME, ParagraphCommand } from './Paragraph';
 import { BlockImageNode, BLOCK_IMAGE_NODE_NAME, BlockImageCommand } from './BlockImage';
+import { VideoNode, VIDEO_NODE_NAME, VideoCommand } from './Video';
+import { AudioNode, AUDIO_NODE_NAME, AudioCommand } from './Audio';
 import { HeadingNode, HEADING_NODE_NAME, HeadingCommand } from './Heading';
 import { DividerNode, DIVIDER_NODE_NAME, DividerCommand } from './Divider';
 import { ListItemNode, LIST_ITEM_NODE_NAME, ListItemCommand } from './list/ListItem';
@@ -33,6 +35,8 @@ export const nodeNams = [
   TABLE_ROW_NODE_NAME,
   TABLE_HEADER_NODE_NAME,
   TABLE_CELL_NODE_NAME,
+  VIDEO_NODE_NAME,
+  AUDIO_NODE_NAME,
 ] as const;
 
 export interface NodeCommandsMap {
@@ -52,6 +56,8 @@ export interface NodeCommandsMap {
   [TABLE_ROW_NODE_NAME]: TableRowCommand;
   [TABLE_HEADER_NODE_NAME]: TableHeaderCommand;
   [TABLE_CELL_NODE_NAME]: TableCellCommand;
+  [VIDEO_NODE_NAME]: VideoCommand;
+  [AUDIO_NODE_NAME]: AudioCommand;
 }
 
 export type NodeName = keyof NodeCommandsMap;
@@ -75,4 +81,6 @@ export const allNodes = [
   new TableCellNode(),
   new TableRowNode(),
   new TableNode(),
+  new VideoNode(),
+  new AudioNode(),
 ];

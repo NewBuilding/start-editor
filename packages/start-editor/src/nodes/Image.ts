@@ -13,6 +13,16 @@ export class ImageNode extends NodeInterface<ImageCommand<Command>> {
   }
 
   nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
+    const getAttrs = (dom: Node | string) => {
+      const element = dom as HTMLElement;
+      if (isBlockImage(element)) return false;
+      return {
+        style: styleStringToObj(element.style.cssText, defaultStyle),
+        src: element.getAttribute('src'),
+        alt: element.getAttribute('alt'),
+        title: element.getAttribute('title'),
+      };
+    };
     return {
       group: 'inline',
       inline: true,
@@ -35,25 +45,19 @@ export class ImageNode extends NodeInterface<ImageCommand<Command>> {
       },
       parseDOM: [
         {
+          tag: '.start-editor-image',
+          getAttrs,
+        },
+        {
           tag: 'img',
-          getAttrs(dom) {
-            const element = dom as HTMLElement;
-            if (isBlockImage(element)) return false;
-            return {
-              style: styleStringToObj(element.style.cssText, defaultStyle),
-              src: element.getAttribute('src'),
-              target: element.getAttribute('target'),
-            };
-          },
+          getAttrs,
         },
       ],
       toDOM: (node) => {
-        const { other } = node.attrs;
-
         return [
-          'img',
+          node.attrs.src ? 'img' : 'span',
           {
-            ...other,
+            ...node.attrs,
             style: objToStyleString(node.attrs.style),
             class: 'start-editor-node start-editor-image',
           },

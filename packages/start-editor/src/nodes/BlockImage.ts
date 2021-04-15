@@ -13,6 +13,16 @@ export class BlockImageNode extends NodeInterface<BlockImageCommand<Command>> {
   }
 
   nodeSpec(defaultStyle: StyleObject = { width: '100%' }): NodeSpec {
+    const getAttrs = (dom: Node | string) => {
+      const element = dom as HTMLElement;
+      if (!isBlockImage(element)) return false;
+      return {
+        style: styleStringToObj(element.style.cssText, defaultStyle),
+        src: element.getAttribute('src'),
+        alt: element.getAttribute('alt'),
+        title: element.getAttribute('title'),
+      };
+    };
     return {
       group: 'block',
       inline: false,
@@ -35,21 +45,17 @@ export class BlockImageNode extends NodeInterface<BlockImageCommand<Command>> {
       },
       parseDOM: [
         {
+          tag: '.start-editor-block_image',
+          getAttrs,
+        },
+        {
           tag: 'img',
-          getAttrs(dom) {
-            const element = dom as HTMLElement;
-            if (!isBlockImage(element)) return false;
-            return {
-              style: styleStringToObj(element.style.cssText, defaultStyle),
-              src: element.getAttribute('src'),
-              target: element.getAttribute('target'),
-            };
-          },
+          getAttrs,
         },
       ],
       toDOM: (node) => {
         return [
-          'img',
+          node.attrs.src ? 'img' : 'span',
           {
             ...node.attrs,
             style: objToStyleString(node.attrs.style),
