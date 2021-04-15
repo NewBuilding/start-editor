@@ -35,13 +35,13 @@ export class ImageNode extends NodeInterface<ImageCommand<Command>> {
       },
       parseDOM: [
         {
-          tag: 'img[src]',
+          tag: 'img',
           getAttrs(dom) {
             const element = dom as HTMLElement;
             if (isBlockImage(element)) return false;
             return {
               style: styleStringToObj(element.style.cssText, defaultStyle),
-              href: element.getAttribute('href'),
+              src: element.getAttribute('src'),
               target: element.getAttribute('target'),
             };
           },

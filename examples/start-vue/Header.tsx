@@ -5,7 +5,7 @@ import {editor} from './Editor';
 export default defineComponent({
   setup() {
     const onclick = () => {
-      editor.commands.style.add({fontWeight: 'bold'});
+      editor.commandMap.style.add({fontWeight: 'bold'});
     };
     return () =>(
       <div class="start-vue-header">

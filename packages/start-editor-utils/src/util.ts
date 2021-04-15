@@ -1,5 +1,6 @@
 export function objToStyleString(obj: Partial<CSSStyleDeclaration>): string {
   return Object.entries(obj).reduce((all, [key, value]) => {
+    if (!key || !value) return all;
     const property = `${camelToKebab(key)}:${value};`;
     return all + property;
   }, '');
@@ -57,12 +58,4 @@ export function isUrl(url: string) {
  */
 export function isImageBySuffix(url: string): boolean {
   return /.*(\.png|\.jpg|\.jpeg|\.gif)$/.test(url);
-}
-
-/**
- * 追加px后缀
- * @param val
- */
-export function px(val: number) {
-  return `${val}px`;
 }

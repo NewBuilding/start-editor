@@ -2,7 +2,7 @@
 import { Plugin, PluginKey, EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import Popper, { createPopper as _createPopper } from '@popperjs/core';
-import { coordsAtPos, getClosestParent, getRelatviePosition, px } from 'start-editor-utils';
+import { coordsAtPos, getClosestParent, getRelatviePosition, px, setElementRect } from 'start-editor-utils';
 import { PluginInterface } from 'start-editor';
 import { throttle } from 'lodash';
 import { currentStateKey } from './CurrentState';
@@ -169,10 +169,12 @@ export class AnchorPopperPlugin extends PluginInterface {
     if (!element) return;
     const relativePos = getRelatviePosition(this.editor.$el, element);
 
-    hoverNodeAnchor.style.left = px(relativePos.left);
-    hoverNodeAnchor.style.top = px(relativePos.top);
-    hoverNodeAnchor.style.width = px(element.clientWidth);
-    hoverNodeAnchor.style.height = px(element.clientHeight);
+    setElementRect(hoverNodeAnchor, {
+      left: relativePos.left,
+      top: relativePos.top,
+      width: element.clientWidth,
+      height: element.clientHeight,
+    });
   }
 
   updateTextAnchor(view: EditorView) {
@@ -182,10 +184,12 @@ export class AnchorPopperPlugin extends PluginInterface {
     const fromCoords = coordsAtPos(view, selection.from);
     const toCoords = coordsAtPos(view, selection.to, true);
     const relativePos = getRelativePos(fromCoords, this.editor.$el);
-    textAnchor.style.left = px(relativePos.left);
-    textAnchor.style.top = px(relativePos.top);
-    textAnchor.style.width = px(Math.max(toCoords.left - fromCoords.left, 1));
-    textAnchor.style.height = px(toCoords.bottom - fromCoords.top);
+    setElementRect(textAnchor, {
+      left: relativePos.left,
+      top: relativePos.top,
+      width: Math.max(toCoords.left - fromCoords.left, 1),
+      height: toCoords.bottom - fromCoords.top,
+    });
   }
 
   updateNodeAnchor(view: EditorView) {
@@ -194,10 +198,12 @@ export class AnchorPopperPlugin extends PluginInterface {
     if (!nodeInfo) return;
     const dom = view.nodeDOM(nodeInfo.pos) as HTMLElement;
     const relativePos = getRelativePos(view.coordsAtPos(nodeInfo.pos), this.editor.$el);
-    nodeAnchor.style.left = px(relativePos.left);
-    nodeAnchor.style.top = px(relativePos.top);
-    nodeAnchor.style.width = px(dom.clientWidth);
-    nodeAnchor.style.height = px(dom.clientHeight);
+    setElementRect(textAnchor, {
+      left: relativePos.left,
+      top: relativePos.top,
+      width: dom.clientWidth,
+      height: dom.clientHeight,
+    });
   }
 
   update(view: EditorView) {

@@ -1,11 +1,10 @@
-import { Plugin, PluginKey } from 'prosemirror-state';
-import { ResolvedPos } from 'prosemirror-model';
-import { getParentElementByClassName } from 'start-editor-utils';
-import { PluginInterface } from 'start-editor';
+import { Plugin, PluginKey, Selection, NodeSelection } from 'prosemirror-state';
+import { getParentElementByClassName, elementHasClassNames, getNodeByEvent } from 'start-editor-utils';
+import { PluginInterface, ProseMirrorNode } from 'start-editor';
 
 export interface CurrentState {
   // 当前hover位置对应的 ResolvedPos
-  hoverResolvedPos: ResolvedPos | null;
+  hoverNode: ProseMirrorNode | null;
   // 当前hover的dom元素
   hoverDom: HTMLElement | null;
 }
@@ -40,14 +39,30 @@ export class CurrentStatePlugin extends PluginInterface {
                   return false;
                 },
               );
-              let resolvedPos = null;
+              let hoverNode = null;
               if (element) {
                 const pos = view.posAtDOM(element, 0);
-                resolvedPos = view.state.doc.resolve(pos);
+                const resolvedPos = view.state.doc.resolve(pos);
+                // inline node
+                if (elementHasClassNames(element, ['start-editor-image'])) {
+                  hoverNode = resolvedPos.nodeAfter;
+                } else if (
+                  elementHasClassNames(element, [
+                    'start-editor-block_image',
+                    'start-editor-video',
+                    'start-editor-audio',
+                  ])
+                ) {
+                  // atom node
+                  const selection = Selection.findFrom(resolvedPos, 1);
+                  hoverNode = selection instanceof NodeSelection ? selection.node : null;
+                } else {
+                  // 非 atom node
+                  hoverNode = resolvedPos.parent;
+                }
               }
-
               const tr = view.state.tr.setMeta('hoverDom', element);
-              tr.setMeta('hoverResolvedPos', resolvedPos);
+              tr.setMeta('hoverNode', hoverNode);
               view.dispatch(tr);
               return false;
             },
@@ -57,19 +72,19 @@ export class CurrentStatePlugin extends PluginInterface {
           init() {
             return {
               hoverDom: null,
-              hoverResolvedPos: null,
+              hoverNode: null,
             };
           },
           apply(tr, old) {
             let hoverDom = tr.getMeta('hoverDom');
-            let hoverResolvedPos = tr.getMeta('hoverResolvedPos');
+            let hoverNode = tr.getMeta('hoverNode');
             if (hoverDom === undefined) {
               hoverDom = old.hoverDom;
-              hoverResolvedPos = old.hoverResolvedPos;
+              hoverNode = old.hoverNode;
             }
             return {
               hoverDom,
-              hoverResolvedPos,
+              hoverNode,
             };
           },
         },

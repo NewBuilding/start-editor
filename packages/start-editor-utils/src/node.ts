@@ -85,32 +85,32 @@ export function parentHasNode(pos: ResolvedPos, typeName: string) {
   return false;
 }
 
+interface NodePos {
+  node: ProseMirrorNode;
+  pos: number;
+}
+
 /**
  * 根据dom event查找node
  * @param view
  * @param event
  */
-export function getNodeByEvent(view: EditorView, event: MouseEvent) {
+export function getNodeByEvent(view: EditorView, event: MouseEvent): NodePos | null {
   const pos = view.posAtCoords({
     left: event.clientX,
     top: event.clientY,
   });
-
   if (!pos) {
     return null;
   }
-
   // 为 -1，表示该坐标落在了顶级节点的位置，不在任何节点之内
   if (pos.inside == -1) {
     return null;
   }
-
   const $pos = view.state.doc.resolve(pos.inside);
-
   if (!$pos.nodeAfter) {
     return null;
   }
-
   return {
     node: $pos.nodeAfter,
     pos: $pos.before($pos.depth + 1),

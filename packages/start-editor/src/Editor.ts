@@ -164,6 +164,8 @@ export class Editor {
   addPlugins(plugins: Plugin[]) {
     if (!this.options.plugins) {
       this.options.plugins = plugins;
+    } else {
+      this.options.plugins.push(...plugins);
     }
     this.view.setProps({
       state: this.createState(),

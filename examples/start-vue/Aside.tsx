@@ -14,6 +14,10 @@ const links = [
     title: '梦游天姥吟留别',
     content: 'poem',
   },
+  {
+    title: '快前拖拽菜单',
+    content: 'beforeMenu',
+  },
 ];
 export default defineComponent({
   name: 'aside',
