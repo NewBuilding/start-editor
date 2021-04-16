@@ -11,4 +11,7 @@ export default defineConfig({
     'start-editor-vue': '../packages/start-editor-vue/src',
     'start-editor-utils': '../packages/start-editor-utils/src',
   },
+  define: {
+    'process.env': process.env,
+  },
 });
