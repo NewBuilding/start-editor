@@ -55,12 +55,18 @@ export class BlockImageNode extends NodeInterface<BlockImageCommand<Command>> {
       ],
       toDOM: (node) => {
         return [
-          node.attrs.src ? 'img' : 'span',
+          'div',
           {
-            ...node.attrs,
-            style: objToStyleString(node.attrs.style),
             class: 'start-editor-node start-editor-block_image',
           },
+          [
+            node.attrs.src ? 'img' : 'span',
+            {
+              ...node.attrs,
+              class: 'start-editor-block_image-content',
+              style: objToStyleString(node.attrs.style),
+            },
+          ],
         ];
       },
     };

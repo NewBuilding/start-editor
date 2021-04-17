@@ -2,6 +2,8 @@ import { NodeSelection, Plugin } from 'prosemirror-state';
 import { PluginInterface } from '../interface';
 import { getNodeByEvent, isCtrlKey } from 'start-editor-utils';
 
+NodeSelection.prototype.visible = false;
+
 /**
  * 用于拓展内置的点击节点即选中，内置的为点击 atom node 会直接选中
  * 拓展后，点击 content 为 block 的 node，会直接选中, selected node 会增加ProseMirror
@@ -13,7 +15,6 @@ export class SelecNodePlugin extends PluginInterface {
         props: {
           handleClick(view, _pos, event) {
             const clickedNode = getNodeByEvent(view, event);
-            console.log(clickedNode);
 
             if (clickedNode === null) {
               return false;

@@ -1,16 +1,28 @@
-import { defineComponent } from 'vue';
-import { RouterView } from 'vue-router';
+import { defineComponent, watch, ref } from 'vue';
+import { RouterView, useRoute } from 'vue-router';
 import Aside from './Aside';
 // import Panel from './Panel';
 import Header from './Header';
 
 export default defineComponent({
   setup() {
+    const route = useRoute();
+    const showAside = ref(true);
+    watch(
+      () => route.query,
+      () => {
+        console.log('watch', route.query.hideAside);
+        if (route.query.hideAside) {
+          showAside.value = false;
+        }
+      },
+      { immediate: true },
+    );
     return () => (
       <div class="start-vue">
         <Header />
         <main class="start-vue-main">
-          <Aside />
+          {showAside.value && <Aside />}
           <RouterView />
           {/* <Panel /> */}
         </main>

@@ -32,7 +32,8 @@
     "prosemirror-state": "^1.3.4",
     "prosemirror-tables": "^1.1.1",
     "prosemirror-transform": "^1.2.11",
-    "prosemirror-view": "^1.17.6"
+    "prosemirror-view": "^1.17.6",
+    "tsx-dom": "^1.2.0"
   },
   "devDependencies": {
     "@types/prosemirror-commands": "^1.0.4",

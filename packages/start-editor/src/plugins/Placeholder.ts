@@ -14,7 +14,6 @@ export class PlaceholderPlugin extends PluginInterface {
       new Plugin({
         props: {
           decorations: (state) => {
-            console.log(state);
             const { doc, selection } = state;
             const editable = this.editor.view?.editable;
             if (!editable) {

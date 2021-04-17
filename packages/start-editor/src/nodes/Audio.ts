@@ -56,12 +56,18 @@ export class AudioNode extends NodeInterface<AudioCommand<Command>> {
       toDOM: (node) => {
         const attrs = node.attrs.controls ? node.attrs : { src: node.attrs.src };
         return [
-          node.attrs.src ? 'audio' : 'span',
+          'div',
           {
-            ...attrs,
-            style: objToStyleString(node.attrs.style),
             class: 'start-editor-node start-editor-audio',
           },
+          [
+            node.attrs.src ? 'audio' : 'span',
+            {
+              ...attrs,
+              class: 'start-editor-audio-content',
+              style: objToStyleString(node.attrs.style),
+            },
+          ],
         ];
       },
     };

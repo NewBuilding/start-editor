@@ -19,16 +19,18 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "start-editor": "0.0.1",
-    "vue": "^3.0.5",
     "prosemirror-model": "^1.13.3",
     "prosemirror-state": "^1.3.4",
-    "prosemirror-view": "^1.17.6"
+    "prosemirror-view": "^1.17.6",
+    "start-editor": "0.0.1",
+    "vue": "^3.0.5"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.168",
     "@types/node": "^14.14.37",
     "@types/prosemirror-dev-tools": "^3.0.1",
+    "@types/prosemirror-state": "^1.2.6",
+    "@types/prosemirror-view": "^1.17.1",
     "@typescript-eslint/eslint-plugin": "^4.19.0",
     "@typescript-eslint/parser": "^4.19.0",
     "@vitejs/plugin-vue": "^1.2.1",
@@ -42,9 +44,8 @@
     "react-dom": "^17.0.2",
     "typescript": "^4.2.3",
     "vite": "^2.1.3",
+    "vite-plugin-dom-jsx": "^0.0.1-beta.5",
     "vue-router": "4",
-    "vue-tsc": "^0.0.8",
-    "@types/prosemirror-state": "^1.2.6",
-    "@types/prosemirror-view": "^1.17.1"
+    "vue-tsc": "^0.0.8"
   }
 }

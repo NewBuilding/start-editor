@@ -56,12 +56,18 @@ export class VideoNode extends NodeInterface<VideoCommand<Command>> {
       toDOM: (node) => {
         const attrs = node.attrs.controls ? node.attrs : { src: node.attrs.src };
         return [
-          node.attrs.src ? 'video' : 'span',
+          'div',
           {
-            ...attrs,
-            style: objToStyleString(node.attrs.style),
             class: 'start-editor-node start-editor-video',
           },
+          [
+            node.attrs.src ? 'video' : 'span',
+            {
+              ...attrs,
+              class: 'start-editor-video-content',
+              style: objToStyleString(node.attrs.style),
+            },
+          ],
         ];
       },
     };

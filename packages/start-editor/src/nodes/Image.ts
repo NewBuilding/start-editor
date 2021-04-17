@@ -12,7 +12,7 @@ export class ImageNode extends NodeInterface<ImageCommand<Command>> {
     return IMAGE_NODE_NAME;
   }
 
-  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
+  nodeSpec(defaultStyle: StyleObject = { maxHeight: '50px' }): NodeSpec {
     const getAttrs = (dom: Node | string) => {
       const element = dom as HTMLElement;
       if (isBlockImage(element)) return false;
@@ -55,12 +55,19 @@ export class ImageNode extends NodeInterface<ImageCommand<Command>> {
       ],
       toDOM: (node) => {
         return [
-          node.attrs.src ? 'img' : 'span',
+          'div',
           {
-            ...node.attrs,
-            style: objToStyleString(node.attrs.style),
             class: 'start-editor-node start-editor-image',
+            style: objToStyleString({ display: 'inline-block', fontSize: '0' }),
           },
+          [
+            node.attrs.src ? 'img' : 'span',
+            {
+              ...node.attrs,
+              class: 'start-editor-image-content',
+              style: objToStyleString(node.attrs.style),
+            },
+          ],
         ];
       },
     };
