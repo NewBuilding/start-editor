@@ -1,6 +1,6 @@
-import { defineComponent, watch, onMounted } from 'vue';
+import { defineComponent, watch } from 'vue';
 import { EditorCanvas } from 'start-editor-vue';
-import applyDevTools from 'prosemirror-dev-tools';
+// import applyDevTools from 'prosemirror-dev-tools';
 import { StartEditor } from 'start-editor';
 import { Plugin } from 'prosemirror-state';
 import { useRoute } from 'vue-router';
@@ -98,6 +98,7 @@ const contentMap = {
   <div>
     <video src="https://st0.dancf.com/csc/1681/configs/system/20210021-110338-ea07.mp4" controls></video>
     <audio src="https://st0.dancf.com/csc/1681/configs/system/20210308-174808-4b46.mp3" controls></audio>
+    <img />
   </div>
   `,
 };
@@ -121,7 +122,6 @@ export default defineComponent({
   name: 'editor',
   setup() {
     const route = useRoute();
-    const a: string = 1213;
 
     watch(
       () => route.query,
@@ -131,7 +131,7 @@ export default defineComponent({
       },
       { immediate: true },
     );
-    applyDevTools(editor.view);
+    // applyDevTools(editor.view);
 
     return () => (
       <div class="start-vue-main-editor">

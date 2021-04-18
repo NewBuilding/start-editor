@@ -1,0 +1,46 @@
+.resource-placeholder {
+  display: flex;
+  padding: 12px 36px 12px 12px;
+  align-items: center;
+  text-align: left;
+  overflow: hidden;
+  background-color: rgb(242, 241, 238);
+  border-radius: 3px;
+  color: rgba(55, 53, 47, 0.6);
+  cursor: pointer;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+
+  &:hover {
+    background-color: blue;
+  }
+
+  .icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+}
+
+.inline-placeholder {
+  display: inline-block;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 3px;
+  background-color: rgb(242, 241, 238);
+  z-index: -1;
+
+  .icon {
+    width: 25px;
+    height: 25px;
+  }
+}

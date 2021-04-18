@@ -54,11 +54,17 @@ export class ImageNode extends NodeInterface<ImageCommand<Command>> {
         },
       ],
       toDOM: (node) => {
+        const isEmpty = !node.attrs.src;
         return [
           'div',
           {
             class: 'start-editor-node start-editor-image',
-            style: objToStyleString({ display: 'inline-block', fontSize: '0' }),
+            style: objToStyleString({
+              display: 'inline-block',
+              fontSize: '0',
+              width: isEmpty ? '40px' : 'auto',
+              height: isEmpty ? '40px' : 'auto',
+            }),
           },
           [
             node.attrs.src ? 'img' : 'span',

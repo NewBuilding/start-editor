@@ -7,7 +7,6 @@
     "moduleResolution": "node",
     "strict": true,
     "jsx": "react",
-    "jsxFactory": "h",
     "sourceMap": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,

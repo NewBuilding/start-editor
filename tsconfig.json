@@ -19,5 +19,5 @@
       "start-editor-utils": ["packages/start-editor-utils/src"]
     }
   },
-  "include": ["packages/global.d.ts", "packages/*/src"]
+  "include": ["packages/global.d.ts", "packages/start-editor-utils/src", "packages/start-editor-vue/src"]
 }

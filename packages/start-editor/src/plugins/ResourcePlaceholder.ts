@@ -2,7 +2,7 @@ import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
 import { Plugin } from 'prosemirror-state';
 import { PluginInterface } from '../interface';
 import { NodeName } from '../nodes';
-import { h } from 'tsx-dom';
+import { Placeholder } from '../components';
 
 export const placeholderNode: NodeName[] = ['image', 'blockImage', 'video', 'audio'];
 
@@ -46,19 +46,12 @@ function getDecorations(view: EditorView) {
   state.doc.descendants((node, pos) => {
     if (!node.attrs.src && placeholderNode.includes(node.type.name as NodeName)) {
       const decoration = Decoration.widget(pos, () => {
-        const instance = PlaceholderView({ type: node.type.name });
+        const instance = Placeholder({ type: node.type.name as any });
+        console.log(instance);
         return instance;
       });
       decorations.push(decoration);
     }
   });
   return DecorationSet.create(state.doc, decorations);
-}
-
-interface PlaceholderViewProps {
-  type: string;
-}
-
-function PlaceholderView(props: PlaceholderViewProps) {
-  return (<div>{props.type}</div>) as HTMLElement;
 }

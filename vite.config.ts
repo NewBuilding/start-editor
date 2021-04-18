@@ -6,7 +6,7 @@ import domJsx from 'vite-plugin-dom-jsx';
 // https://vitejs.dev/config/
 export default defineConfig({
   // root: ''
-  plugins: [domJsx({ include: [/start-editor/, /examples\/tsx-dom/] }), vue(), vueJsx()],
+  plugins: [domJsx({ include: [/\/start-editor\//], pragma: 'React.createElement' }), vue(), vueJsx()],
   alias: {
     'start-editor': '../packages/start-editor/src',
     'start-editor-vue': '../packages/start-editor-vue/src',
