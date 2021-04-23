@@ -20,7 +20,7 @@
     ]
   },
   "dependencies": {
-    "jsx-dom": "^7.0.0-beta.5",
+    "jsx-dom": "^6.4.23",
     "lodash": "^4.17.21",
     "prosemirror-commands": "^1.1.6",
     "prosemirror-dropcursor": "^1.3.3",

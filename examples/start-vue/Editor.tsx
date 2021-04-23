@@ -96,9 +96,17 @@ const contentMap = {
 `,
   media: `
   <div>
+    <h2>1213</h2>
     <video src="https://st0.dancf.com/csc/1681/configs/system/20210021-110338-ea07.mp4" controls></video>
     <audio src="https://st0.dancf.com/csc/1681/configs/system/20210308-174808-4b46.mp3" controls></audio>
-    <img />
+    <p>
+      123123123<img />12312312
+      <img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fyouimg1.c-ctrip.com%2Ftarget%2Ftg%2F035%2F063%2F726%2F3ea4031f045945e1843ae5156749d64c.jpg&refer=http%3A%2F%2Fyouimg1.c-ctrip.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620971326&t=3507ef9ac593d1b9956dea8c0c42daee" />
+      我寄愁心与明月
+    </p>
+    <img width="100%" />
+    <video></video>
+    <audio></audio>
   </div>
   `,
 };

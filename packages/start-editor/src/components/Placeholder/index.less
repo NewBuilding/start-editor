@@ -1,19 +1,19 @@
 .resource-placeholder {
   display: flex;
+  box-sizing: border-box;
   padding: 12px 36px 12px 12px;
   align-items: center;
-  text-align: left;
-  overflow: hidden;
   background-color: rgb(242, 241, 238);
   border-radius: 3px;
   color: rgba(55, 53, 47, 0.6);
   cursor: pointer;
-  position: absolute;
-  left: 10px;
-  right: 10px;
+  margin: 10px 0;
+  user-select: none;
+  transition: background-color 200ms ease-in;
+
 
   &:hover {
-    background-color: blue;
+    background-color: rgba(242, 241, 238, 0.5);
   }
 
   .icon {
@@ -28,16 +28,22 @@
 }
 
 .inline-placeholder {
-  display: inline-block;
-  position: absolute;
-  width: 30px;
-  height: 30px;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
+  width: 40px;
+  height: 40px;
   padding: 5px;
+  cursor: pointer;
   border-radius: 3px;
+  box-sizing: border-box;
   background-color: rgb(242, 241, 238);
-  z-index: -1;
+  transition: background-color 200ms ease-in;
+
+  &:hover {
+    background-color: rgba(242, 241, 238, 0.6);
+  }
+
 
   .icon {
     width: 25px;

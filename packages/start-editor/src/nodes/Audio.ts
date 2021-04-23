@@ -59,13 +59,14 @@ export class AudioNode extends NodeInterface<AudioCommand<Command>> {
           'div',
           {
             class: 'start-editor-node start-editor-audio',
+            style: objToStyleString({ display: node.attrs.src ? 'block' : 'none' }),
           },
           [
-            node.attrs.src ? 'audio' : 'span',
+            node.attrs.src ? 'audio' : 'div',
             {
               ...attrs,
               class: 'start-editor-audio-content',
-              style: objToStyleString(node.attrs.style),
+              style: objToStyleString({ ...node.attrs.style, height: node.attrs.src ? 'auto' : '50px' }),
             },
           ],
         ];

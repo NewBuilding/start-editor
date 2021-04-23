@@ -59,13 +59,14 @@ export class VideoNode extends NodeInterface<VideoCommand<Command>> {
           'div',
           {
             class: 'start-editor-node start-editor-video',
+            style: objToStyleString({ display: node.attrs.src ? 'block' : 'none' }),
           },
           [
-            node.attrs.src ? 'video' : 'span',
+            node.attrs.src ? 'video' : 'div',
             {
               ...attrs,
               class: 'start-editor-video-content',
-              style: objToStyleString(node.attrs.style),
+              style: objToStyleString({ ...node.attrs.style }),
             },
           ],
         ];

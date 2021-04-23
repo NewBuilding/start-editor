@@ -47,7 +47,6 @@ function getDecorations(view: EditorView) {
     if (!node.attrs.src && placeholderNode.includes(node.type.name as NodeName)) {
       const decoration = Decoration.widget(pos, () => {
         const instance = Placeholder({ type: node.type.name as any });
-        console.log(instance);
         return instance;
       });
       decorations.push(decoration);

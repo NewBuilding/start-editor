@@ -60,10 +60,8 @@ export class ImageNode extends NodeInterface<ImageCommand<Command>> {
           {
             class: 'start-editor-node start-editor-image',
             style: objToStyleString({
-              display: 'inline-block',
+              display: isEmpty ? 'none' : 'inline-block',
               fontSize: '0',
-              width: isEmpty ? '40px' : 'auto',
-              height: isEmpty ? '40px' : 'auto',
             }),
           },
           [

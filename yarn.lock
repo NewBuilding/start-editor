@@ -1416,10 +1416,10 @@ csstype@^2.5.7, csstype@^2.6.8:
   resolved "https://registry.npm.taobao.org/csstype/download/csstype-2.6.16.tgz?cache=0&sync_timestamp=1614159662633&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcsstype%2Fdownload%2Fcsstype-2.6.16.tgz#544d69f547013b85a40d15bff75db38f34fe9c39"
   integrity sha1-VE1p9UcBO4WkDRW/912zjzT+nDk=
 
-csstype@^3.0.7:
-  version "3.0.7"
-  resolved "https://registry.npm.taobao.org/csstype/download/csstype-3.0.7.tgz?cache=0&sync_timestamp=1614159662633&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcsstype%2Fdownload%2Fcsstype-3.0.7.tgz#2a5fb75e1015e84dd15692f71e89a1450290950b"
-  integrity sha1-Kl+3XhAV6E3RVpL3HomhRQKQlQs=
+csstype@^3.0.3:
+  version "3.0.8"
+  resolved "https://registry.nlark.com/csstype/download/csstype-3.0.8.tgz?cache=0&sync_timestamp=1618818466657&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcsstype%2Fdownload%2Fcsstype-3.0.8.tgz#d2266a792729fb227cd216fb572f43728e1ad340"
+  integrity sha1-0iZqeScp+yJ80hb7Vy9Dco4a00A=
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -2456,12 +2456,12 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jsx-dom@^7.0.0-beta.5:
-  version "7.0.0-beta.5"
-  resolved "https://registry.npm.taobao.org/jsx-dom/download/jsx-dom-7.0.0-beta.5.tgz#fbbe9b8e93429ee10f818de011d33d878527a953"
-  integrity sha1-+76bjpNCnuEPgY3gEdM9h4UnqVM=
+jsx-dom@^6.4.23:
+  version "6.4.23"
+  resolved "https://registry.npm.taobao.org/jsx-dom/download/jsx-dom-6.4.23.tgz#47f4e547eb86679bd03f3d0b36f2097c2799ee46"
+  integrity sha1-R/TlR+uGZ5vQPz0LNvIJfCeZ7kY=
   dependencies:
-    csstype "^3.0.7"
+    csstype "^3.0.3"
 
 kew@^0.7.0:
   version "0.7.0"

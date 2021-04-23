@@ -1,6 +1,7 @@
 import React from 'jsx-dom';
 import Icon, { IconName } from '../Icon';
 import './index.less';
+import {px} from 'start-editor-utils';
 
 export type PlaceholderType = 'image' | 'blockImage' | 'video' | 'audio';
 
@@ -18,11 +19,11 @@ const typeMap: Record<PlaceholderType, { icon: IconName; title: string }> = {
     title: '增加图片',
   },
   video: {
-    icon: 'imagePlaceholder',
+    icon: 'video',
     title: '增加视频',
   },
   audio: {
-    icon: 'imagePlaceholder',
+    icon: 'audio',
     title: '增加音频',
   },
 };

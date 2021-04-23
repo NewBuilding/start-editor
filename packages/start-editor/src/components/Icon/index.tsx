@@ -1,4 +1,4 @@
-import React from 'jsx-dom';
+import React, { CSSProperties } from 'jsx-dom';
 import type { Name } from './iconSprite';
 
 export type { Name as IconName };
@@ -23,7 +23,7 @@ import(/* webpackChunkName: "icon-sprite" */ './iconSprite').then((module) => {
 
 export interface IconProps {
   name: Name;
-  style?: Partial<CSSStyleDeclaration>;
+  style?: CSSProperties;
   class?: string;
   onClick?(e: Event): void;
 }
