@@ -2,7 +2,7 @@ import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { DOMParser, Schema, MarkSpec, NodeSpec } from 'prosemirror-model';
 import OrderedMap from 'orderedmap';
-import { CommandMap } from './type';
+import { CommandMap, ProseMirrorNode } from './type';
 import { allNodes, NodeName } from './nodes';
 import { allMarks } from './marks';
 import './styles/index.less';
@@ -97,14 +97,16 @@ export class Editor {
     return new Schema({ nodes, marks });
   }
 
-  private createState() {
+  private createState(doc?: ProseMirrorNode) {
     const {
       options: { content },
     } = this;
-    if (typeof content === 'string') {
+    if (typeof content === 'string' || !!doc) {
       // html
-      const domElement = new window.DOMParser().parseFromString(content, 'text/html');
-      const doc = DOMParser.fromSchema(this.schema).parse(domElement);
+      if (!doc) {
+        const domElement = new window.DOMParser().parseFromString(content as string, 'text/html');
+        doc = DOMParser.fromSchema(this.schema).parse(domElement);
+      }
       return EditorState.create({
         doc,
         plugins: this.getPlugins(),
@@ -169,7 +171,7 @@ export class Editor {
       this.options.plugins.push(...plugins);
     }
     this.view.setProps({
-      state: this.createState(),
+      state: this.createState(this.state.doc),
     });
   }
 }

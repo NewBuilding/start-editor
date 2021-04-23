@@ -17,6 +17,8 @@ import { TableNode, TABLE_NODE_NAME, TableCommand } from './table/Table';
 import { TableRowNode, TABLE_ROW_NODE_NAME, TableRowCommand } from './table/TableRow';
 import { TableHeaderNode, TABLE_HEADER_NODE_NAME, TableHeaderCommand } from './table/TableHeader';
 import { TableCellNode, TABLE_CELL_NODE_NAME, TableCellCommand } from './table/TableCell';
+import { FlexBoxNode, FLEX_BOX_NODE_NAME, FlexBoxCommand } from './flexBox/FlexBox';
+import { FlexItemNode, FLEX_ITEM_NODE_NAME, FlexItemCommand } from './flexBox/FlexItem';
 
 export const nodeNams = [
   LINK_NODE_NAME,
@@ -37,6 +39,8 @@ export const nodeNams = [
   TABLE_CELL_NODE_NAME,
   VIDEO_NODE_NAME,
   AUDIO_NODE_NAME,
+  FLEX_BOX_NODE_NAME,
+  FLEX_ITEM_NODE_NAME,
 ] as const;
 
 export interface NodeCommandsMap {
@@ -58,6 +62,8 @@ export interface NodeCommandsMap {
   [TABLE_CELL_NODE_NAME]: TableCellCommand;
   [VIDEO_NODE_NAME]: VideoCommand;
   [AUDIO_NODE_NAME]: AudioCommand;
+  [FLEX_BOX_NODE_NAME]: FlexBoxCommand;
+  [FLEX_ITEM_NODE_NAME]: FlexItemCommand;
 }
 
 export type NodeName = keyof NodeCommandsMap;
@@ -83,4 +89,6 @@ export const allNodes = [
   new TableNode(),
   new VideoNode(),
   new AudioNode(),
+  new FlexBoxNode(),
+  new FlexItemNode(),
 ];

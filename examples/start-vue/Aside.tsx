@@ -22,6 +22,10 @@ const links = [
     title: '媒体',
     content: 'media',
   },
+  {
+    title: 'flexbox',
+    content: 'flexbox',
+  },
 ];
 export default defineComponent({
   name: 'aside',

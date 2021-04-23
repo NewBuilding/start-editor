@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>测试</title>
+    <style>
+      .container {
+        position: relative;
+      }
+      .mask {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 999;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- <div class="container">
+      <div class="mask"></div>
+      <audio
+        id="audio"
+        src="https://st0.dancf.com/csc/1681/configs/system/20210308-174808-4b46.mp3"
+        controls="true"
+        style="box-sizing: border-box; display: block; width: 100%; margin: 10px 0px"
+        class="start-editor-audio-content"
+      ></audio>
+    </div> -->
+    <div>
+      audio element
+      <audio src="http://developer.mozilla.org/@api/deki/files/2926/=AudioTest_(1).ogg" controls></audio>
+    </div>
+    <script>
+      var el = document.querySelector('div');
+      el.addEventListener('click', function () {
+        console.log('click123123');
+      });
+      const mask = document.querySelector('.mask');
+      mask.addEventListener('click', onclick);
+      function onclick(e) {
+        console.log('onClick', e);
+      }
+    </script>
+  </body>
+</html>
