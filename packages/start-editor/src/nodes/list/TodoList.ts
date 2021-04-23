@@ -24,6 +24,14 @@ export class TodoListNode extends NodeInterface<TodoListCommand<Command>> {
       },
       parseDOM: [
         {
+          tag: '.start-editor-todo_list',
+          getAttrs(dom) {
+            const element = dom as HTMLElement;
+            const style = styleStringToObj(element.style.cssText, defaultStyle);
+            return { style };
+          },
+        },
+        {
           tag: 'dl',
           getAttrs(dom) {
             const element = dom as HTMLElement;

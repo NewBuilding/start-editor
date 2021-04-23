@@ -27,6 +27,17 @@ export class TableRowNode extends NodeInterface<TableRowCommand<Command>> {
       draggable: false,
       parseDOM: [
         {
+          tag: '.start-editor-table_row',
+          getAttrs: (_dom) => {
+            const dom = _dom as HTMLElement;
+            const style = styleStringToObj(dom.style.cssText, defaultStyle);
+
+            return {
+              style,
+            };
+          },
+        },
+        {
           tag: 'tr',
           getAttrs: (_dom) => {
             const dom = _dom as HTMLElement;
@@ -42,7 +53,7 @@ export class TableRowNode extends NodeInterface<TableRowCommand<Command>> {
         const attrs = node.attrs;
         const style = objToStyleString(attrs.style);
 
-        return ['tr', { style }, 0];
+        return ['tr', { style, class: 'start-editor-node start-editor-table_row' }, 0];
       },
     };
   }

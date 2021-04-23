@@ -24,6 +24,14 @@ export class OrderedListNode extends NodeInterface<OrderedListCommand<Command>> 
       },
       parseDOM: [
         {
+          tag: '.start-editor-ordered_list',
+          getAttrs(dom) {
+            const element = dom as HTMLElement;
+            const style = styleStringToObj(element.style.cssText, defaultStyle);
+            return { style };
+          },
+        },
+        {
           tag: 'ol',
           getAttrs(dom) {
             const element = dom as HTMLElement;

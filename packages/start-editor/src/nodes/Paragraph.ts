@@ -1,4 +1,4 @@
-import { Plugin, EditorState } from 'prosemirror-state';
+import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
 import { NodeSpec, StyleObject, Command } from '../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
@@ -31,6 +31,14 @@ export class ParagraphNode extends NodeInterface<ParagraphCommand<Command>> {
         },
       },
       parseDOM: [
+        {
+          tag: '.start-editor-paragraph',
+          getAttrs: (dom) => {
+            const element = dom as HTMLElement;
+            const style = styleStringToObj(element.style.cssText, defaultStyle);
+            return { style };
+          },
+        },
         {
           tag: 'p',
           getAttrs: (dom) => {

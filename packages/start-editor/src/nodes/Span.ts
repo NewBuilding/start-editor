@@ -13,7 +13,7 @@ export class SpanNode extends NodeInterface<SpanCommand<Command>> {
   }
 
   nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
-    const tags = ['s', 'strike', 'del', 'strong', 'b', 'i', 'em', 'u', 'span.start-editor-span'];
+    const tags = ['s', 'strike', 'del', 'strong', 'b', 'i', 'em', 'u', '.start-editor-span'];
     return {
       content: 'text*',
       group: 'inline',

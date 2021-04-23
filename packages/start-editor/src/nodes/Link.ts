@@ -38,6 +38,17 @@ export class LinkNode extends NodeInterface<LinkCommand<Command>> {
       },
       parseDOM: [
         {
+          tag: '.start-editor-link',
+          getAttrs(dom) {
+            const element = dom as HTMLElement;
+            return {
+              style: styleStringToObj(element.style.cssText, defaultStyle),
+              href: element.getAttribute('href'),
+              target: element.getAttribute('target'),
+            };
+          },
+        },
+        {
           tag: 'a[href]',
           getAttrs(dom) {
             const element = dom as HTMLElement;
@@ -53,7 +64,7 @@ export class LinkNode extends NodeInterface<LinkCommand<Command>> {
         return [
           'span',
           {
-            style: 'display:inline-flex;padding: 0 5px;',
+            style: objToStyleString({ display: 'inline-flex', padding: '0 5px' }),
           },
           [
             'a',

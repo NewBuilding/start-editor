@@ -39,6 +39,14 @@ export class TableNode extends NodeInterface<TableCommand<Command>> {
       group: 'block',
       parseDOM: [
         {
+          tag: '.start-editor-table',
+          getAttrs(_dom) {
+            const dom = _dom as HTMLElement;
+
+            return { style: styleStringToObj(dom.style.cssText, defaultStyle) };
+          },
+        },
+        {
           tag: 'table',
           getAttrs(_dom) {
             const dom = _dom as HTMLElement;
@@ -49,7 +57,7 @@ export class TableNode extends NodeInterface<TableCommand<Command>> {
       ],
       toDOM: (node) => {
         const style = objToStyleString(node.attrs.style);
-        return ['table', { style }, ['tbody', 0]];
+        return ['table', { style, class: 'start-editor-node start-editor-table' }, ['tbody', 0]];
       },
     };
   }

@@ -23,6 +23,14 @@ export class ListItemNode extends NodeInterface<ListItemCommand<Command>> {
       },
       parseDOM: [
         {
+          tag: '.start-editor-list_item',
+          getAttrs(dom) {
+            const element = dom as HTMLElement;
+            const style = styleStringToObj(element.style.cssText, defaultStyle);
+            return { style };
+          },
+        },
+        {
           tag: 'li',
           getAttrs(dom) {
             const element = dom as HTMLElement;

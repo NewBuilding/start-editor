@@ -26,6 +26,17 @@ export class TodoItemNode extends NodeInterface<TodoItemCommand<Command>> {
       },
       parseDOM: [
         {
+          tag: '.start-editor-todo_item',
+          getAttrs(dom) {
+            const element = dom as HTMLElement;
+            const style = styleStringToObj(element.style.cssText, defaultStyle);
+            return {
+              style,
+              hasDone: element.getAttribute('data-has-done') === 'true' || element.getAttribute('checked'),
+            };
+          },
+        },
+        {
           tag: 'dt',
           getAttrs(dom) {
             const element = dom as HTMLElement;

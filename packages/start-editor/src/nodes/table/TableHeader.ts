@@ -14,6 +14,18 @@ export class TableHeaderNode extends NodeInterface<TableHeaderCommand<Command>> 
   }
 
   nodeSpec(defaultStyle: StyleObject = { border: '1px solid black' }): NodeSpec {
+    const getAttrs = (_dom: any) => {
+      const dom = _dom as HTMLElement;
+      const style = styleStringToObj(dom.style.cssText, defaultStyle);
+      const colspan = parseInt(dom.getAttribute('colspan') || '') || 1;
+      const rowspan = parseInt(dom.getAttribute('rowspan') || '') || 1;
+
+      return {
+        colspan,
+        rowspan,
+        style,
+      };
+    };
     return {
       attrs: {
         colspan: {
@@ -32,26 +44,19 @@ export class TableHeaderNode extends NodeInterface<TableHeaderCommand<Command>> 
       draggable: false,
       parseDOM: [
         {
+          tag: '.start-editor-table_header',
+          getAttrs,
+        },
+        {
           tag: 'th',
-          getAttrs: (_dom) => {
-            const dom = _dom as HTMLElement;
-            const style = styleStringToObj(dom.style.cssText, defaultStyle);
-            const colspan = parseInt(dom.getAttribute('colspan') || '') || 1;
-            const rowspan = parseInt(dom.getAttribute('rowspan') || '') || 1;
-
-            return {
-              colspan,
-              rowspan,
-              style,
-            };
-          },
+          getAttrs,
         },
       ],
       toDOM(node) {
         const attrs = node.attrs;
         const style = objToStyleString(attrs.style);
 
-        return ['th', { ...attrs, style }, 0];
+        return ['th', { ...attrs, style, class: 'start-editor-node start-editor-table_header' }, 0];
       },
     };
   }

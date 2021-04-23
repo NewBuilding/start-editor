@@ -14,6 +14,18 @@ export class TableCellNode extends NodeInterface<TableCellCommand<Command>> {
   }
 
   nodeSpec(defaultStyle: StyleObject = { border: '1px solid black' }): NodeSpec {
+    const getAttrs = (_dom: Node | string) => {
+      const dom = _dom as HTMLElement;
+      const style = styleStringToObj(dom.style.cssText, defaultStyle);
+      const colspan = parseInt(dom.getAttribute('colspan') || '') || 1;
+      const rowspan = parseInt(dom.getAttribute('rowspan') || '') || 1;
+
+      return {
+        colspan,
+        rowspan,
+        style,
+      };
+    };
     return {
       attrs: {
         colspan: {
@@ -32,24 +44,25 @@ export class TableCellNode extends NodeInterface<TableCellCommand<Command>> {
       draggable: false,
       parseDOM: [
         {
+          tag: '.start-editor-table_cell',
+          getAttrs,
+        },
+        {
           tag: 'td',
-          getAttrs(_dom) {
-            const dom = _dom as HTMLElement;
-            const style = styleStringToObj(dom.style.cssText, defaultStyle);
-            const colspan = parseInt(dom.getAttribute('colspan') || '') || 1;
-            const rowspan = parseInt(dom.getAttribute('rowspan') || '') || 1;
-
-            return {
-              colspan,
-              rowspan,
-              style,
-            };
-          },
+          getAttrs,
         },
       ],
       toDOM: (node) => {
         const attrs = node.attrs;
-        return ['td', { ...attrs, style: objToStyleString(attrs.style) }, 0];
+        return [
+          'td',
+          {
+            ...attrs,
+            style: objToStyleString(attrs.style),
+            class: 'start-editor-node start-editor-table_cell',
+          },
+          0,
+        ];
       },
     };
   }
