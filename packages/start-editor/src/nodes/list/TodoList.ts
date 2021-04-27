@@ -1,21 +1,18 @@
 import { Plugin, EditorState } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, Dispatch, Command, StyleObject } from '../../type';
+import { NodeSpec, Dispatch, Command, StyleObject, NodeNameEnum } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
-import { TODO_ITEM_NODE_NAME } from './TodoItem';
-
-export const TODO_LIST_NODE_NAME = 'todoList';
 
 export interface TodoListCommand<T = boolean> {}
 
 export class TodoListNode extends NodeInterface<TodoListCommand<Command>> {
   get name(): string {
-    return TODO_LIST_NODE_NAME;
+    return NodeNameEnum.TODO_LIST;
   }
 
   nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
     return {
-      content: `${TODO_ITEM_NODE_NAME}+`,
+      content: `${NodeNameEnum.TODO_ITEM}+`,
       group: 'block',
       attrs: {
         style: {

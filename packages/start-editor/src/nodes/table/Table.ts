@@ -1,11 +1,9 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, Command, ProseMirrorNode, Schema, StyleObject } from '../../type';
+import { NodeSpec, Command, ProseMirrorNode, Schema, StyleObject, NodeNameEnum } from '../../type';
 import { TABLE_ROW_NODE_NAME } from './TableRow';
 import { styleStringToObj, objToStyleString } from 'start-editor-utils';
 import { NodeType, Fragment } from 'prosemirror-model';
-
-export const TABLE_NODE_NAME = 'table';
 
 export enum TableRoleKey {
   tableCell = 'cell',
@@ -18,7 +16,7 @@ export interface TableCommand<T = boolean> {}
 
 export class TableNode extends NodeInterface<TableCommand<Command>> {
   get name(): string {
-    return TABLE_NODE_NAME;
+    return NodeNameEnum.TABLE;
   }
 
   nodeSpec(
@@ -33,7 +31,7 @@ export class TableNode extends NodeInterface<TableCommand<Command>> {
           default: defaultStyle,
         },
       },
-      content: `${TABLE_ROW_NODE_NAME}+`,
+      content: `${NodeNameEnum.TABLE_ROW}+`,
       tableRole: TableRoleKey.table,
       draggable: false,
       group: 'block',

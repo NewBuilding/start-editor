@@ -1,15 +1,13 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
-
-export const FLEX_ITEM_NODE_NAME = 'flexItem';
 
 export interface FlexItemCommand<T = boolean> {}
 
 export class FlexItemNode extends NodeInterface<FlexItemCommand<Command>> {
   get name(): string {
-    return FLEX_ITEM_NODE_NAME;
+    return NodeNameEnum.FLEX_ITEM;
   }
 
   nodeSpec(

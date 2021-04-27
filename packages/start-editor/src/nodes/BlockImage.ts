@@ -1,15 +1,13 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../type';
 import { objToStyleString, isBlockImage, styleStringToObj } from 'start-editor-utils';
-
-export const BLOCK_IMAGE_NODE_NAME = 'blockImage';
 
 export interface BlockImageCommand<T = boolean> {}
 
 export class BlockImageNode extends NodeInterface<BlockImageCommand<Command>> {
   get name(): string {
-    return BLOCK_IMAGE_NODE_NAME;
+    return NodeNameEnum.BLOCK_IMAGE;
   }
 
   nodeSpec(defaultStyle: StyleObject = { width: '100%' }): NodeSpec {

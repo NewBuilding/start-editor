@@ -1,15 +1,14 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../type';
 import { objToStyleString, isBlockImage, styleStringToObj } from 'start-editor-utils';
 
-export const IMAGE_NODE_NAME = 'image';
 
 export interface ImageCommand<T = boolean> {}
 
 export class ImageNode extends NodeInterface<ImageCommand<Command>> {
   get name(): string {
-    return IMAGE_NODE_NAME;
+    return NodeNameEnum.IMAGE;
   }
 
   nodeSpec(defaultStyle: StyleObject = { maxHeight: '50px' }): NodeSpec {

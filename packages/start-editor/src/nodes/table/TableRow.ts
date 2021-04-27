@@ -1,18 +1,14 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 import { TableRoleKey } from './Table';
-import { TABLE_CELL_NODE_NAME } from './TableCell';
-import { TABLE_HEADER_NODE_NAME } from './TableHeader';
-
-export const TABLE_ROW_NODE_NAME = 'tableRow';
 
 export interface TableRowCommand<T = boolean> {}
 
 export class TableRowNode extends NodeInterface<TableRowCommand<Command>> {
   get name(): string {
-    return TABLE_ROW_NODE_NAME;
+    return NodeNameEnum.TABLE_ROW;
   }
 
   nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
@@ -22,7 +18,7 @@ export class TableRowNode extends NodeInterface<TableRowCommand<Command>> {
           default: defaultStyle,
         },
       },
-      content: `(${TABLE_CELL_NODE_NAME} | ${TABLE_HEADER_NODE_NAME})+`,
+      content: `(${NodeNameEnum.TABLE_CELL} | ${NodeNameEnum.TABLE_HEADER})+`,
       tableRole: TableRoleKey.tableRow,
       draggable: false,
       parseDOM: [

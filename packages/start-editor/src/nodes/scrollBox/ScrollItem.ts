@@ -1,28 +1,22 @@
 import { Plugin } from 'prosemirror-state';
-import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, StyleObject, Command, NodeNameEnum } from '../type';
+import { NodeInterface } from '../../interface/NodeInterface';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
-export interface ParagraphCommand<T = boolean> {}
+export interface ScrollItemCommand<T = boolean> {}
 
-export class ParagraphNode extends NodeInterface<ParagraphCommand<Command>> {
+export class ScrollItemNode extends NodeInterface<ScrollItemCommand<Command>> {
   get name(): string {
-    return NodeNameEnum.PARAGRAPH;
+    return NodeNameEnum.SCROLL_ITEM;
   }
 
   nodeSpec(
     defaultStyle: StyleObject = {
-      maxWidth: '100%',
-      width: '100%',
-      whiteSpace: 'pre-wrap',
-      wordBreak: 'break-word',
-      padding: '3px 2px',
-      margin: '1px 0',
+      flex: '1',
     },
   ): NodeSpec {
     return {
-      content: 'inline*',
-      group: 'block',
+      content: 'block+',
       attrs: {
         style: {
           default: defaultStyle,
@@ -30,17 +24,18 @@ export class ParagraphNode extends NodeInterface<ParagraphCommand<Command>> {
       },
       parseDOM: [
         {
-          tag: '.start-editor-paragraph',
-          getAttrs: (dom) => {
+          tag: '.start-editor-flex_item',
+          getAttrs(dom) {
             const element = dom as HTMLElement;
             const style = styleStringToObj(element.style.cssText, defaultStyle);
             return { style };
           },
         },
         {
-          tag: 'p',
-          getAttrs: (dom) => {
+          tag: 'div,section',
+          getAttrs(dom) {
             const element = dom as HTMLElement;
+            if (element.parentElement?.style.display !== 'flex') return false;
             const style = styleStringToObj(element.style.cssText, defaultStyle);
             return { style };
           },
@@ -48,10 +43,10 @@ export class ParagraphNode extends NodeInterface<ParagraphCommand<Command>> {
       ],
       toDOM: (node) => {
         return [
-          'p',
+          'div',
           {
             style: objToStyleString(node.attrs.style),
-            class: 'start-editor-node start-editor-paragraph',
+            class: 'start-editor-node start-editor-flex_item',
           },
           0,
         ];
@@ -59,7 +54,7 @@ export class ParagraphNode extends NodeInterface<ParagraphCommand<Command>> {
     };
   }
 
-  commands(): ParagraphCommand<Command> {
+  commands(): ScrollItemCommand<Command> {
     return {};
   }
   plugins(): Plugin<any, any>[] {

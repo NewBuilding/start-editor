@@ -1,16 +1,14 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 import { TableRoleKey } from './Table';
-
-export const TABLE_HEADER_NODE_NAME = 'tableHeader';
 
 export interface TableHeaderCommand<T = boolean> {}
 
 export class TableHeaderNode extends NodeInterface<TableHeaderCommand<Command>> {
   get name(): string {
-    return TABLE_HEADER_NODE_NAME;
+    return NodeNameEnum.TABLE_HEADER;
   }
 
   nodeSpec(defaultStyle: StyleObject = { border: '1px solid black' }): NodeSpec {

@@ -1,21 +1,18 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, StyleObject, Command } from '../../type';
+import { NodeSpec, StyleObject, Command, NodeNameEnum } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
-import { LIST_ITEM_NODE_NAME } from './ListItem';
-
-export const UNORDER_LIST_NODE_NAME = 'underedList';
 
 export interface UnorderedListCommand<T = boolean> {}
 
 export class UnorderedListNode extends NodeInterface<UnorderedListCommand<Command>> {
   get name(): string {
-    return UNORDER_LIST_NODE_NAME;
+    return NodeNameEnum.UNORDER_LIST;
   }
 
   nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
     return {
-      content: `${LIST_ITEM_NODE_NAME}+`,
+      content: `${NodeNameEnum.LIST_ITEM}+`,
       group: 'block',
       attrs: {
         style: {

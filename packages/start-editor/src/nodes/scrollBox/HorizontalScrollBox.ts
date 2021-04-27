@@ -1,18 +1,18 @@
-import { Plugin, EditorState } from 'prosemirror-state';
+import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
 import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
-export interface ListItemCommand<T = boolean> {}
+export interface HorizontalScrollBoxCommand<T = boolean> {}
 
-export class ListItemNode extends NodeInterface<ListItemCommand<Command>> {
+export class HorizontalScrollBoxNode extends NodeInterface<HorizontalScrollBoxCommand<Command>> {
   get name(): string {
-    return NodeNameEnum.LIST_ITEM;
+    return NodeNameEnum.HORIZONTAL_SCROLL_BOX;
   }
 
   nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
     return {
-      content: 'block+',
+      content: `${NodeNameEnum.SCROLL_ITEM}+`,
       group: 'block',
       attrs: {
         style: {
@@ -21,15 +21,7 @@ export class ListItemNode extends NodeInterface<ListItemCommand<Command>> {
       },
       parseDOM: [
         {
-          tag: '.start-editor-list_item',
-          getAttrs(dom) {
-            const element = dom as HTMLElement;
-            const style = styleStringToObj(element.style.cssText, defaultStyle);
-            return { style };
-          },
-        },
-        {
-          tag: 'li',
+          tag: '.start-editor-horizantal_scroll_box',
           getAttrs(dom) {
             const element = dom as HTMLElement;
             const style = styleStringToObj(element.style.cssText, defaultStyle);
@@ -39,10 +31,10 @@ export class ListItemNode extends NodeInterface<ListItemCommand<Command>> {
       ],
       toDOM: (node) => {
         return [
-          'li',
+          'div',
           {
-            style: objToStyleString(node.attrs.style),
-            class: 'start-editor-node start-editor-list_item',
+            style: objToStyleString({ ...node.attrs.style, display: 'flex' }),
+            class: 'start-editor-node start-editor-horizantal_scroll_box',
           },
           0,
         ];
@@ -50,7 +42,7 @@ export class ListItemNode extends NodeInterface<ListItemCommand<Command>> {
     };
   }
 
-  commands(): ListItemCommand<Command> {
+  commands(): HorizontalScrollBoxCommand<Command> {
     return {};
   }
   plugins(): Plugin<any, any>[] {

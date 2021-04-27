@@ -1,15 +1,13 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
-
-export const AUDIO_NODE_NAME = 'audio';
 
 export interface AudioCommand<T = boolean> {}
 
 export class AudioNode extends NodeInterface<AudioCommand<Command>> {
   get name(): string {
-    return AUDIO_NODE_NAME;
+    return NodeNameEnum.AUDIO;
   }
 
   nodeSpec(

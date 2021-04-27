@@ -1,15 +1,13 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
-
-export const VIDEO_NODE_NAME = 'video';
 
 export interface VideoCommand<T = boolean> {}
 
 export class VideoNode extends NodeInterface<VideoCommand<Command>> {
   get name(): string {
-    return VIDEO_NODE_NAME;
+    return NodeNameEnum.VIDEO;
   }
 
   nodeSpec(

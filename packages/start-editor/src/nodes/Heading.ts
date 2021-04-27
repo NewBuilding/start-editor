@@ -1,9 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../type';
 import { objToStyleString, styleStringToObj, DEFAULT_FONT_FAMILY } from 'start-editor-utils';
-
-export const HEADING_NODE_NAME = 'heading';
 
 export interface HeadingCommand<T = boolean> {}
 
@@ -47,7 +45,7 @@ export class HeadingNode extends NodeInterface<HeadingCommand<Command>> {
   ];
 
   get name(): string {
-    return HEADING_NODE_NAME;
+    return NodeNameEnum.HEADING;
   }
 
   nodeSpec(defaultStyle: StyleObject = { marginBottom: '4px', marginTop: '0.5em' }): NodeSpec {

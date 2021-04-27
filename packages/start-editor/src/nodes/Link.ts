@@ -1,9 +1,8 @@
 import { Plugin, EditorState } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Dispatch, Command, StyleObject } from '../type';
+import { NodeSpec, Dispatch, Command, StyleObject, NodeNameEnum } from '../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
-export const LINK_NODE_NAME = 'link';
 
 interface LinkAttrs {
   href: string;
@@ -16,7 +15,7 @@ export interface LinkCommand<T = boolean> {
 
 export class LinkNode extends NodeInterface<LinkCommand<Command>> {
   get name(): string {
-    return LINK_NODE_NAME;
+    return NodeNameEnum.LINK;
   }
 
   nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {

@@ -1,15 +1,13 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
-
-export const DIVIDER_NODE_NAME = 'divider';
 
 export interface DividerCommand<T = boolean> {}
 
 export class DividerNode extends NodeInterface<DividerCommand<Command>> {
   get name(): string {
-    return DIVIDER_NODE_NAME;
+    return NodeNameEnum.DIVIDER;
   }
 
   get defaultStyle(): Partial<CSSStyleDeclaration> {

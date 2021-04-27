@@ -1,15 +1,13 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
-
-export const FLEX_BOX_NODE_NAME = 'flexBox';
 
 export interface FlexBoxCommand<T = boolean> {}
 
 export class FlexBoxNode extends NodeInterface<FlexBoxCommand<Command>> {
   get name(): string {
-    return FLEX_BOX_NODE_NAME;
+    return NodeNameEnum.FLEX_BOX;
   }
 
   nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
@@ -34,7 +32,9 @@ export class FlexBoxNode extends NodeInterface<FlexBoxCommand<Command>> {
           tag: 'div,section',
           getAttrs(dom) {
             const element = dom as HTMLElement;
-            if (element.style.display !== 'flex') return false;
+            if (element.style.display !== 'flex' || ['auto', 'scroll'].includes(element.style.overflow)) {
+              return false;
+            }
             const style = styleStringToObj(element.style.cssText, defaultStyle);
             return { style };
           },

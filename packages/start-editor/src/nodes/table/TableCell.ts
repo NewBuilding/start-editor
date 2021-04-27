@@ -1,16 +1,14 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject } from '../../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../../type';
 import { styleStringToObj, objToStyleString } from 'start-editor-utils';
 import { TableRoleKey } from './Table';
-
-export const TABLE_CELL_NODE_NAME = 'tableCell';
 
 export interface TableCellCommand<T = boolean> {}
 
 export class TableCellNode extends NodeInterface<TableCellCommand<Command>> {
   get name(): string {
-    return TABLE_CELL_NODE_NAME;
+    return NodeNameEnum.TABLE_CELL;
   }
 
   nodeSpec(defaultStyle: StyleObject = { border: '1px solid black' }): NodeSpec {
