@@ -41,7 +41,9 @@ export class Editor {
     this.commandMap = this.createCommand();
     this.setupDom();
     this.view = new EditorView(
-      { mount: this.editableDom },
+      {
+        mount: this.editableDom,
+      },
       {
         ...options.props,
         state: this.createState(),
@@ -97,9 +99,10 @@ export class Editor {
     } else {
       this.options.plugins.push(...plugins);
     }
-    this.view.setProps({
-      state: this.createState(this.state.doc),
+    const state = this.state.reconfigure({
+      plugins: this.options.plugins,
     });
+    this.view.updateState(state);
   }
 
   private setupDom() {

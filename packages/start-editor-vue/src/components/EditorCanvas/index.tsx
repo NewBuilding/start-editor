@@ -16,14 +16,13 @@ export default defineComponent({
   },
   setup(props) {
     const container = ref<HTMLDivElement | null>(null);
-    const plugins = getPlugins(props.editor).reduce(
-      (result, p) => [...result, ...p.plugins],
-      [] as ProseMirrorPlugin[],
-    );
-    props.editor.addPlugins(plugins);
+    // const plugins = getPlugins(props.editor).reduce(
+    //   (result, p) => [...result, ...p.plugins],
+    //   [] as ProseMirrorPlugin[],
+    // );
+    // props.editor.addPlugins(plugins);
     onMounted(() => {
-      const editorEl = props.editor?.editableDom;
-      editorEl && container.value?.appendChild(editorEl);
+      container.value?.appendChild(props.editor.container);
     });
     return () => <div class="start-editor-container" ref={container}></div>;
   },

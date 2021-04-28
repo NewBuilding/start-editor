@@ -3,18 +3,21 @@
   width: 100%;
   overflow: hidden;
   overflow: auto;
+  background-color: #eff1f6;
 
   .start-editor-wrap {
     display: flex;
-    max-width: 100%;
+    width: 100%;
     flex-direction: column;
     align-items: center;
     position: relative;
     margin-bottom: 50px;
+    margin-top: 10px;
+
   }
 
   .start-editor-shell {
-    max-width: 100%;
+
     display: inline-block;
     position: relative;
     background-color: #fff;
@@ -22,8 +25,9 @@
   }
 
   .start-editor-canvas {
-    max-width: 100%;
+    width: 600px;
     overflow: hidden;
+    padding: 10px 20px;
 
     &:focus {
       outline: none;

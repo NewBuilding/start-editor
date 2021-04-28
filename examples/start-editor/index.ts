@@ -1,5 +1,6 @@
-import { StartEditor } from 'start-editor';
+import { StartEditor, Plugin } from 'start-editor';
 import './index.less';
+import { getPlugins } from 'start-editor-vue';
 
 const content = `
   <div>
@@ -27,6 +28,15 @@ const content = `
     <em>em标签</em>
     <i>i标签</i>
   </p>
+
+  <table>
+  <tr><th>name</th><th>age</th><th>sex</th></tr>  
+  <tr><td>Perry</td><td>25</td><td>man</td></tr>  
+  <tr><td>Perry</td><td>25</td><td>man</td></tr>  
+  <tr><td>Perry</td><td>25</td><td>man</td></tr>  
+  <tr><td>Perry</td><td>25</td><td>man</td></tr>  
+  </table>
+
   <div class="start-editor-horizantal_scroll_box" style="height:200px;">
     <div class="start-editor-scroll_item" style="width: 300px;background-color: red;">
       300px
@@ -60,7 +70,21 @@ const content = `
 </div>
 `;
 
-const editor = new StartEditor({ content });
+const editor = new StartEditor({
+  content,
+  plugins: [
+    new Plugin({
+      view() {
+        return {
+          update() {
+            console.log('update');
+          },
+        };
+      },
+    }),
+  ],
+});
+
 window.editor = editor;
 
 const div = document.createElement('div');
@@ -68,3 +92,15 @@ div.classList.add('start-editor-text');
 document.body.appendChild(div);
 
 editor.mount(div);
+
+editor.addPlugins([
+  new Plugin({
+    view() {
+      return {
+        update: () => {
+          console.log('new Plugin');
+        },
+      };
+    },
+  }),
+]);

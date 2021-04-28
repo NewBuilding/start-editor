@@ -207,6 +207,7 @@ export class AnchorPopperPlugin extends PluginInterface {
   }
 
   update(view: EditorView) {
+    console.log('anchor');
     if (!inited) {
       mount(this.editor.editableDom);
     }
