@@ -72,9 +72,9 @@ export const allNodes = [
   new TableNode(),
   new VideoNode(),
   new AudioNode(),
-  new FlexBoxNode(),
-  new FlexItemNode(),
   new HorizontalScrollBoxNode(),
   new VerticalScrollBoxNode(),
   new ScrollItemNode(),
+  new FlexBoxNode(),
+  new FlexItemNode(),
 ];

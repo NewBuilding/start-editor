@@ -10,7 +10,7 @@ export class VerticalScrollBoxNode extends NodeInterface<VerticalScrollBoxComman
     return NodeNameEnum.VERTICAL_SCROLL_BOX;
   }
 
-  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
+  nodeSpec(defaultStyle: StyleObject = { height: '300px' }): NodeSpec {
     return {
       content: `${NodeNameEnum.SCROLL_ITEM}+`,
       group: 'block',
@@ -33,7 +33,7 @@ export class VerticalScrollBoxNode extends NodeInterface<VerticalScrollBoxComman
         return [
           'div',
           {
-            style: objToStyleString({ ...node.attrs.style, display: 'flex' }),
+            style: objToStyleString({ ...node.attrs.style, overflowX: 'hidden', overflowY: 'auto' }),
             class: 'start-editor-node start-editor-vertical_scroll_box',
           },
           0,

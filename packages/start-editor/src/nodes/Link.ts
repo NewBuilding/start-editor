@@ -3,7 +3,6 @@ import { NodeInterface } from '../interface/NodeInterface';
 import { NodeSpec, Dispatch, Command, StyleObject, NodeNameEnum } from '../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
-
 interface LinkAttrs {
   href: string;
   target?: '_blank' | '_self';
@@ -63,14 +62,15 @@ export class LinkNode extends NodeInterface<LinkCommand<Command>> {
         return [
           'span',
           {
-            style: objToStyleString({ display: 'inline-flex', padding: '0 5px' }),
+            class: 'start-editor-node start-editor-link',
+            style: objToStyleString({ display: 'inline-flex', padding: '0 2px' }),
           },
           [
             'a',
             {
               ...node.attrs,
+              class: 'start-editor-node-content',
               style: objToStyleString(node.attrs.style),
-              class: 'start-editor-node start-editor-link',
             },
             0,
           ],

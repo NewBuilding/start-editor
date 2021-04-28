@@ -23,29 +23,92 @@ interface EditorOptions {
   plugins?: Plugin[];
 }
 
+export type MountTarget = HTMLElement | string;
+
 export class Editor {
-  $el: HTMLElement;
   options: EditorOptions;
   view: EditorView;
   schema: Schema;
   commandMap: CommandMap;
+  container: HTMLDivElement = document.createElement('div');
+  wrap: HTMLDivElement = document.createElement('div');
+  shell: HTMLDivElement = document.createElement('div');
+  editableDom: HTMLElement = document.createElement('div');
 
   constructor(options: EditorOptions) {
     this.options = options;
-    this.$el = document.createElement('div');
-    this.$el.classList.add('start-editor');
     this.schema = this.createSchema();
     this.commandMap = this.createCommand();
-    this.view = new EditorView(this.$el, {
-      ...options.props,
-      state: this.createState(),
-      attributes: this.docAttributes,
-    });
-    window.editor = this;
+    this.setupDom();
+    this.view = new EditorView(
+      { mount: this.editableDom },
+      {
+        ...options.props,
+        state: this.createState(),
+        attributes: this.docAttributes,
+      },
+    );
   }
 
   get state(): EditorState {
     return this.view.state;
+  }
+
+  /**
+   * 挂载编辑器
+   * @param target
+   */
+  mount(target: MountTarget) {
+    let ele = target as HTMLElement;
+    if (typeof target === 'string') {
+      ele = document.querySelector(target) as HTMLElement;
+    }
+    if (!ele) {
+      throw new Error('mount target should be a html element or css selector');
+    }
+    ele.appendChild(this.container);
+  }
+
+  /**
+   * 将编辑器中的内容导出为html string
+   */
+  exportHtml(): string {
+    return serializeToHTML(this.state.schema, this.state.doc);
+  }
+
+  /**
+   * 重新设置内容
+   * @param content
+   */
+  setContent(content: EditorOptions['content']): void {
+    this.options.content = content;
+    this.view.setProps({
+      state: this.createState(),
+    });
+  }
+
+  /**
+   * 追加插件
+   * @param plugins
+   */
+  addPlugins(plugins: Plugin[]) {
+    if (!this.options.plugins) {
+      this.options.plugins = plugins;
+    } else {
+      this.options.plugins.push(...plugins);
+    }
+    this.view.setProps({
+      state: this.createState(this.state.doc),
+    });
+  }
+
+  private setupDom() {
+    this.container.classList.add('start-editor');
+    this.wrap.classList.add('start-editor-wrap');
+    this.shell.classList.add('start-editor-shell');
+    this.shell.appendChild(this.editableDom);
+    this.wrap.appendChild(this.shell);
+    this.container.appendChild(this.wrap);
   }
 
   private get docAttributes() {
@@ -140,38 +203,5 @@ export class Editor {
       ...plugins,
       ...(this.options.plugins || []),
     ];
-  }
-
-  /**
-   * 将编辑器中的内容导出为html string
-   */
-  exportHtml(): string {
-    return serializeToHTML(this.state.schema, this.state.doc);
-  }
-
-  /**
-   * 重新设置内容
-   * @param content
-   */
-  setContent(content: EditorOptions['content']): void {
-    this.options.content = content;
-    this.view.setProps({
-      state: this.createState(),
-    });
-  }
-
-  /**
-   * 追加插件
-   * @param plugins
-   */
-  addPlugins(plugins: Plugin[]) {
-    if (!this.options.plugins) {
-      this.options.plugins = plugins;
-    } else {
-      this.options.plugins.push(...plugins);
-    }
-    this.view.setProps({
-      state: this.createState(this.state.doc),
-    });
   }
 }

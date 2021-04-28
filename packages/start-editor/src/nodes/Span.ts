@@ -34,10 +34,18 @@ export class SpanNode extends NodeInterface<SpanCommand<Command>> {
         return [
           'span',
           {
-            style: objToStyleString(node.attrs.style),
-            class: 'start-editor-node-node start-editor-span',
+            style: objToStyleString({ ...node.attrs.style, display: 'inline-flex', padding: '0 2px' }),
+            class: 'start-editor-node start-editor-span',
           },
-          0,
+          [
+            'span',
+            {
+              ...node.attrs,
+              style: objToStyleString(node.attrs.style),
+              class: 'start-editor-node-content',
+            },
+            0,
+          ],
         ];
       },
     };

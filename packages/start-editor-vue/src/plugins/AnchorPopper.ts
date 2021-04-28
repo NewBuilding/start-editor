@@ -161,13 +161,13 @@ export class AnchorPopperPlugin extends PluginInterface {
     ];
   }
   destroy() {
-    unmount(this.editor.$el);
+    unmount(this.editor.editableDom);
   }
 
   updateHoverNodeAnchor(state: EditorState) {
     const element = currentStateKey.getState(state)?.hoverDom;
     if (!element) return;
-    const relativePos = getRelatviePosition(this.editor.$el, element);
+    const relativePos = getRelatviePosition(this.editor.editableDom, element);
 
     setElementRect(hoverNodeAnchor, {
       left: relativePos.left,
@@ -183,7 +183,7 @@ export class AnchorPopperPlugin extends PluginInterface {
     } = view;
     const fromCoords = coordsAtPos(view, selection.from);
     const toCoords = coordsAtPos(view, selection.to, true);
-    const relativePos = getRelativePos(fromCoords, this.editor.$el);
+    const relativePos = getRelativePos(fromCoords, this.editor.editableDom);
     setElementRect(textAnchor, {
       left: relativePos.left,
       top: relativePos.top,
@@ -197,7 +197,7 @@ export class AnchorPopperPlugin extends PluginInterface {
     const nodeInfo = getClosestParent(state);
     if (!nodeInfo) return;
     const dom = view.nodeDOM(nodeInfo.pos) as HTMLElement;
-    const relativePos = getRelativePos(view.coordsAtPos(nodeInfo.pos), this.editor.$el);
+    const relativePos = getRelativePos(view.coordsAtPos(nodeInfo.pos), this.editor.editableDom);
     setElementRect(textAnchor, {
       left: relativePos.left,
       top: relativePos.top,
@@ -208,7 +208,7 @@ export class AnchorPopperPlugin extends PluginInterface {
 
   update(view: EditorView) {
     if (!inited) {
-      mount(this.editor.$el);
+      mount(this.editor.editableDom);
     }
     this.throttleUpdate(view);
   }

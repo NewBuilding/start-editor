@@ -22,7 +22,7 @@ export default defineComponent({
     );
     props.editor.addPlugins(plugins);
     onMounted(() => {
-      const editorEl = props.editor?.$el;
+      const editorEl = props.editor?.editableDom;
       editorEl && container.value?.appendChild(editorEl);
     });
     return () => <div class="start-editor-container" ref={container}></div>;

@@ -1,5 +1,29 @@
 .start-editor {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  overflow: auto;
+
+  .start-editor-wrap {
+    display: flex;
+    max-width: 100%;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-bottom: 50px;
+  }
+
+  .start-editor-shell {
+    max-width: 100%;
+    display: inline-block;
+    position: relative;
+    background-color: #fff;
+
+  }
+
   .start-editor-canvas {
+    max-width: 100%;
+    overflow: hidden;
 
     &:focus {
       outline: none;

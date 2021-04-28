@@ -10,7 +10,15 @@ export class HorizontalScrollBoxNode extends NodeInterface<HorizontalScrollBoxCo
     return NodeNameEnum.HORIZONTAL_SCROLL_BOX;
   }
 
-  nodeSpec(defaultStyle: StyleObject = {}): NodeSpec {
+  nodeSpec(
+    defaultStyle: StyleObject = {
+      height: '100px',
+      maxWidth: '100%',
+      overflowX: 'auto',
+      overflowY: 'hidden',
+      whiteSpace: 'nowrap',
+    },
+  ): NodeSpec {
     return {
       content: `${NodeNameEnum.SCROLL_ITEM}+`,
       group: 'block',
@@ -33,10 +41,15 @@ export class HorizontalScrollBoxNode extends NodeInterface<HorizontalScrollBoxCo
         return [
           'div',
           {
-            style: objToStyleString({ ...node.attrs.style, display: 'flex' }),
             class: 'start-editor-node start-editor-horizantal_scroll_box',
           },
-          0,
+          [
+            'div',
+            {
+              style: objToStyleString(node.attrs.style),
+            },
+            0,
+          ],
         ];
       },
     };
