@@ -1,4 +1,4 @@
-import { defineComponent, watch } from 'vue';
+import { defineComponent, watch, ref } from 'vue';
 import { EditorCanvas } from 'start-editor-vue';
 // import applyDevTools from 'prosemirror-dev-tools';
 import { StartEditor } from 'start-editor';

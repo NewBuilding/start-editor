@@ -3,7 +3,7 @@ import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { DOMParser, Schema, MarkSpec, NodeSpec } from 'prosemirror-model';
 import OrderedMap from 'orderedmap';
 import { CommandMap, ProseMirrorNode } from './type';
-import { allNodes, NodeName } from './nodes';
+import { allNodes } from './nodes';
 import { allMarks } from './marks';
 import './styles/index.less';
 
@@ -12,14 +12,14 @@ import { dropCursor } from 'prosemirror-dropcursor';
 import { undo, redo, history } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
-import { StyleObject } from './type';
+import { StyleObject, NodeNameEnum } from './type';
 import { objToStyleString, DEFAULT_FONT_FAMILY, serializeToHTML } from 'start-editor-utils';
 import { getPlugins } from './plugins';
 
 interface EditorOptions {
   props?: DirectEditorProps;
   content: Record<string, unknown> | string;
-  defaultStyles?: Record<NodeName, StyleObject>;
+  defaultStyles?: Record<NodeNameEnum, StyleObject>;
   plugins?: Plugin[];
 }
 
@@ -69,6 +69,7 @@ export class Editor {
       throw new Error('mount target should be a html element or css selector');
     }
     ele.appendChild(this.container);
+    this.view.dispatch(this.state.tr);
   }
 
   /**
@@ -100,9 +101,10 @@ export class Editor {
       this.options.plugins.push(...plugins);
     }
     const state = this.state.reconfigure({
-      plugins: this.options.plugins,
+      plugins: this.getPlugins(),
     });
     this.view.updateState(state);
+    // this.view.dispatch(this.state.tr);
   }
 
   private setupDom() {
@@ -154,7 +156,10 @@ export class Editor {
       },
     });
     allNodes.forEach((node) => {
-      nodes = nodes.addToEnd(node.name, node.nodeSpec(this.options.defaultStyles?.[node.name as NodeName]));
+      nodes = nodes.addToEnd(
+        node.name,
+        node.nodeSpec(this.options.defaultStyles?.[node.name as NodeNameEnum]),
+      );
     });
     allMarks.forEach((mark) => {
       marks = marks.addToEnd(mark.name, mark.markSpec({}));
@@ -194,7 +199,7 @@ export class Editor {
     [...allNodes, ...allMarks].forEach((nm) => {
       plugins.push(...nm.plugins());
     });
-    getPlugins(this, {}).forEach((instance) => {
+    getPlugins(this).forEach((instance) => {
       plugins.push(...instance.plugins);
     });
     return [

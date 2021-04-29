@@ -1,24 +1,29 @@
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
-import { Plugin } from 'prosemirror-state';
+import { Plugin, EditorState } from 'prosemirror-state';
 import { PluginInterface } from '../interface';
-import { NodeName } from '../nodes';
 import { Placeholder } from '../components';
+import { NodeNameEnum } from '../type';
 
-export const placeholderNode: NodeName[] = ['image', 'blockImage', 'video', 'audio'];
-
-let inited = false;
+const placeholderNode: NodeNameEnum[] = [
+  NodeNameEnum.IMAGE,
+  NodeNameEnum.BLOCK_IMAGE,
+  NodeNameEnum.VIDEO,
+  NodeNameEnum.AUDIO,
+];
 
 export class ResourcePlaceholderPlugin extends PluginInterface {
   get plugins() {
     return [
       new Plugin<DecorationSet>({
         state: {
-          init() {
-            return DecorationSet.empty;
+          init(config, state) {
+            return getDecorations(state);
           },
-          apply(tr, old) {
-            const decorationSet = tr.getMeta('decorationSet');
-            return decorationSet || old;
+          apply: (tr, old, state) => {
+            if (tr.docChanged) {
+              return getDecorations(state);
+            }
+            return old;
           },
         },
         props: {
@@ -26,25 +31,15 @@ export class ResourcePlaceholderPlugin extends PluginInterface {
             return this.getState(state);
           },
         },
-        view: () => {
-          return {
-            update: (view, lastState) => {
-              if (view.state.doc === lastState.doc && inited) return;
-              inited = true;
-              view.dispatch(view.state.tr.setMeta('decorationSet', getDecorations(view)));
-            },
-          };
-        },
       }),
     ];
   }
 }
 
-function getDecorations(view: EditorView) {
-  const { state } = view;
+function getDecorations(state: EditorState) {
   const decorations: Decoration[] = [];
   state.doc.descendants((node, pos) => {
-    if (!node.attrs.src && placeholderNode.includes(node.type.name as NodeName)) {
+    if (!node.attrs.src && placeholderNode.includes(node.type.name as NodeNameEnum)) {
       const decoration = Decoration.widget(pos, () => {
         const instance = Placeholder({ type: node.type.name as any });
         return instance;

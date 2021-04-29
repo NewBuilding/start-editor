@@ -6,7 +6,7 @@ import { ResourcePlaceholderPlugin } from './ResourcePlaceholder';
 
 export interface PluginOptions {}
 
-export function getPlugins(editor: Editor, options: PluginOptions) {
+export function getPlugins(editor: Editor) {
   return [
     new TrailingNodePlugin(editor),
     new PlaceholderPlugin(editor),
