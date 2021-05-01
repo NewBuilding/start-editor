@@ -1,6 +1,7 @@
-import { Node, NodeType, ResolvedPos, Node as ProseMirrorNode } from 'prosemirror-model';
 import { EditorState, NodeSelection, Selection, TextSelection } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import type { Node, ResolvedPos, Node as ProseMirrorNode } from 'prosemirror-model';
+import type { EditorView } from 'prosemirror-view';
+import type { NodePos } from './type';
 
 export interface nodePredicate {
   (node: Node): boolean;
@@ -85,11 +86,6 @@ export function parentHasNode(pos: ResolvedPos, typeName: string) {
   return false;
 }
 
-interface NodePos {
-  node: ProseMirrorNode;
-  pos: number;
-}
-
 /**
  * 根据dom event查找node
  * @param view
@@ -162,4 +158,42 @@ export function getClosestParent(
   }
   const $from = isTextSelection(selection) ? selection.$from : doc.resolve(selection.from + 1);
   return findParentNode($from, (node) => isTargetNode(node));
+}
+
+/**
+ * 判断是否为容器node
+ * @param node
+ */
+export function isContainerNode(node: ProseMirrorNode): boolean {
+  return node.isBlock && !node.isTextblock && !node.isAtom;
+}
+
+/**
+ * 向上级查找，知道找到最近的一个公共父node
+ * @param startPos
+ * @param endPos
+ */
+export function getCommonParent(startPos: ResolvedPos, endPos: ResolvedPos): NodeInfo {
+  const $pos = startPos.pos > endPos.pos ? startPos : endPos;
+  const $other = startPos.pos > endPos.pos ? endPos : startPos;
+  for (let i = $pos.depth; i > 0; i -= 1) {
+    const node = $pos.node(i);
+    const pos = i > 0 ? $pos.before(i) : 0;
+    if ($other.parent === node || pos < $other.pos) {
+      return {
+        pos: pos,
+        start: $pos.start(i),
+        end: $pos.end(i),
+        depth: i,
+        node,
+      };
+    }
+  }
+  return {
+    pos: 0,
+    start: 0,
+    end: startPos.doc.nodeSize,
+    depth: 0,
+    node: startPos.doc,
+  };
 }

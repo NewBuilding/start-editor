@@ -1,32 +1,50 @@
-import type { Node, NodeSpec, Schema as ProseMirrorSchema } from 'prosemirror-model';
-import type { Transaction, EditorState, Plugin } from 'prosemirror-state';
+import type { Node, Schema as ProseMirrorSchema } from 'prosemirror-model';
+import type { Transaction, EditorState, Plugin as ProseMirrorPlugin } from 'prosemirror-state';
 import type { NodeCommandsMap } from './nodes';
 import type { MarkName, MarkCommandMap } from './marks';
+import type { Editor } from './Editor';
 
-interface Dispatch {
+export interface Dispatch {
   (tr: Transaction): void;
 }
 
-type Schema = ProseMirrorSchema<NodeNameEnum, MarkName>;
+export type Schema = ProseMirrorSchema<NodeNameEnum, MarkName>;
 
-interface Command<S extends Schema = any> {
+export interface Command<S extends Schema = any> {
   (state: EditorState<S>, dispatch: Dispatch): boolean;
 }
 
-type CommandMap = NodeCommandsMap & MarkCommandMap;
+export type CommandMap = NodeCommandsMap & MarkCommandMap;
 
-type StyleObject = Partial<CSSStyleDeclaration>;
+export type StyleObject = Partial<CSSStyleDeclaration>;
 
-export {
-  StyleObject,
-  NodeSpec,
-  Node as ProseMirrorNode,
-  Dispatch,
-  Schema,
-  Command,
-  CommandMap,
-  Plugin as ProseMirrorPlugin,
-};
+export interface Range {
+  from: number;
+  to: number;
+}
+
+export interface Rect {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  right: number;
+  bottom: number;
+}
+
+export interface Position {
+  left: number;
+  top: number;
+}
+
+export type BoxRect = Omit<Rect, 'width' | 'height'>;
+
+export type SizeRect = Omit<Rect, 'bottom' | 'right'>;
+
+export interface NodePos {
+  node: Node;
+  pos: number;
+}
 
 export enum NodeNameEnum {
   AUDIO = 'audio',

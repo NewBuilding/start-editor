@@ -1,8 +1,8 @@
 import { EditorState, Plugin } from 'prosemirror-state';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
-import { DOMParser, Schema, MarkSpec, NodeSpec } from 'prosemirror-model';
+import { DOMParser, Schema, MarkSpec, NodeSpec, Node as ProseMirrorNode } from 'prosemirror-model';
 import OrderedMap from 'orderedmap';
-import { CommandMap, ProseMirrorNode } from './type';
+import { CommandMap } from './type';
 import { allNodes } from './nodes';
 import { allMarks } from './marks';
 import './styles/index.less';
@@ -14,13 +14,14 @@ import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
 import { StyleObject, NodeNameEnum } from './type';
 import { objToStyleString, DEFAULT_FONT_FAMILY, serializeToHTML } from 'start-editor-utils';
-import { getPlugins } from './plugins';
+import { InnerPlugins } from './plugins';
+import { PluginInterface } from './interface';
 
 interface EditorOptions {
   props?: DirectEditorProps;
   content: Record<string, unknown> | string;
   defaultStyles?: Record<NodeNameEnum, StyleObject>;
-  plugins?: Plugin[];
+  plugins?: PluginInterface[];
 }
 
 export type MountTarget = HTMLElement | string;
@@ -30,6 +31,7 @@ export class Editor {
   view: EditorView;
   schema: Schema;
   commandMap: CommandMap;
+  plugins: Map<string, PluginInterface> = new Map();
   container: HTMLDivElement = document.createElement('div');
   wrap: HTMLDivElement = document.createElement('div');
   shell: HTMLDivElement = document.createElement('div');
@@ -37,9 +39,11 @@ export class Editor {
 
   constructor(options: EditorOptions) {
     this.options = options;
+    this.options.plugins = options.plugins || [];
     this.schema = this.createSchema();
     this.commandMap = this.createCommand();
     this.setupDom();
+    this.setStartPlugins([...InnerPlugins, ...this.options.plugins]);
     this.view = new EditorView(
       {
         mount: this.editableDom,
@@ -70,6 +74,16 @@ export class Editor {
     }
     ele.appendChild(this.container);
     this.view.dispatch(this.state.tr);
+    this.plugins.forEach((plugin) => {
+      plugin.mounted();
+    });
+  }
+
+  destroy() {
+    this.plugins.forEach((p) => {
+      p.destroy();
+    });
+    this.view.destroy();
   }
 
   /**
@@ -94,17 +108,23 @@ export class Editor {
    * 追加插件
    * @param plugins
    */
-  addPlugins(plugins: Plugin[]) {
-    if (!this.options.plugins) {
-      this.options.plugins = plugins;
-    } else {
-      this.options.plugins.push(...plugins);
-    }
+  addPlugins(plugins: PluginInterface[]) {
+    this.setStartPlugins(plugins);
     const state = this.state.reconfigure({
       plugins: this.getPlugins(),
     });
     this.view.updateState(state);
-    // this.view.dispatch(this.state.tr);
+  }
+
+  private setStartPlugins(plugins: PluginInterface[]) {
+    plugins.forEach((plugin) => {
+      plugin.editor = this;
+      // 追加的plugin会覆盖内置的plugin
+      if (this.plugins.has(plugin.id) && !InnerPlugins.find((p) => p.id === plugin.id)) {
+        throw new Error('Already has plugin which id is ' + plugin.id);
+      }
+      this.plugins.set(plugin.id, plugin);
+    });
   }
 
   private setupDom() {
@@ -199,9 +219,11 @@ export class Editor {
     [...allNodes, ...allMarks].forEach((nm) => {
       plugins.push(...nm.plugins());
     });
-    getPlugins(this).forEach((instance) => {
-      plugins.push(...instance.plugins);
+
+    this.plugins.forEach((p) => {
+      plugins.push(...p.plugins);
     });
+
     return [
       history(),
       keymap({ 'Mod-z': undo, 'Mod-y': redo }),
@@ -209,7 +231,6 @@ export class Editor {
       dropCursor(),
       gapCursor(),
       ...plugins,
-      ...(this.options.plugins || []),
     ];
   }
 }

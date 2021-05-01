@@ -14,6 +14,10 @@ const ignodeNode: NodeNameEnum[] = [
 ];
 
 export class PlaceholderPlugin extends PluginInterface {
+  get id() {
+    return 'Placeholder';
+  }
+
   get plugins() {
     return [
       new Plugin({

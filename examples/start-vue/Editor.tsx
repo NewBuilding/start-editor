@@ -1,9 +1,9 @@
-import { defineComponent, watch, ref } from 'vue';
-import { EditorCanvas } from 'start-editor-vue';
-// import applyDevTools from 'prosemirror-dev-tools';
+import { defineComponent, watch, ref, onMounted } from 'vue';
+import applyDevTools from 'prosemirror-dev-tools';
 import { StartEditor } from 'start-editor';
 import { Plugin } from 'prosemirror-state';
 import { useRoute } from 'vue-router';
+import {PluginInterface} from 'start-editor';
 
 const contentMap = {
   poem: `
@@ -134,23 +134,14 @@ const contentMap = {
 
 export const editor = new StartEditor({
   content: '',
-  plugins: [
-    new Plugin({
-      view() {
-        return {
-          update() {
-            // console.log('update');
-          },
-        };
-      },
-    }),
-  ],
 });
+window.editor = editor;
 
 export default defineComponent({
   name: 'editor',
   setup() {
     const route = useRoute();
+    const containerRef = ref<HTMLElement>();
 
     watch(
       () => route.query,
@@ -160,11 +151,14 @@ export default defineComponent({
       },
       { immediate: true },
     );
-    // applyDevTools(editor.view);
+    applyDevTools(editor.view);
+
+    onMounted(() => {
+      containerRef.value && editor.mount(containerRef.value);
+    });
 
     return () => (
-      <div class="start-vue-main-editor">
-        <EditorCanvas editor={editor} />
+      <div class="start-vue-main-editor" ref={containerRef}>
       </div>
     );
   },

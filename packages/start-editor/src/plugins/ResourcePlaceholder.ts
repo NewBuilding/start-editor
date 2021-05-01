@@ -1,4 +1,4 @@
-import { Decoration, DecorationSet, EditorView } from 'prosemirror-view';
+import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Plugin, EditorState } from 'prosemirror-state';
 import { PluginInterface } from '../interface';
 import { Placeholder } from '../components';
@@ -12,6 +12,9 @@ const placeholderNode: NodeNameEnum[] = [
 ];
 
 export class ResourcePlaceholderPlugin extends PluginInterface {
+  get id() {
+    return 'ResourcePlaceholder';
+  }
   get plugins() {
     return [
       new Plugin<DecorationSet>({

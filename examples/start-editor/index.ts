@@ -83,17 +83,6 @@ const content = `
 
 const editor = new StartEditor({
   content,
-  plugins: [
-    new Plugin({
-      view() {
-        return {
-          update() {
-            console.log('update');
-          },
-        };
-      },
-    }),
-  ],
 });
 
 window.editor = editor;
@@ -103,15 +92,3 @@ div.classList.add('start-editor-text');
 document.body.appendChild(div);
 
 editor.mount(div);
-
-editor.addPlugins([
-  new Plugin({
-    view() {
-      return {
-        update: () => {
-          console.log('new Plugin');
-        },
-      };
-    },
-  }),
-]);

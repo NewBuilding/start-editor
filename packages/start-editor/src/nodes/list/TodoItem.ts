@@ -1,6 +1,6 @@
-import { Plugin, EditorState } from 'prosemirror-state';
+import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, Dispatch, Command, StyleObject, NodeNameEnum } from '../../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
 export interface TodoItemCommand<T = boolean> {}
@@ -66,7 +66,7 @@ export class TodoItemNode extends NodeInterface<TodoItemCommand<Command>> {
           [
             'div',
             {
-              style: objToStyleString(node.attrs.style),
+              style: objToStyleString({ ...node.attrs.style, display: 'inline-block' }),
             },
             0,
           ],

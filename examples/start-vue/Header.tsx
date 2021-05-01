@@ -8,6 +8,8 @@ export default defineComponent({
     };
     return () => (
       <div class="start-vue-header">
+        <div>
+        </div>
         <button onClick={onclick}>加粗</button>
       </div>
     );

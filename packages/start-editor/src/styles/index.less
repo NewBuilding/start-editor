@@ -1,3 +1,6 @@
+@import 'prosemirror-view/style/prosemirror.css';
+@import 'prosemirror-gapcursor/style/gapcursor.css';
+
 .start-editor {
   height: 100%;
   width: 100%;
@@ -7,25 +10,33 @@
 
   .start-editor-wrap {
     display: flex;
-    width: 100%;
     flex-direction: column;
     align-items: center;
     position: relative;
-    margin-bottom: 50px;
-    margin-top: 10px;
 
+
+
+    .start-editor-select_box {
+      background-color: rgba(45, 170, 219, 0.3);
+      position: absolute;
+      z-index: 1000;
+    }
   }
 
-  .start-editor-shell {
 
+  .start-editor-shell {
+    margin: 20px 80px 80px 80px;
+    width: calc(100% - 160px);
+    min-width: 550px;
     display: inline-block;
+    box-sizing: border-box;
     position: relative;
     background-color: #fff;
-
   }
 
   .start-editor-canvas {
-    width: 800px;
+    width: 100%;
+    box-sizing: border-box;
     overflow: hidden;
     padding: 10px 20px;
 
@@ -47,9 +58,11 @@
 
   .ProseMirror-selectednode {
     position: relative;
+    outline: none !important;
 
     &::after {
       content: '';
+      pointer-events: none;
       display: block;
       left: 0;
       right: 0;
@@ -59,6 +72,7 @@
       background-color: rgba(45, 170, 219, 0.3);
       z-index: 1000;
     }
+
   }
 
   .start-editor-node--empty {

@@ -1,16 +1,24 @@
-import { Editor } from '../Editor';
-import { TrailingNodePlugin } from './TrailingNode';
-import { SelecNodePlugin } from './SelectNode';
+import { PluginInterface } from '../interface';
+import { NodeTrailingPlugin } from './NodeTrailing';
+import { NodeSelectPlugin } from './NodeSelect';
 import { PlaceholderPlugin } from './Placeholder';
 import { ResourcePlaceholderPlugin } from './ResourcePlaceholder';
+import { BoxSelectNodePlugin } from './BoxSelectNode';
+import { NodeRangeSelection } from './NodeRangeSelection';
 
-export interface PluginOptions {}
+export const InnerPlugins: PluginInterface[] = [
+  new NodeTrailingPlugin(),
+  new PlaceholderPlugin(),
+  new NodeSelectPlugin(),
+  new ResourcePlaceholderPlugin(),
+  new BoxSelectNodePlugin(),
+];
 
-export function getPlugins(editor: Editor) {
-  return [
-    new TrailingNodePlugin(editor),
-    new PlaceholderPlugin(editor),
-    new SelecNodePlugin(editor),
-    new ResourcePlaceholderPlugin(editor),
-  ];
-}
+export {
+  NodeSelectPlugin,
+  NodeTrailingPlugin,
+  PlaceholderPlugin,
+  ResourcePlaceholderPlugin,
+  BoxSelectNodePlugin,
+  NodeRangeSelection,
+};

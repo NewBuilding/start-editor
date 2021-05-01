@@ -1,6 +1,6 @@
-import { Plugin, EditorState } from 'prosemirror-state';
+import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, Dispatch, Command, StyleObject, NodeNameEnum } from '../../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
 export interface TodoListCommand<T = boolean> {}
