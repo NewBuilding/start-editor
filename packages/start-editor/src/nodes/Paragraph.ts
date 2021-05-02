@@ -1,6 +1,7 @@
 import { Plugin } from 'prosemirror-state';
+import { NodeSpec } from 'prosemirror-model';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, StyleObject, Command, NodeNameEnum } from '../type';
+import { StyleObject, Command, NodeNameEnum } from '../type';
 import { objToStyleString, styleStringToObj } from 'start-editor-utils';
 
 export interface ParagraphCommand<T = boolean> {}
@@ -16,8 +17,10 @@ export class ParagraphNode extends NodeInterface<ParagraphCommand<Command>> {
       width: '100%',
       whiteSpace: 'pre-wrap',
       wordBreak: 'break-word',
-      padding: '3px 2px',
-      margin: '1px 0',
+      padding: '3px 0',
+      margin: '2px 0',
+      lineHeight: '1.5',
+      fontSize: '16px',
     },
   ): NodeSpec {
     return {

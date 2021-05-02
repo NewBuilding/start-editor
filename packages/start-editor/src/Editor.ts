@@ -1,4 +1,4 @@
-import { EditorState, Plugin } from 'prosemirror-state';
+import { EditorState, Plugin, TextSelection } from 'prosemirror-state';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { DOMParser, Schema, MarkSpec, NodeSpec, Node as ProseMirrorNode } from 'prosemirror-model';
 import OrderedMap from 'orderedmap';
@@ -13,7 +13,7 @@ import { undo, redo, history } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
 import { StyleObject, NodeNameEnum } from './type';
-import { objToStyleString, DEFAULT_FONT_FAMILY, serializeToHTML } from 'start-editor-utils';
+import { objToStyleString, DEFAULT_FONT_FAMILY, serializeToHTML, isTextSelection } from 'start-editor-utils';
 import { InnerPlugins } from './plugins';
 import { PluginInterface } from './interface';
 
@@ -36,6 +36,7 @@ export class Editor {
   wrap: HTMLDivElement = document.createElement('div');
   shell: HTMLDivElement = document.createElement('div');
   editableDom: HTMLElement = document.createElement('div');
+  isFocus: boolean = false;
 
   constructor(options: EditorOptions) {
     this.options = options;
@@ -66,6 +67,9 @@ export class Editor {
    */
   mount(target: MountTarget) {
     let ele = target as HTMLElement;
+    if (this.container.parentElement) {
+      throw new Error('Editor has been mounted.');
+    }
     if (typeof target === 'string') {
       ele = document.querySelector(target) as HTMLElement;
     }
@@ -77,9 +81,12 @@ export class Editor {
     this.plugins.forEach((plugin) => {
       plugin.mounted();
     });
+    this.onContainerClick = this.onContainerClick.bind(this);
+    this.container.addEventListener('click', this.onContainerClick);
   }
 
   destroy() {
+    this.container.removeEventListener('click', this.onContainerClick);
     this.plugins.forEach((p) => {
       p.destroy();
     });
@@ -114,6 +121,19 @@ export class Editor {
       plugins: this.getPlugins(),
     });
     this.view.updateState(state);
+  }
+
+  private onContainerClick(e: Event) {
+    const oldFocus = this.isFocus;
+    this.isFocus = e.target === this.shell || this.shell.contains(e.target as HTMLElement);
+    if (oldFocus !== this.isFocus) {
+      const tr = this.state.tr;
+      if (!this.isFocus && !isTextSelection(this.state.selection)) {
+        // 编辑器blur的时候取消 node select
+        tr.setSelection(TextSelection.create(this.state.doc, 0));
+      }
+      this.view.dispatch(tr);
+    }
   }
 
   private setStartPlugins(plugins: PluginInterface[]) {

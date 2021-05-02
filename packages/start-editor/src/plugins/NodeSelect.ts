@@ -23,14 +23,14 @@ export class NodeSelectPlugin extends PluginInterface {
     const parentPos = sel.$from.start(sel.$from.depth);
     parent.descendants((node, pos) => {
       pos += parentPos;
-      if (pos >= sel.from && pos + node.nodeSize <= sel.to) {
+      if (!node.isText && pos >= sel.from && pos + node.nodeSize <= sel.to) {
         decorations.push(
           Decoration.node(pos, pos + node.nodeSize, {
             class: SELECTED_NODE_CLASSNAME,
           }),
         );
       }
-      return true;
+      return false;
     });
 
     return DecorationSet.create(state.doc, decorations);
@@ -39,21 +39,9 @@ export class NodeSelectPlugin extends PluginInterface {
   get plugins() {
     return [
       new Plugin({
-        state: {
-          init: (config, state) => {
-            return this.getFocusNodeDecorationSet(state);
-          },
-          apply: (tr, old, state) => {
-            if (tr.selection === state.selection) {
-              return old;
-            }
-
-            return this.getFocusNodeDecorationSet(state);
-          },
-        },
         props: {
-          decorations(state) {
-            return this.getState(state);
+          decorations: (state) => {
+            return this.getFocusNodeDecorationSet(state);
           },
           handleClick(view, _pos, event) {
             const clickedNode = getNodeByEvent(view, event);

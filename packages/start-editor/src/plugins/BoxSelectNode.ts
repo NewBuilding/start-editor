@@ -130,7 +130,7 @@ export class BoxSelectNodePlugin extends PluginInterface {
       // this.editor.tooltips?.nodeMenu.show(false);
       this.showSelectBox = true;
       this.selectBox.show();
-      this.editorContainer.addEventListener('click', this.onClick);
+      this.wrapConatainer.addEventListener('click', this.onClick);
     }, 200);
     this.anchor = this.getRelatviePosition({ left: e.clientX, top: e.clientY });
     const conatiner = this.wrapConatainer as HTMLElement;
@@ -162,9 +162,9 @@ export class BoxSelectNodePlugin extends PluginInterface {
     conatiner.removeEventListener('mousemove', this.onMousemove);
     const { selection } = this.editor.state;
     // 手动处理isEditorFocus逻辑
-    // if (selection instanceof NodeRangeSelection && selection.from !== selection.to) {
-    //   this.editor.isEditorFocus = true;
-    // }
+    if (selection instanceof NodeRangeSelection && selection.from !== selection.to) {
+      this.editor.isFocus = true;
+    }
   }
 
   getRelatviePosition(pos: Position) {
@@ -172,7 +172,7 @@ export class BoxSelectNodePlugin extends PluginInterface {
   }
 
   onClick(e: Event) {
-    this.editorContainer.removeEventListener('click', this.onClick);
+    this.wrapConatainer.removeEventListener('click', this.onClick);
     // 阻止editor文件中isDocClick处理isEditorFocus逻辑，框选需要手动处理这些逻辑
     e.stopPropagation();
   }

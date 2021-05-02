@@ -58,7 +58,7 @@ export class NodeRangeSelection extends Selection {
 NodeRangeSelection.prototype.visible = false;
 
 try {
-  Selection.jsonID('nodeRange', NodeRangeSelection);
+  Selection.jsonID('NodeRangeSelection', NodeRangeSelection);
 } catch (e) {}
 
 class NodeRangeBookmark {
