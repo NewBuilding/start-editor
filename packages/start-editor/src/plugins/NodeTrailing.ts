@@ -1,6 +1,6 @@
 import { Plugin } from 'prosemirror-state';
 import { PluginInterface } from '../interface';
-import { NodeNameEnum } from '../type';
+import { NodeNameEnum, PluginIDEnum } from '../type';
 
 export interface NodeTrailingOptions {
   // 要追加的node
@@ -12,9 +12,7 @@ export interface NodeTrailingOptions {
  * 自动在文档最后追加一行
  */
 export class NodeTrailingPlugin extends PluginInterface<NodeTrailingOptions> {
-  get id() {
-    return 'NodeTrailing';
-  }
+  ID = PluginIDEnum.NODE_TRALLING;
 
   get defaultOptions(): NodeTrailingOptions {
     return {

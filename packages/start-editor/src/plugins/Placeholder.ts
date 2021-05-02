@@ -1,7 +1,7 @@
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Plugin } from 'prosemirror-state';
 import { PluginInterface } from '../interface';
-import { NodeNameEnum } from '../type';
+import { NodeNameEnum, PluginIDEnum } from '../type';
 
 const nodeEmptyClass = 'start-editor-node--empty';
 const editorEmptyClass = 'start-editor--empty';
@@ -14,9 +14,7 @@ const ignodeNode: NodeNameEnum[] = [
 ];
 
 export class PlaceholderPlugin extends PluginInterface {
-  get id() {
-    return 'Placeholder';
-  }
+  ID = PluginIDEnum.PLACEHOLDER;
 
   get plugins() {
     return [

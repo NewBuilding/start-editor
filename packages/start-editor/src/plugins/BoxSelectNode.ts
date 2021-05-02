@@ -11,7 +11,7 @@ import {
 
 import { NodeRangeSelection } from './NodeRangeSelection';
 import { throttle } from 'lodash';
-import type { Position, BoxRect, Range, NodePos } from '../type';
+import { Position, BoxRect, Range, NodePos, PluginIDEnum } from '../type';
 import type { EditorView } from 'prosemirror-view';
 
 // 针对容器会有框选容器子项，忽略子项的容器数组
@@ -33,9 +33,7 @@ const ROOT_ADD_CLASSNAME = 'start-editor-is_box_selecting';
  *
  */
 export class BoxSelectNodePlugin extends PluginInterface {
-  get id() {
-    return 'BoxSelectNode';
-  }
+  ID = PluginIDEnum.BOX_SELECT_NODE;
 
   get plugins() {
     return [];

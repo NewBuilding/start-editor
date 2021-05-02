@@ -1,8 +1,8 @@
-import { Plugin } from 'prosemirror-state';
+import { Plugin, EditorState } from 'prosemirror-state';
 import { Editor } from '../Editor';
 
 export abstract class PluginInterface<T = Record<string, any>> {
-  abstract id: string;
+  abstract ID: string;
   editor!: Editor;
 
   protected options: T;

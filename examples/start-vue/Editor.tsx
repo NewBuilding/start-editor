@@ -1,9 +1,8 @@
 import { defineComponent, watch, ref, onMounted } from 'vue';
+import {Plugin} from 'prosemirror-state';
 import applyDevTools from 'prosemirror-dev-tools';
-import { StartEditor } from 'start-editor';
-import { Plugin } from 'prosemirror-state';
+import { StartEditor, PluginInterface, PluginIDEnum, HoverNodeAnchorPlugin } from 'start-editor';
 import { useRoute } from 'vue-router';
-import {PluginInterface} from 'start-editor';
 
 const contentMap = {
   poem: `
@@ -132,8 +131,32 @@ const contentMap = {
   `,
 };
 
+class MyPlugin extends PluginInterface {
+  ID = 'MyPlugin'
+
+  get plugins() {
+    return [
+      new Plugin({
+        view: () => {
+          return {
+            update: (view) => {
+              const plugin = this.editor.getPlugin<HoverNodeAnchorPlugin>(PluginIDEnum.HOVER_NODE_ANCHOR);
+              const pstate = plugin.getState(view.state);
+              console.log('hoverNode:', pstate.hoverNode?.type.name);
+              console.log('hoverDom:', pstate.hoverDom);
+            }
+          };
+        }
+      })
+    ];
+  }
+}
+
 export const editor = new StartEditor({
   content: '',
+  plugins: [
+    // new MyPlugin()
+  ]
 });
 window.editor = editor;
 

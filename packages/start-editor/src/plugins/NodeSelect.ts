@@ -3,6 +3,7 @@ import { DecorationSet, Decoration } from 'prosemirror-view';
 import { getNodeByEvent, isCtrlKey, isContainerNode } from 'start-editor-utils';
 import NodeRangeSelection from './NodeRangeSelection';
 import { PluginInterface } from '../interface';
+import { PluginIDEnum } from '../type';
 
 const SELECTED_NODE_CLASSNAME = 'ProseMirror-selectednode';
 
@@ -11,9 +12,7 @@ const SELECTED_NODE_CLASSNAME = 'ProseMirror-selectednode';
  * 2. 为noderange 范围内的node也设置class name
  */
 export class NodeSelectPlugin extends PluginInterface {
-  get id() {
-    return 'NodeSelect';
-  }
+  ID = PluginIDEnum.NODE_SELECT;
 
   getFocusNodeDecorationSet(state: EditorState) {
     const sel = state.selection;

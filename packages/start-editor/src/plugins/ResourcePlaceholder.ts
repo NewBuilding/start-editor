@@ -2,7 +2,7 @@ import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Plugin, EditorState } from 'prosemirror-state';
 import { PluginInterface } from '../interface';
 import { Placeholder } from '../components';
-import { NodeNameEnum } from '../type';
+import { NodeNameEnum, PluginIDEnum } from '../type';
 
 const placeholderNode: NodeNameEnum[] = [
   NodeNameEnum.IMAGE,
@@ -12,9 +12,8 @@ const placeholderNode: NodeNameEnum[] = [
 ];
 
 export class ResourcePlaceholderPlugin extends PluginInterface {
-  get id() {
-    return 'ResourcePlaceholder';
-  }
+  ID = PluginIDEnum.RESOURCE_PLACEHOLDER;
+
   get plugins() {
     return [
       new Plugin<DecorationSet>({

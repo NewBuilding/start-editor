@@ -2,7 +2,7 @@ import { EditorState, Plugin, TextSelection } from 'prosemirror-state';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { DOMParser, Schema, MarkSpec, NodeSpec, Node as ProseMirrorNode } from 'prosemirror-model';
 import OrderedMap from 'orderedmap';
-import { CommandMap } from './type';
+import { CommandMap, PluginIDEnum } from './type';
 import { allNodes } from './nodes';
 import { allMarks } from './marks';
 import './styles/index.less';
@@ -111,6 +111,13 @@ export class Editor {
     });
   }
 
+  getPlugin<T extends PluginInterface>(id: PluginIDEnum | string): T {
+    if (!this.plugins.has(id)) {
+      throw new Error('not exist the plugin which id is ' + id);
+    }
+    return this.plugins.get(id) as T;
+  }
+
   /**
    * 追加插件
    * @param plugins
@@ -140,10 +147,10 @@ export class Editor {
     plugins.forEach((plugin) => {
       plugin.editor = this;
       // 追加的plugin会覆盖内置的plugin
-      if (this.plugins.has(plugin.id) && !InnerPlugins.find((p) => p.id === plugin.id)) {
-        throw new Error('Already has plugin which id is ' + plugin.id);
+      if (this.plugins.has(plugin.ID) && !InnerPlugins.find((p) => p.ID === plugin.ID)) {
+        throw new Error('Already has plugin which id is ' + plugin.ID);
       }
-      this.plugins.set(plugin.id, plugin);
+      this.plugins.set(plugin.ID, plugin);
     });
   }
 

@@ -9,7 +9,6 @@ export default defineConfig({
   plugins: [domJsx({ include: [/\/start-editor\//], pragma: 'React.createElement' }), vue(), vueJsx()],
   alias: {
     'start-editor': '../packages/start-editor/src',
-    'start-editor-vue': '../packages/start-editor-vue/src',
     'start-editor-utils': '../packages/start-editor-utils/src',
   },
   define: {

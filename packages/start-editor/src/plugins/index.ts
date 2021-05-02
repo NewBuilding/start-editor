@@ -5,6 +5,9 @@ import { PlaceholderPlugin } from './Placeholder';
 import { ResourcePlaceholderPlugin } from './ResourcePlaceholder';
 import { BoxSelectNodePlugin } from './BoxSelectNode';
 import { NodeRangeSelection } from './NodeRangeSelection';
+import { PopperAnchorPlugin } from './PopperAnchor';
+import { HoverNodeAnchorPlugin } from './HoverNodeAnchor';
+import {} from './NodeCursorAnchor';
 
 export const InnerPlugins: PluginInterface[] = [
   new NodeTrailingPlugin(),
@@ -12,6 +15,8 @@ export const InnerPlugins: PluginInterface[] = [
   new NodeSelectPlugin(),
   new ResourcePlaceholderPlugin(),
   new BoxSelectNodePlugin(),
+  // new PopperAnchorPlugin(),
+  new HoverNodeAnchorPlugin(),
 ];
 
 export {
@@ -21,4 +26,6 @@ export {
   ResourcePlaceholderPlugin,
   BoxSelectNodePlugin,
   NodeRangeSelection,
+  PopperAnchorPlugin,
+  HoverNodeAnchorPlugin,
 };
