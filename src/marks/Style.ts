@@ -1,7 +1,7 @@
 import { MarkSpec } from 'prosemirror-model';
 import { Plugin, EditorState, Transaction } from 'prosemirror-state';
 import { MarkInterface } from '../interface/MarkInterface';
-import { Schema, Command, StyleObject, MarkNameEnum } from '@/type';
+import { Schema, Command, StyleObject, MarkNameEnum } from '@/@types';
 import { objToStyleString, styleStringToObj, getSaveAttrKeys } from '@/utils';
 import { get, omit } from 'lodash';
 

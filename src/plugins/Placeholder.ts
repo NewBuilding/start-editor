@@ -1,7 +1,7 @@
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Plugin } from 'prosemirror-state';
 import { PluginInterface } from '../interface';
-import { NodeNameEnum, PluginIDEnum } from '../type';
+import { NodeNameEnum, PluginIDEnum } from '@/@types';
 
 const nodeEmptyClass = 'start-editor-node--empty';
 const editorEmptyClass = 'start-editor--empty';

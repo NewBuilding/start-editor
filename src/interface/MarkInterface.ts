@@ -1,6 +1,6 @@
-import { MarkSpec } from 'prosemirror-model';
-import { Plugin } from 'prosemirror-state';
-import { StyleObject } from '../type';
+import type { MarkSpec } from 'prosemirror-model';
+import type { Plugin } from 'prosemirror-state';
+import type { StyleObject } from '@/@types';
 
 export abstract class MarkInterface<T> {
   abstract get name(): string;

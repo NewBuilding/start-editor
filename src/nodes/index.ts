@@ -1,4 +1,4 @@
-import { NodeNameEnum } from '../type';
+import { NodeNameEnum } from '@/@types';
 
 import { LinkNode, LinkCommand } from './Link';
 import { ImageNode, ImageCommand } from './Image';

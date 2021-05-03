@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../type';
-import { objToStyleString, styleStringToObj, DEFAULT_FONT_FAMILY } from '@/utils';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '@/@types';
+import { objToStyleString, styleStringToObj } from '@/utils';
 
 export interface HeadingCommand<T = boolean> {}
 

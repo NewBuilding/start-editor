@@ -1,6 +1,6 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { NodeSpec, StyleObject, Command, NodeNameEnum } from '../../type';
+import { NodeSpec, StyleObject, Command, NodeNameEnum } from '@/@types';
 import { objToStyleString, styleStringToObj } from '@/utils';
 
 export interface UnorderedListCommand<T = boolean> {}

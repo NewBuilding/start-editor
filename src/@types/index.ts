@@ -1,7 +1,7 @@
 import type { Node as ProseMirrorNode, NodeSpec, Schema as ProseMirrorSchema } from 'prosemirror-model';
 import type { Transaction, EditorState } from 'prosemirror-state';
-import type { NodeCommandsMap } from './nodes';
-import type { MarkCommandMap } from './marks';
+import type { NodeCommandsMap } from '@/nodes';
+import type { MarkCommandMap } from '@/marks';
 
 export interface Dispatch {
   (tr: Transaction): void;

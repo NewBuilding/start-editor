@@ -1,4 +1,4 @@
-import { MarkNameEnum } from '@/type';
+import { MarkNameEnum } from '@/@types';
 import { StyleMark, StyleCommand } from './Style';
 
 export interface MarkCommandMap {

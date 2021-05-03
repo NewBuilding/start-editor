@@ -2,7 +2,7 @@ import { Decoration, DecorationSet } from 'prosemirror-view';
 import { Plugin, EditorState } from 'prosemirror-state';
 import { PluginInterface } from '../interface';
 import { Placeholder } from '../components';
-import { NodeNameEnum, PluginIDEnum } from '../type';
+import { NodeNameEnum, PluginIDEnum } from '@/@types';
 
 const placeholderNode: NodeNameEnum[] = [
   NodeNameEnum.IMAGE,

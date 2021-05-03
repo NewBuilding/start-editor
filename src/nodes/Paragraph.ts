@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeSpec } from 'prosemirror-model';
 import { NodeInterface } from '../interface/NodeInterface';
-import { StyleObject, Command, NodeNameEnum } from '../type';
+import { StyleObject, Command, NodeNameEnum } from '@/@types';
 import { objToStyleString, styleStringToObj } from '@/utils';
 
 export interface ParagraphCommand<T = boolean> {}

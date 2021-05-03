@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeSpec } from 'prosemirror-model';
 import { NodeInterface } from '../../interface/NodeInterface';
-import { Command, ProseMirrorNode, Schema, StyleObject, NodeNameEnum } from '../../type';
+import { Command, ProseMirrorNode, Schema, StyleObject, NodeNameEnum } from '@/@types';
 import { styleStringToObj, objToStyleString } from '@/utils';
 import { NodeType, Fragment } from 'prosemirror-model';
 

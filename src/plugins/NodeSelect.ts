@@ -3,7 +3,7 @@ import { DecorationSet, Decoration } from 'prosemirror-view';
 import { getNodeByEvent, isCtrlKey, isContainerNode } from '@/utils';
 import NodeRangeSelection from './NodeRangeSelection';
 import { PluginInterface } from '../interface';
-import { PluginIDEnum } from '../type';
+import { PluginIDEnum } from '@/@types';
 
 const SELECTED_NODE_CLASSNAME = 'ProseMirror-selectednode';
 

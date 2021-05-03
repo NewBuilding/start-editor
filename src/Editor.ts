@@ -2,7 +2,6 @@ import { EditorState, Plugin, TextSelection } from 'prosemirror-state';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { DOMParser, Schema, MarkSpec, NodeSpec, Node as ProseMirrorNode } from 'prosemirror-model';
 import OrderedMap from 'orderedmap';
-import { CommandMap, PluginIDEnum } from './type';
 import { allNodes } from './nodes';
 import { allMarks } from './marks';
 import './styles/index.less';
@@ -12,12 +11,12 @@ import { dropCursor } from 'prosemirror-dropcursor';
 import { undo, redo, history } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
-import { StyleObject, NodeNameEnum } from './type';
+import { StyleObject, NodeNameEnum, CommandMap, PluginIDEnum } from '@/@types';
 import { objToStyleString, DEFAULT_FONT_FAMILY, serializeToHTML, isTextSelection } from '@/utils';
-import { InnerPlugins } from './plugins';
-import { PluginInterface } from './interface';
+import { InnerPlugins } from '@/plugins';
+import { PluginInterface } from '@/interface';
 
-interface EditorOptions {
+export interface EditorOptions {
   props?: DirectEditorProps;
   content: Record<string, unknown> | string;
   defaultStyles?: Record<NodeNameEnum, StyleObject>;
@@ -26,7 +25,7 @@ interface EditorOptions {
 
 export type MountTarget = HTMLElement | string;
 
-export class Editor {
+export class StartEditor {
   options: EditorOptions;
   view: EditorView;
   schema: Schema;

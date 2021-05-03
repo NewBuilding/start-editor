@@ -11,7 +11,6 @@ export default defineComponent({
     watch(
       () => route.query,
       () => {
-        console.log('watch', route.query.hideAside);
         if (route.query.hideAside) {
           showAside.value = false;
         }

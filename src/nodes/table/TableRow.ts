@@ -1,7 +1,7 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeSpec } from 'prosemirror-model';
 import { NodeInterface } from '@/interface/NodeInterface';
-import { Command, StyleObject, NodeNameEnum } from '@/type';
+import { Command, StyleObject, NodeNameEnum } from '@/@types';
 import { objToStyleString, styleStringToObj } from '@/utils';
 import { TableRoleKey } from './Table';
 

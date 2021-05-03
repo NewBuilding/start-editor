@@ -1,9 +1,10 @@
 import { PluginInterface } from '../interface';
-import { PluginIDEnum, NodeCursorAnchorPlugin } from '..';
+import { PluginIDEnum } from '@/@types';
 import { Plugin } from 'prosemirror-state';
 import { TextMenu } from '../components';
 import { throttle } from 'lodash';
 import { EditorView } from 'prosemirror-view';
+import type { NodeCursorAnchorPlugin } from './NodeCursorAnchor';
 
 export class TextMenuPlugin extends PluginInterface {
   ID: string = PluginIDEnum.TEXT_MENU;

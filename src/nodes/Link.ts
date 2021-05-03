@@ -1,6 +1,6 @@
 import { Plugin, EditorState } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Dispatch, Command, StyleObject, NodeNameEnum } from '../type';
+import { NodeSpec, Dispatch, Command, StyleObject, NodeNameEnum } from '@/@types';
 import { objToStyleString, styleStringToObj } from '@/utils';
 
 interface LinkAttrs {

@@ -1,4 +1,4 @@
-import type { Position, SizeRect } from '@/type';
+import type { Position, SizeRect } from '@/@types';
 /**
  * 从当前元素向父级查找元素，直到找到拥有该classname的dom 元素，否则返回null
  * @param dom

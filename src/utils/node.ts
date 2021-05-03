@@ -1,7 +1,7 @@
 import { EditorState, NodeSelection, Selection, TextSelection } from 'prosemirror-state';
 import type { Node, ResolvedPos, Node as ProseMirrorNode } from 'prosemirror-model';
 import type { EditorView } from 'prosemirror-view';
-import type { NodePos } from '@/type';
+import type { NodePos } from '@/@types';
 
 export interface nodePredicate {
   (node: Node): boolean;

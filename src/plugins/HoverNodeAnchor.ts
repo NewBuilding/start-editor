@@ -9,7 +9,7 @@ import {
 } from '@/utils';
 import { PluginInterface } from '@/interface';
 import { throttle } from 'lodash';
-import { PluginIDEnum } from '@/type';
+import { PluginIDEnum } from '@/@types';
 
 export interface PopperAnchorOptions {
   // 在这个数组中的node，在hover时忽略，取它的父node

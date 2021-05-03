@@ -1,6 +1,6 @@
 import { Plugin } from 'prosemirror-state';
 import { PluginInterface } from '../interface';
-import { NodeNameEnum, PluginIDEnum } from '../type';
+import { NodeNameEnum, PluginIDEnum } from '@/@types';
 
 export interface NodeTrailingOptions {
   // 要追加的node

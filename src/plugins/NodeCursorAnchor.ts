@@ -5,7 +5,7 @@ import Popper, { createPopper as _createPopper } from '@popperjs/core';
 import { coordsAtPos, getClosestParent, setElementRect } from '@/utils';
 import { PluginInterface } from '@/interface';
 import { throttle } from 'lodash';
-import { BoxRect, PluginIDEnum } from '../type';
+import { BoxRect, PluginIDEnum } from '@/@types';
 import type { CreatePopperOptions } from './HoverNodeAnchor';
 
 export interface NodeCursorAnchorOptions {

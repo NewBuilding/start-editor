@@ -1,6 +1,6 @@
 import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Command, StyleObject, NodeNameEnum } from '../type';
+import { NodeSpec, Command, StyleObject, NodeNameEnum } from '@/@types';
 import { objToStyleString, styleStringToObj } from '@/utils';
 
 export interface SpanCommand<T = boolean> {}

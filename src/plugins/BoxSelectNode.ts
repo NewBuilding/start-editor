@@ -11,7 +11,7 @@ import {
 
 import { NodeRangeSelection } from './NodeRangeSelection';
 import { throttle } from 'lodash';
-import { Position, BoxRect, Range, NodePos, PluginIDEnum } from '../type';
+import { Position, BoxRect, Range, NodePos, PluginIDEnum } from '@/@types';
 import type { EditorView } from 'prosemirror-view';
 
 // 针对容器会有框选容器子项，忽略子项的容器数组
