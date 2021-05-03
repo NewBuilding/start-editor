@@ -118,7 +118,7 @@ export class HoverNodeAnchorPlugin extends PluginInterface<PopperAnchorOptions> 
     },
   });
 
-  mount() {
+  mounted() {
     const ele = this.anchor;
     ele.classList.add(this.options.anchorClassName);
     ele.style.position = 'absolute';
@@ -137,11 +137,15 @@ export class HoverNodeAnchorPlugin extends PluginInterface<PopperAnchorOptions> 
    * @param options popper配置项
    */
   createPopper(tooltip: HTMLElement, options?: CreatePopperOptions): Popper.Instance {
-    options = options || {
-      placement: 'auto-start',
-      offset: [0, 8],
-      modifiers: [],
-    };
+    options = Object.assign(
+      {},
+      {
+        placement: 'auto-start',
+        offset: [0, 8],
+        modifiers: [],
+      },
+      options,
+    );
     if (!options.modifiers?.find((modifier) => modifier.name === 'offset')) {
       options.modifiers = options.modifiers || [];
       options.modifiers.push({
@@ -161,12 +165,16 @@ export class HoverNodeAnchorPlugin extends PluginInterface<PopperAnchorOptions> 
     return this.plugin.getState(state);
   }
 
-  private throttleUpdate = throttle((state: EditorState) => {
-    this.updateAnchor(state);
-    this.popperInstances.forEach((instance) => {
-      instance.update();
-    });
-  }, 200);
+  private throttleUpdate = throttle(
+    (state: EditorState) => {
+      this.updateAnchor(state);
+      this.popperInstances.forEach((instance) => {
+        instance.update();
+      });
+    },
+    200,
+    { leading: false, trailing: true },
+  );
 
   private updateAnchor(state: EditorState) {
     const element = this.getState(state)?.hoverDom;

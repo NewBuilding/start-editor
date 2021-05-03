@@ -1,2 +1,5 @@
-export { default as Icon } from './Icon';
-export { default as Placeholder } from './Placeholder';
+export * from './Icon';
+export * from './Tooltip';
+
+export * from './Placeholder';
+export * from './TextMenu';

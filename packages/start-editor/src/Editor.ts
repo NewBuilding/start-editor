@@ -123,7 +123,7 @@ export class Editor {
    * @param plugins
    */
   addPlugins(plugins: PluginInterface[]) {
-    this.setStartPlugins(plugins);
+    this.setStartPlugins(plugins, true);
     const state = this.state.reconfigure({
       plugins: this.getPlugins(),
     });
@@ -143,12 +143,15 @@ export class Editor {
     }
   }
 
-  private setStartPlugins(plugins: PluginInterface[]) {
+  private setStartPlugins(plugins: PluginInterface[], isAdd = false) {
     plugins.forEach((plugin) => {
       plugin.editor = this;
       // 追加的plugin会覆盖内置的plugin
       if (this.plugins.has(plugin.ID) && !InnerPlugins.find((p) => p.ID === plugin.ID)) {
         throw new Error('Already has plugin which id is ' + plugin.ID);
+      }
+      if (isAdd) {
+        plugin.mounted();
       }
       this.plugins.set(plugin.ID, plugin);
     });

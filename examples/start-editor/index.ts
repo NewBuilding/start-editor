@@ -1,6 +1,5 @@
-import { StartEditor, Plugin } from 'start-editor';
+import { StartEditor } from 'start-editor';
 import './index.less';
-import { getPlugins } from 'start-editor-vue';
 
 const content = `
   <div>

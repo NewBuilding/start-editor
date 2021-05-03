@@ -2458,7 +2458,7 @@ jsprim@^1.2.2:
 
 jsx-dom@^6.4.23:
   version "6.4.23"
-  resolved "https://registry.npm.taobao.org/jsx-dom/download/jsx-dom-6.4.23.tgz#47f4e547eb86679bd03f3d0b36f2097c2799ee46"
+  resolved "https://registry.nlark.com/jsx-dom/download/jsx-dom-6.4.23.tgz#47f4e547eb86679bd03f3d0b36f2097c2799ee46"
   integrity sha1-R/TlR+uGZ5vQPz0LNvIJfCeZ7kY=
   dependencies:
     csstype "^3.0.3"

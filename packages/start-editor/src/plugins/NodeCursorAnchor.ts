@@ -21,7 +21,7 @@ export interface NodeCursorAnchorOptions {
  *
  */
 export class NodeCursorAnchorPlugin extends PluginInterface<NodeCursorAnchorOptions> {
-  ID = PluginIDEnum.POPPER_ANCHAOR;
+  ID = PluginIDEnum.NODE_CURSOR_ANCHOR;
 
   // 锚，表征光标的位置和高度
   textAnchor = document.createElement('div');
@@ -43,7 +43,19 @@ export class NodeCursorAnchorPlugin extends PluginInterface<NodeCursorAnchorOpti
     };
   }
 
-  mount() {
+  get plugins(): Plugin[] {
+    return [
+      new Plugin({
+        view: () => {
+          return {
+            update: this.throttleUpdate,
+          };
+        },
+      }),
+    ];
+  }
+
+  mounted() {
     this.anchors.forEach(({ ele, classname }) => {
       ele.classList.add(classname);
       ele.style.position = 'absolute';
@@ -80,24 +92,16 @@ export class NodeCursorAnchorPlugin extends PluginInterface<NodeCursorAnchorOpti
     return this.createPopper(this.nodeAnchor, tooltip, options);
   }
 
-  get plugins(): Plugin[] {
-    return [
-      new Plugin({
-        view: () => {
-          return {
-            update: this.throttleUpdate,
-          };
-        },
-      }),
-    ];
-  }
-
   private createPopper(anchor: HTMLElement, tooltip: HTMLElement, options?: CreatePopperOptions) {
-    options = options || {
-      placement: 'auto-start',
-      offset: [0, 8],
-      modifiers: [],
-    };
+    options = Object.assign(
+      {},
+      {
+        placement: 'auto-start',
+        offset: [0, 8],
+        modifiers: [],
+      },
+      options,
+    );
     if (!options.modifiers?.find((modifier) => modifier.name === 'offset')) {
       options.modifiers = options.modifiers || [];
       options.modifiers.push({
@@ -112,13 +116,17 @@ export class NodeCursorAnchorPlugin extends PluginInterface<NodeCursorAnchorOpti
     return instance;
   }
 
-  private throttleUpdate = throttle((view) => {
-    this.updateTextAnchor(view);
-    this.updateNodeAnchor(view);
-    this.popperInstances.forEach((instance) => {
-      instance.update();
-    });
-  }, 200);
+  private throttleUpdate = throttle(
+    (view) => {
+      this.updateTextAnchor(view);
+      this.updateNodeAnchor(view);
+      this.popperInstances.forEach((instance) => {
+        instance.update();
+      });
+    },
+    200,
+    { leading: false, trailing: true },
+  );
 
   private updateTextAnchor(view: EditorView) {
     const {
@@ -141,7 +149,7 @@ export class NodeCursorAnchorPlugin extends PluginInterface<NodeCursorAnchorOpti
     if (!nodeInfo) return;
     const dom = view.nodeDOM(nodeInfo.pos) as HTMLElement;
     const relativePos = getRelativePos(view.coordsAtPos(nodeInfo.pos), this.editor.editableDom);
-    setElementRect(this.textAnchor, {
+    setElementRect(this.nodeAnchor, {
       left: relativePos.left,
       top: relativePos.top,
       width: dom.clientWidth,

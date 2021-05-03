@@ -20,6 +20,7 @@
     ]
   },
   "dependencies": {
+    "@popperjs/core": "^2.9.2",
     "jsx-dom": "^6.4.23",
     "lodash": "^4.17.21",
     "prosemirror-commands": "^1.1.6",

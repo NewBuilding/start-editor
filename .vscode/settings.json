@@ -9,6 +9,10 @@
     // "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[tsx]": {
+    // "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[vue]": {
     // "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     "editor.defaultFormatter": "esbenp.prettier-vscode"

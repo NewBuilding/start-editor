@@ -28,7 +28,7 @@ export interface IconProps {
   onClick?(e: Event): void;
 }
 
-export default function Icon(props: IconProps) {
+export function Icon(props: IconProps) {
   const { name, onClick, class: classname = '', style = {} } = props;
   return (
     <svg

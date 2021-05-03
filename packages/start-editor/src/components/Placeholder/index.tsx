@@ -1,7 +1,6 @@
 import React from 'jsx-dom';
-import Icon, { IconName } from '../Icon';
+import  {Icon, IconName } from '../Icon';
 import './index.less';
-import {px} from 'start-editor-utils';
 
 export type PlaceholderType = 'image' | 'blockImage' | 'video' | 'audio';
 
@@ -28,7 +27,7 @@ const typeMap: Record<PlaceholderType, { icon: IconName; title: string }> = {
   },
 };
 
-export default function Placeholder(props: PlaceholderViewProps) {
+export function Placeholder(props: PlaceholderViewProps) {
   const { type } = props;
   const typeInfo = typeMap[props.type];
   return (
