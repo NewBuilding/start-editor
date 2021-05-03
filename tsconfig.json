@@ -14,10 +14,9 @@
     "lib": ["esnext", "dom"],
     "types": ["vite/client", "node"],
     "paths": {
-      "start-editor": ["packages/start-editor/src"],
-      "start-editor-utils": ["packages/start-editor-utils/src"]
+      "@/*": ["src/*"]
     }
   },
   "exclude": ["node_modules", "packages"],
-  "include": ["examples", "packages/*/src"]
+  "include": ["examples", "src"]
 }

@@ -1,7 +1,7 @@
 import { defineComponent, watch, ref, onMounted } from 'vue';
-import {Plugin} from 'prosemirror-state';
+import { Plugin } from 'prosemirror-state';
 import applyDevTools from 'prosemirror-dev-tools';
-import { StartEditor, PluginInterface, PluginIDEnum, HoverNodeAnchorPlugin } from 'start-editor';
+import { StartEditor, PluginInterface, PluginIDEnum, HoverNodeAnchorPlugin } from '../../src';
 import { useRoute } from 'vue-router';
 
 const contentMap = {
@@ -132,7 +132,7 @@ const contentMap = {
 };
 
 class MyPlugin extends PluginInterface {
-  ID = 'MyPlugin'
+  ID = 'MyPlugin';
 
   get plugins() {
     return [
@@ -144,10 +144,10 @@ class MyPlugin extends PluginInterface {
               const pstate = plugin.getState(view.state);
               console.log('hoverNode:', pstate.hoverNode?.type.name);
               console.log('hoverDom:', pstate.hoverDom);
-            }
+            },
           };
-        }
-      })
+        },
+      }),
     ];
   }
 }
@@ -156,7 +156,7 @@ export const editor = new StartEditor({
   content: '',
   plugins: [
     // new MyPlugin()
-  ]
+  ],
 });
 window.editor = editor;
 
@@ -180,9 +180,6 @@ export default defineComponent({
       containerRef.value && editor.mount(containerRef.value);
     });
 
-    return () => (
-      <div class="start-vue-main-editor" ref={containerRef}>
-      </div>
-    );
+    return () => <div class="start-vue-main-editor" ref={containerRef}></div>;
   },
 });

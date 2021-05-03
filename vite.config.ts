@@ -2,14 +2,14 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import domJsx from 'vite-plugin-dom-jsx';
+import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   // root: ''
-  plugins: [domJsx({ include: [/\/start-editor\//], pragma: 'React.createElement' }), vue(), vueJsx()],
+  plugins: [domJsx({ include: [/\/src\//], pragma: 'React.createElement' }), vue(), vueJsx()],
   alias: {
-    'start-editor': '../packages/start-editor/src',
-    'start-editor-utils': '../packages/start-editor-utils/src',
+    '@': path.resolve(__dirname, 'src'),
   },
   define: {
     'process.env': process.env,

@@ -1,12 +1,9 @@
 {
-  "private": true,
+  "name": "start-editor",
   "scripts": {
     "dev": "vite",
     "build:icon": "node ./scripts/buildIcon.js"
   },
-  "workspaces": [
-    "packages/*"
-  ],
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
@@ -23,7 +20,17 @@
     "prosemirror-model": "^1.13.3",
     "prosemirror-state": "^1.3.4",
     "prosemirror-view": "^1.17.6",
-    "start-editor": "0.0.1",
+    "@popperjs/core": "^2.9.2",
+    "jsx-dom": "^6.4.23",
+    "prosemirror-commands": "^1.1.6",
+    "prosemirror-dropcursor": "^1.3.3",
+    "prosemirror-gapcursor": "^1.1.5",
+    "prosemirror-history": "^1.1.3",
+    "prosemirror-inputrules": "^1.1.3",
+    "prosemirror-keymap": "^1.1.4",
+    "prosemirror-schema-list": "^1.1.4",
+    "prosemirror-tables": "^1.1.1",
+    "prosemirror-transform": "^1.2.11",
     "vue": "^3.0.5"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import { StartEditor } from 'start-editor';
+import { StartEditor } from '../../src';
 import './index.less';
 
 const content = `
