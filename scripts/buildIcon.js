@@ -3,9 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const SVGSpriter = require('svg-sprite');
 
-const iconDirPath = path.resolve(__dirname, '../packages/start-editor/src/components/icon/icons');
-const imageDirPath = path.resolve(__dirname, '../packages/start-editor/src/components/icon/images');
-const outputPath = path.resolve(__dirname, '../packages/start-editor/src/components/icon');
+const iconDirPath = path.resolve(__dirname, '../src/components/icon/icons');
+const imageDirPath = path.resolve(__dirname, '../src/components/icon/images');
+const outputPath = path.resolve(__dirname, '../src/components/icon');
 
 async function run() {
   const [iconRes, imageRes] = await Promise.all([
@@ -34,7 +34,7 @@ function getConfig(removeFill, idPrefix = '') {
     shape: {
       id: {
         generator(name) {
-          return 'start-editor-icon--' + idPrefix + name.split('.').slice(0, -1).join('.');
+          return 'start-ui-icon_' + idPrefix + name.split('.').slice(0, -1).join('.');
         },
       },
       dimension: {
@@ -66,10 +66,10 @@ function getConfig(removeFill, idPrefix = '') {
       inline: true,
       symbol: {
         dimensions: true,
-        common: 'start-editor-icon',
-        prefix: 'start-editor-icon',
+        common: 'start-ui-icon',
+        prefix: 'start-ui-icon',
         sprite: 'icon-sprite',
-        id: 'start-editor',
+        id: 'start-ui',
       },
     },
   };

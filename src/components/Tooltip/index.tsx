@@ -1,9 +1,10 @@
 import React, { createRef } from 'jsx-dom';
 import './index.less';
 import Popper, { createPopper } from '@popperjs/core';
+import { classnames } from '@/utils';
+import { BaseChildrenProps } from '@/@types';
 
-export interface TooltipProps {
-  children: HTMLElement | SVGElement | string;
+export interface TooltipProps extends BaseChildrenProps {
   title: string | HTMLElement;
   placement?: Popper.Options['placement'];
   offset?: [number, number];
@@ -13,8 +14,8 @@ export interface TooltipProps {
 export function Tooltip(props: TooltipProps) {
   props = Object.assign<Omit<TooltipProps, 'children' | 'title'>, any>(
     {
-      placement: 'top-start',
-      offset: [0, 5],
+      placement: 'top',
+      offset: [0, 8],
       modifiers: [],
     },
     props,
@@ -30,8 +31,8 @@ export function Tooltip(props: TooltipProps) {
   }
   const containerRef = createRef<HTMLDivElement>();
   const titleContent = (
-    <div class="start-editor-tooltip" id="tooltip">
-      <div class="start-editor-tooltip_arrow" id="arrow" data-popper-arrow></div>
+    <div class="start-ui-tooltip" id="tooltip">
+      <div class="start-ui-tooltip_arrow" id="arrow" data-popper-arrow></div>
       {props.title}
     </div>
   ) as HTMLElement;
@@ -53,7 +54,13 @@ export function Tooltip(props: TooltipProps) {
     titleContent.style.visibility = 'hidden';
   };
   return (
-    <div class="start-editor-tooltip-anchor" onMouseEnter={onEnter} onMouseLeave={onLeave} ref={containerRef}>
+    <div
+      class={classnames('start-ui-tooltip-anchor', props.class)}
+      style={props.style}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      ref={containerRef}
+    >
       {props.children}
     </div>
   );

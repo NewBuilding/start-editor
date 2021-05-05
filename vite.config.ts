@@ -8,8 +8,10 @@ import path from 'path';
 export default defineConfig({
   // root: ''
   plugins: [domJsx({ include: [/\/src\//], pragma: 'React.createElement' }), vue(), vueJsx()],
-  alias: {
-    '@': path.resolve(__dirname, 'src'),
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
   },
   define: {
     'process.env': process.env,

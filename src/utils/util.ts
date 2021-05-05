@@ -59,3 +59,13 @@ export function isUrl(url: string) {
 export function isImageBySuffix(url: string): boolean {
   return /.*(\.png|\.jpg|\.jpeg|\.gif)$/.test(url);
 }
+
+export function classnames(...classnames: Array<string | undefined>) {
+  let name = '';
+  classnames.forEach((classname) => {
+    if (classname) {
+      name += ' ' + classname;
+    }
+  });
+  return name;
+}

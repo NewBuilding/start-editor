@@ -2,6 +2,7 @@ import type { Node as ProseMirrorNode, NodeSpec, Schema as ProseMirrorSchema } f
 import type { Transaction, EditorState } from 'prosemirror-state';
 import type { NodeCommandsMap } from '@/nodes';
 import type { MarkCommandMap } from '@/marks';
+import type { CSSProperties } from 'jsx-dom';
 
 export interface Dispatch {
   (tr: Transaction): void;
@@ -90,4 +91,15 @@ export enum PluginIDEnum {
   HOVER_NODE_ANCHOR = 'HOVER_NODE_ANCHOR',
   NODE_CURSOR_ANCHOR = 'NODE_CURSOR_ANCHOR',
   TEXT_MENU = 'TEXT_MENU',
+}
+
+export interface BaseProps {
+  style?: CSSProperties;
+  class?: string;
+}
+
+type Child = HTMLElement | SVGElement | string;
+
+export interface BaseChildrenProps extends BaseProps {
+  children?: Child | Child[];
 }

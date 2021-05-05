@@ -1,20 +1,20 @@
 import { EditorState, Plugin, TextSelection } from 'prosemirror-state';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
-import { DOMParser, Schema, MarkSpec, NodeSpec, Node as ProseMirrorNode } from 'prosemirror-model';
-import OrderedMap from 'orderedmap';
-import { allNodes } from './nodes';
-import { allMarks } from './marks';
-import './styles/index.less';
-
+import { DOMParser, Schema } from 'prosemirror-model';
 import { gapCursor } from 'prosemirror-gapcursor';
 import { dropCursor } from 'prosemirror-dropcursor';
 import { undo, redo, history } from 'prosemirror-history';
 import { keymap } from 'prosemirror-keymap';
 import { baseKeymap } from 'prosemirror-commands';
-import { StyleObject, NodeNameEnum, CommandMap, PluginIDEnum } from '@/@types';
+import OrderedMap from 'orderedmap';
+import { allNodes } from './nodes';
+import { allMarks } from './marks';
+import './styles/index.less';
 import { objToStyleString, DEFAULT_FONT_FAMILY, serializeToHTML, isTextSelection } from '@/utils';
-import { InnerPlugins } from '@/plugins';
-import { PluginInterface } from '@/interface';
+
+import type { NodeNameEnum, CommandMap, PluginIDEnum, StyleObject } from '@/@types';
+import type { MarkSpec, NodeSpec, Node as ProseMirrorNode } from 'prosemirror-model';
+import type { PluginInterface } from '@/interface';
 
 export interface EditorOptions {
   props?: DirectEditorProps;
@@ -43,7 +43,7 @@ export class StartEditor {
     this.schema = this.createSchema();
     this.commandMap = this.createCommand();
     this.setupDom();
-    this.setStartPlugins([...InnerPlugins, ...this.options.plugins]);
+    this.setStartPlugins(this.options.plugins);
     this.view = new EditorView(
       {
         mount: this.editableDom,
@@ -146,7 +146,7 @@ export class StartEditor {
     plugins.forEach((plugin) => {
       plugin.editor = this;
       // 追加的plugin会覆盖内置的plugin
-      if (this.plugins.has(plugin.ID) && !InnerPlugins.find((p) => p.ID === plugin.ID)) {
+      if (this.plugins.has(plugin.ID)) {
         throw new Error('Already has plugin which id is ' + plugin.ID);
       }
       if (isAdd) {

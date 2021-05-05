@@ -1,8 +1,8 @@
-.start-editor-tooltip-anchor {
+.start-ui-tooltip-anchor {
   display: inline-block;
 }
 
-.start-editor-tooltip {
+.start-ui-tooltip {
   word-wrap: break-word;
   background-color: black;
   border-radius: 2px;
@@ -14,9 +14,9 @@
   text-decoration: none;
   visibility: hidden;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 12px;
 
-  .start-editor-tooltip_arrow {
+  .start-ui-tooltip_arrow {
     position: absolute;
     width: 8px;
     height: 8px;
@@ -35,19 +35,19 @@
 
   }
 
-  &[data-popper-placement^='top']>.start-editor-tooltip_arrow {
+  &[data-popper-placement^='top']>.start-ui-tooltip_arrow {
     bottom: -4px;
   }
 
-  &[data-popper-placement^='bottom']>.start-editor-tooltip_arrow {
+  &[data-popper-placement^='bottom']>.start-ui-tooltip_arrow {
     top: -4px;
   }
 
-  &[data-popper-placement^='left']>.start-editor-tooltip_arrow {
+  &[data-popper-placement^='left']>.start-ui-tooltip_arrow {
     right: -4px;
   }
 
-  &[data-popper-placement^='right']>.start-editor-tooltip_arrow {
+  &[data-popper-placement^='right']>.start-ui-tooltip_arrow {
     left: -4px;
   }
 }

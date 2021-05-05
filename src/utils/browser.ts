@@ -8,4 +8,9 @@ export function isCtrlKey(_event: Event) {
   return browser?.os === 'Mac OS' ? event.metaKey : event.ctrlKey;
 }
 
-export default browser;
+/**
+ * 在macbook返回⌘， window 返回⌃
+ */
+export function getCtrlChar() {
+  return browser?.os === 'Mac OS' ? '⌘' : '⌃';
+}

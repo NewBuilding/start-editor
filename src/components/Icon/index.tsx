@@ -34,12 +34,12 @@ export function Icon(props: IconProps) {
     <svg
       onClick={onClick}
       style={style}
-      class={`start-editor-icon start-editor-icon--${name} ${classname}`}
+      class={`start-ui-icon start-ui-icon_${name} ${classname}`}
       width="50px"
       height="50px"
       fill="currentcolor"
     >
-      <use xlinkHref={`#start-editor-icon--${name}`} />
+      <use xlinkHref={`#start-ui-icon_${name}`} />
     </svg>
   );
 }

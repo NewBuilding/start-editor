@@ -1,7 +1,7 @@
 import { defineComponent, watch, ref, onMounted } from 'vue';
 import { Plugin } from 'prosemirror-state';
 import applyDevTools from 'prosemirror-dev-tools';
-import { StartEditor, PluginInterface, PluginIDEnum, HoverNodeAnchorPlugin } from '../../src';
+import { StartEditor, PluginInterface, PluginIDEnum, HoverNodeAnchorPlugin, InnerPlugins } from '../../src';
 import { useRoute } from 'vue-router';
 
 const contentMap = {
@@ -154,9 +154,7 @@ class MyPlugin extends PluginInterface {
 
 export const editor = new StartEditor({
   content: '',
-  plugins: [
-    // new MyPlugin()
-  ],
+  plugins: InnerPlugins,
 });
 window.editor = editor;
 

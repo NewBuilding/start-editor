@@ -31,7 +31,7 @@ export function Placeholder(props: PlaceholderViewProps) {
   const { type } = props;
   const typeInfo = typeMap[props.type];
   return (
-    <div class={type !== 'image' ? 'resource-placeholder' : 'inline-placeholder'}>
+    <div class={type !== 'image' ? 'start-ui-resource-placeholder' : 'start-ui-inline-placeholder'}>
       <Icon name={typeInfo.icon} class="icon" />
       {type !== 'image' && <span class="text">{typeInfo.title}</span>}
     </div>
