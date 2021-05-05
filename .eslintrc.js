@@ -1,24 +1,19 @@
 module.exports = {
-  'env': {
-    'browser': true,
-    'commonjs': true,
-    'es6': true
+  env: {
+    browser: true,
+    commonjs: true,
+    es6: true,
   },
-  'parser': '@typescript-eslint/parser',
-  'parserOptions': {
-    'ecmaFeatures': {
-      'jsx': true
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
     },
-    'sourceType': 'module'
+    sourceType: 'module',
   },
-  'plugins': [
-    '@typescript-eslint',
-  ],
-  'extends': [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-  ],
-  'rules': {
+  plugins: ['@typescript-eslint'],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  rules: {
     'no-empty': 0,
     '@typescript-eslint/no-inferrable-types': 0,
     '@typescript-eslint/no-empty-function': 0,
@@ -26,21 +21,15 @@ module.exports = {
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/no-empty-interface': 0,
     '@typescript-eslint/explicit-module-boundary-types': 0,
-    'indent': [
+    indent: [
       'error',
-      2
+      2,
+      {
+        SwitchCase: 1,
+      },
     ],
-    'linebreak-style': [
-      'error',
-      'unix'
-    ],
-    'quotes': [
-      'error',
-      'single'
-    ],
-    'semi': [
-      'error',
-      'always'
-    ]
-  }
+    'linebreak-style': ['error', 'unix'],
+    quotes: ['error', 'single'],
+    semi: ['error', 'always'],
+  },
 };

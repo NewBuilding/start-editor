@@ -4,4 +4,4 @@ export * from './Tooltip';
 export * from './Placeholder';
 export * from './TextMenu';
 export * from './Divider';
-
+export * from './Popover';

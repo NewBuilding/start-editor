@@ -1,7 +1,7 @@
 import React, { createRef } from 'jsx-dom';
 import './index.less';
 import Popper, { createPopper } from '@popperjs/core';
-import { classnames } from '@/utils';
+import { classnames, animationShow, animationHide } from '@/utils';
 import { BaseChildrenProps } from '@/@types';
 
 export interface TooltipProps extends BaseChildrenProps {
@@ -9,6 +9,7 @@ export interface TooltipProps extends BaseChildrenProps {
   placement?: Popper.Options['placement'];
   offset?: [number, number];
   modifiers?: Popper.Options['modifiers'];
+  onClick?: (e: Event) => void;
 }
 
 export function Tooltip(props: TooltipProps) {
@@ -17,6 +18,7 @@ export function Tooltip(props: TooltipProps) {
       placement: 'top',
       offset: [0, 8],
       modifiers: [],
+      onClick: () => {},
     },
     props,
   );
@@ -31,8 +33,8 @@ export function Tooltip(props: TooltipProps) {
   }
   const containerRef = createRef<HTMLDivElement>();
   const titleContent = (
-    <div class="start-ui-tooltip" id="tooltip">
-      <div class="start-ui-tooltip_arrow" id="arrow" data-popper-arrow></div>
+    <div class="start-ui-tooltip">
+      <div class="start-ui-tooltip_arrow" data-popper-arrow></div>
       {props.title}
     </div>
   ) as HTMLElement;
@@ -48,10 +50,10 @@ export function Tooltip(props: TooltipProps) {
       });
     }
     instance.update();
-    titleContent.style.visibility = 'visible';
+    animationShow(titleContent);
   };
   const onLeave = () => {
-    titleContent.style.visibility = 'hidden';
+    animationHide(titleContent);
   };
   return (
     <div
@@ -60,6 +62,7 @@ export function Tooltip(props: TooltipProps) {
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       ref={containerRef}
+      onClick={props.onClick as any}
     >
       {props.children}
     </div>

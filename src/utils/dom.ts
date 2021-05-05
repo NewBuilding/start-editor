@@ -1,4 +1,7 @@
 import type { Position, SizeRect } from '@/@types';
+import { className } from 'jsx-dom';
+import type { ClassList, ClassNames } from 'jsx-dom';
+import { nextTimeOut } from './util';
 /**
  * 从当前元素向父级查找元素，直到找到拥有该classname的dom 元素，否则返回null
  * @param dom
@@ -111,4 +114,68 @@ export function isBoxHasTwoSideIntersaction(box: BoxRect, node: BoxRect) {
     (isTopIntersact && isBottomIntersact && box.left < node.left && box.right > node.right) ||
     (isLeftIntersact && isRightIntersact && isTopIntersact && isBottomIntersact)
   );
+}
+
+/**
+ * 覆写dom-jsx的useClassList， 以修复其不能再svg使用的bug
+ * @param initialValue
+ */
+export function useClassList(initialValue?: ClassNames) {
+  let list: DOMTokenList;
+
+  function ClassList(value: SVGElement) {
+    list = value.classList;
+    if (initialValue != null) {
+      const classNames = className(initialValue).split(' ');
+      list.add(...classNames);
+    }
+  }
+
+  Object.defineProperties(
+    ClassList,
+    Object.getOwnPropertyDescriptors({
+      get size() {
+        return list.length;
+      },
+      get value() {
+        return list.value;
+      },
+      add(...tokens: string[]) {
+        list.add(...tokens);
+      },
+      remove(...tokens: string[]) {
+        list.remove(...tokens);
+      },
+      toggle(token: string, force?: boolean) {
+        list.toggle(token, force);
+      },
+      contains(token: string) {
+        return list?.contains(token);
+      },
+    }),
+  );
+
+  return ClassList as ClassList;
+}
+
+/**
+ * 实现渐入动画
+ * @param ele
+ */
+export async function animationShow(ele: HTMLElement) {
+  ele.style.opacity = '0';
+  ele.style.transition = 'opacity .2s linear';
+  await nextTimeOut();
+  ele.style.visibility = 'visible';
+  ele.style.opacity = '1';
+}
+
+/**
+ * 实现渐出动画
+ * @param ele
+ */
+export async function animationHide(ele: HTMLElement) {
+  ele.style.opacity = '0';
+  await nextTimeOut(200);
+  ele.style.visibility = 'hidden';
 }

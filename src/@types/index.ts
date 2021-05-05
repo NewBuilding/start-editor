@@ -78,7 +78,7 @@ export enum NodeNameEnum {
 }
 
 export enum MarkNameEnum {
-  STYLE = 'STYLE',
+  STYLE = 'style',
 }
 
 export enum PluginIDEnum {

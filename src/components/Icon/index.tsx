@@ -1,4 +1,6 @@
-import React, { CSSProperties } from 'jsx-dom';
+import React from 'jsx-dom';
+import type { ClassList, CSSProperties } from 'jsx-dom';
+import { isFunction } from 'lodash';
 import type { Name } from './iconSprite';
 
 export type { Name as IconName };
@@ -24,21 +26,23 @@ import(/* webpackChunkName: "icon-sprite" */ './iconSprite').then((module) => {
 export interface IconProps {
   name: Name;
   style?: CSSProperties;
-  class?: string;
+  class?: string | ClassList;
   onClick?(e: Event): void;
 }
 
 export function Icon(props: IconProps) {
-  const { name, onClick, class: classname = '', style = {} } = props;
+  const { name, onClick, style = {} } = props;
+  const defaultList = ['start-ui-icon', `start-ui-icon_${name}`];
+  if (isFunction(props.class)) {
+    setTimeout(() => {
+      (props.class as ClassList)?.add(...defaultList);
+    });
+  } else {
+    props.class = `${defaultList.join(' ')} ${props.class}`;
+  }
+
   return (
-    <svg
-      onClick={onClick}
-      style={style}
-      class={`start-ui-icon start-ui-icon_${name} ${classname}`}
-      width="50px"
-      height="50px"
-      fill="currentcolor"
-    >
+    <svg onClick={onClick} class={props.class} style={style} width="50px" height="50px" fill="currentcolor">
       <use xlinkHref={`#start-ui-icon_${name}`} />
     </svg>
   );

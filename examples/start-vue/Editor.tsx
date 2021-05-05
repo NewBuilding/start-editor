@@ -142,8 +142,6 @@ class MyPlugin extends PluginInterface {
             update: (view) => {
               const plugin = this.editor.getPlugin<HoverNodeAnchorPlugin>(PluginIDEnum.HOVER_NODE_ANCHOR);
               const pstate = plugin.getState(view.state);
-              console.log('hoverNode:', pstate.hoverNode?.type.name);
-              console.log('hoverDom:', pstate.hoverDom);
             },
           };
         },

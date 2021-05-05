@@ -1,5 +1,5 @@
-import { ResolvedPos, MarkType, MarkSpec } from 'prosemirror-model';
-import { EditorState } from 'prosemirror-state';
+import type { ResolvedPos, MarkType, MarkSpec, Mark } from 'prosemirror-model';
+import type { EditorState } from 'prosemirror-state';
 
 export function getMarkRange(
   $pos: ResolvedPos | null = null,
@@ -63,4 +63,61 @@ export function getMarkAttrs(state: EditorState, type: MarkType) {
   }
 
   return {};
+}
+
+/**
+ * 获取range 内的所有的mark
+ * @param state
+ * @param from
+ * @param to
+ * @param filter 允许过滤掉不需要的mark
+ */
+export function getRangeMarks(
+  state: EditorState,
+  from: number = state.selection.from,
+  to: number = state.selection.to,
+  filter: (mark: Mark) => boolean = () => true,
+): Mark[] {
+  let marks: Mark[] = [];
+  state.doc.nodesBetween(from, to, (node) => {
+    marks = [...marks, ...node.marks.filter(filter)];
+  });
+  return marks;
+}
+
+export type RangeStyle = Record<keyof CSSStyleDeclaration, Set<string>>;
+
+/**
+ * 获取选区内所有的样式
+ * @param state
+ */
+export function getRangeStyle(state: EditorState): RangeStyle {
+  const marks = getRangeMarks(
+    state,
+    state.selection.from,
+    state.selection.to,
+    (mark) => mark.type.name === 'style',
+  );
+  const style: Record<string, Set<string>> = {};
+  marks.forEach((mark) => {
+    Object.entries<string>(mark.attrs.style).forEach(([key, val]) => {
+      if (!style[key] || !style[key].has(val)) {
+        if (!style[key]) {
+          style[key] = new Set();
+        }
+        style[key].add(val);
+      }
+    });
+  });
+  return style as RangeStyle;
+}
+
+/**
+ * rangeStyle是否存在键为key值为val的style
+ * @param rangeStyle
+ * @param key
+ * @param val
+ */
+export function rangeHasStyle(rangeStyle: RangeStyle, key: keyof CSSStyleDeclaration, val: string) {
+  return !!rangeStyle[key] && rangeStyle[key].has(val);
 }

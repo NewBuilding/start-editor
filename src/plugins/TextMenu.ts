@@ -1,17 +1,16 @@
-import { PluginInterface } from '../interface';
+import { PluginInterface } from '@/interface';
 import { PluginIDEnum } from '@/@types';
 import { Plugin } from 'prosemirror-state';
-import { TextMenu } from '../components';
+import { createTextMenu } from '@/components';
 import { throttle } from 'lodash';
 import { EditorView } from 'prosemirror-view';
 import type { NodeCursorAnchorPlugin } from './NodeCursorAnchor';
-
+import type { TextMenu } from '@/components';
 export class TextMenuPlugin extends PluginInterface {
   ID: string = PluginIDEnum.TEXT_MENU;
-  textMenu!: { show: Function; hide: Function };
+  textMenu!: TextMenu;
   throttleShowTextMenu = throttle(
     (view: EditorView) => {
-      console.log('节流');
       const sel = view.state.selection;
       if (!sel.empty) {
         this.textMenu?.show();
@@ -41,25 +40,16 @@ export class TextMenuPlugin extends PluginInterface {
   }
 
   mounted() {
-    this.textMenu = this.mountTextMenu();
+    this.mountTextMenu();
   }
 
   private mountTextMenu() {
-    const element = TextMenu() as HTMLElement;
+    this.textMenu = createTextMenu({ editor: this.editor });
+    const element = this.textMenu.element;
     this.editor.shell.appendChild(element);
     const anchorPlugin = this.editor.getPlugin<NodeCursorAnchorPlugin>(PluginIDEnum.NODE_CURSOR_ANCHOR);
     anchorPlugin.createCursorPopper(element, {
       placement: 'top-start',
     });
-    return {
-      show() {
-        element.style.opacity = '1';
-        element.style.visibility = 'visible';
-      },
-      hide() {
-        element.style.opacity = '0';
-        element.style.visibility = 'hidden';
-      },
-    };
   }
 }

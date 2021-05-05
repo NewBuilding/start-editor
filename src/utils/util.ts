@@ -69,3 +69,13 @@ export function classnames(...classnames: Array<string | undefined>) {
   });
   return name;
 }
+
+/**
+ * 封装setTimeout，使其支持async await
+ * @param time
+ */
+export async function nextTimeOut(time = 0) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time);
+  });
+}

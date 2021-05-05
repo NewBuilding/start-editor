@@ -20,7 +20,7 @@ export interface StyleCommand<T = boolean> {
    * 删除指定样式，仅删除key和value都相同的样式
    * @param style
    */
-  delete(style: StyleObject): T;
+  remove(style: StyleObject): T;
 }
 
 export class StyleMark extends MarkInterface<StyleCommand<Command>> {
@@ -73,7 +73,7 @@ export class StyleMark extends MarkInterface<StyleCommand<Command>> {
           return true;
         };
       },
-      delete(style) {
+      remove(style) {
         return (state, dispatch) => {
           if (!style) return false;
           dispatch?.(deleteStyleForRangeText(state, style));
