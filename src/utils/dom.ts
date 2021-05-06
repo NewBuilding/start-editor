@@ -1,4 +1,4 @@
-import type { Position, SizeRect } from '@/@types';
+import type { Position, SizeRect, StyleObject } from '@/@types';
 import { className } from 'jsx-dom';
 import type { ClassList, ClassNames } from 'jsx-dom';
 import { nextTimeOut } from './util';
@@ -123,7 +123,7 @@ export function isBoxHasTwoSideIntersaction(box: BoxRect, node: BoxRect) {
 export function useClassList(initialValue?: ClassNames) {
   let list: DOMTokenList;
 
-  function ClassList(value: SVGElement) {
+  function ClassList(value: HTMLElement) {
     list = value.classList;
     if (initialValue != null) {
       const classNames = className(initialValue).split(' ');
@@ -164,9 +164,9 @@ export function useClassList(initialValue?: ClassNames) {
  */
 export async function animationShow(ele: HTMLElement) {
   ele.style.opacity = '0';
+  ele.style.display = '';
   ele.style.transition = 'opacity .2s linear';
   await nextTimeOut();
-  ele.style.visibility = 'visible';
   ele.style.opacity = '1';
 }
 
@@ -177,5 +177,18 @@ export async function animationShow(ele: HTMLElement) {
 export async function animationHide(ele: HTMLElement) {
   ele.style.opacity = '0';
   await nextTimeOut(200);
-  ele.style.visibility = 'hidden';
+  ele.style.display = 'none';
+}
+
+/**
+ * 样式
+ * @param ele
+ * @param styleObject
+ */
+export function setStyle(ele: HTMLElement, obj: StyleObject) {
+  Object.entries(obj).forEach(([key, value]) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ele.style[key] = value;
+  });
 }

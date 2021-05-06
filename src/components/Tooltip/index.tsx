@@ -1,7 +1,7 @@
 import React, { createRef } from 'jsx-dom';
 import './index.less';
 import Popper, { createPopper } from '@popperjs/core';
-import { classnames, animationShow, animationHide } from '@/utils';
+import { classnames, animationShow, animationHide, setStyle } from '@/utils';
 import { BaseChildrenProps } from '@/@types';
 
 export interface TooltipProps extends BaseChildrenProps {
@@ -38,6 +38,7 @@ export function Tooltip(props: TooltipProps) {
       {props.title}
     </div>
   ) as HTMLElement;
+  setStyle(titleContent, { display: 'none' });
   document.body.appendChild(titleContent);
 
   let instance: Popper.Instance | null = null;
@@ -49,8 +50,8 @@ export function Tooltip(props: TooltipProps) {
         modifiers: props.modifiers,
       });
     }
-    instance.update();
     animationShow(titleContent);
+    instance.update();
   };
   const onLeave = () => {
     animationHide(titleContent);

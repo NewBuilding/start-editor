@@ -29,6 +29,7 @@ export interface CreatePopperOptions {
   placement?: Popper.Options['placement'];
   modifiers?: Popper.Options['modifiers'];
   offset?: [number, number];
+  doBeforeShow?: () => void;
 }
 
 /**

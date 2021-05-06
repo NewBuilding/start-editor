@@ -1,17 +1,25 @@
 /* eslint-disable indent */
 import { Plugin } from 'prosemirror-state';
 import type { EditorView } from 'prosemirror-view';
-import Popper, { createPopper as _createPopper } from '@popperjs/core';
-import { coordsAtPos, getClosestParent, setElementRect } from '@/utils';
+import { createPopper as _createPopper } from '@popperjs/core';
+import { coordsAtPos, getClosestParent, setElementRect, animationShow, animationHide } from '@/utils';
 import { PluginInterface } from '@/interface';
 import { throttle } from 'lodash';
 import { BoxRect, PluginIDEnum } from '@/@types';
 import type { CreatePopperOptions } from './HoverNodeAnchor';
+import type Popper from '@popperjs/core';
 
 export interface NodeCursorAnchorOptions {
   // 在这个列表中的node，在hover时忽略，取它的父node
   textAnchorClassName: string;
   nodeAnchorClassName: string;
+}
+
+export interface PopperInstance {
+  tooltip: HTMLElement;
+  instance: Popper.Instance;
+  show: () => void;
+  hide: () => void;
 }
 
 /**
@@ -92,7 +100,11 @@ export class NodeCursorAnchorPlugin extends PluginInterface<NodeCursorAnchorOpti
     return this.createPopper(this.nodeAnchor, tooltip, options);
   }
 
-  private createPopper(anchor: HTMLElement, tooltip: HTMLElement, options?: CreatePopperOptions) {
+  private createPopper(
+    anchor: HTMLElement,
+    tooltip: HTMLElement,
+    options?: CreatePopperOptions,
+  ): PopperInstance {
     options = Object.assign(
       {},
       {
@@ -111,18 +123,29 @@ export class NodeCursorAnchorPlugin extends PluginInterface<NodeCursorAnchorOpti
         },
       });
     }
+    tooltip.style.display = 'none';
+    this.editor.shell.appendChild(tooltip);
     const instance = _createPopper(anchor, tooltip, options);
     this.popperInstances.push(instance);
-    return instance;
+
+    return {
+      instance,
+      tooltip,
+      show() {
+        options?.doBeforeShow && options.doBeforeShow();
+        animationShow(tooltip);
+        instance.update();
+      },
+      hide() {
+        animationHide(tooltip);
+      },
+    };
   }
 
   private throttleUpdate = throttle(
     (view) => {
       this.updateTextAnchor(view);
       this.updateNodeAnchor(view);
-      this.popperInstances.forEach((instance) => {
-        instance.update();
-      });
     },
     200,
     { leading: false, trailing: true },

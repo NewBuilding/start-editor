@@ -4,16 +4,15 @@ import { Plugin } from 'prosemirror-state';
 import { createTextMenu } from '@/components';
 import { throttle } from 'lodash';
 import { EditorView } from 'prosemirror-view';
-import type { NodeCursorAnchorPlugin } from './NodeCursorAnchor';
-import type { TextMenu } from '@/components';
+import type { NodeCursorAnchorPlugin, PopperInstance } from './NodeCursorAnchor';
 export class TextMenuPlugin extends PluginInterface {
   ID: string = PluginIDEnum.TEXT_MENU;
-  textMenu!: TextMenu;
+  textMenuPopper!: PopperInstance;
   throttleShowTextMenu = throttle(
     (view: EditorView) => {
       const sel = view.state.selection;
       if (!sel.empty) {
-        this.textMenu?.show();
+        this.textMenuPopper?.show();
       }
     },
     600,
@@ -28,7 +27,7 @@ export class TextMenuPlugin extends PluginInterface {
             update: (view) => {
               const sel = view.state.selection;
               if (sel.empty) {
-                this.textMenu?.hide();
+                this.textMenuPopper?.hide();
               } else {
                 this.throttleShowTextMenu(view);
               }
@@ -43,13 +42,12 @@ export class TextMenuPlugin extends PluginInterface {
     this.mountTextMenu();
   }
 
-  private mountTextMenu() {
-    this.textMenu = createTextMenu({ editor: this.editor });
-    const element = this.textMenu.element;
-    this.editor.shell.appendChild(element);
+  mountTextMenu() {
+    const textMenu = createTextMenu({ editor: this.editor });
     const anchorPlugin = this.editor.getPlugin<NodeCursorAnchorPlugin>(PluginIDEnum.NODE_CURSOR_ANCHOR);
-    anchorPlugin.createCursorPopper(element, {
+    this.textMenuPopper = anchorPlugin.createCursorPopper(textMenu.element, {
       placement: 'top-start',
+      doBeforeShow: textMenu.update,
     });
   }
 }

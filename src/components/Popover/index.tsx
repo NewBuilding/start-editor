@@ -1,6 +1,6 @@
 import React, { createRef } from 'jsx-dom';
 import { createPopper } from '@popperjs/core';
-import { classnames, animationShow, animationHide } from '@/utils';
+import { classnames, animationShow, animationHide, setStyle } from '@/utils';
 import './index.less';
 
 import type { BaseChildrenProps } from '@/@types';
@@ -43,6 +43,7 @@ export function Popover(props: PopoverProps) {
       {props.content}
     </div>
   ) as HTMLElement;
+  setStyle(contentElement, { display: 'none' });
   document.body.appendChild(contentElement);
   props.ref && props.ref(contentElement);
 
@@ -64,14 +65,14 @@ export function Popover(props: PopoverProps) {
         modifiers: props.modifiers,
       });
     }
-    instance.update();
     animationShow(contentElement);
-    maskElement.style.visibility = 'visible';
+    setStyle(maskElement, { display: 'block' });
+    instance.update();
     maskElement?.addEventListener('click', onMaskClick);
   };
 
   const hide = () => {
-    maskElement.style.visibility = 'hidden';
+    setStyle(maskElement, { display: 'none' });
     animationHide(contentElement);
     maskElement.removeEventListener('click', onMaskClick);
   };

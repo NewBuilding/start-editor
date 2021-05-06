@@ -1,14 +1,8 @@
 import React, { useText, ClassList } from 'jsx-dom';
 import './index.less';
 import { Tooltip, Icon, Divider, Popover } from '@/components';
-import {
-  getCtrlChar,
-  getRangeStyle,
-  rangeHasStyle,
-  useClassList,
-  animationShow,
-  animationHide,
-} from '@/utils';
+import { getCtrlChar, getRangeStyle, rangeHasStyle, useClassList } from '@/utils';
+
 import type { IconName } from '../Icon';
 import type { StartEditor } from '@/Editor';
 import type { StyleObject } from '@/@types';
@@ -88,9 +82,7 @@ const Items: Array<Item | DividerItem> = [
 
 export interface TextMenu {
   element: HTMLElement;
-  show: Function;
-  update: Function;
-  hide: Function;
+  update: () => void;
 }
 
 const ITEM_ACTIVE_CLASS = 'active-icon';
@@ -190,20 +182,8 @@ export function createTextMenu(props: TextMenuProps): TextMenu {
       }
     });
   };
-
-  const show = () => {
-    update();
-    animationShow(element);
-  };
-
-  const hide = () => {
-    element.style.visibility = 'hidden';
-  };
-
   return {
     element,
-    show,
-    hide,
     update,
   };
 }
