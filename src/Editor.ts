@@ -58,6 +58,10 @@ export class StartEditor {
             }
             return false;
           },
+          focus: () => {
+            this.editableDom.classList.add('start-editor-focused');
+            return false;
+          },
         },
         state: this.createState(),
         attributes: this.docAttributes,
@@ -150,6 +154,7 @@ export class StartEditor {
       this.view.dispatch(tr);
     }
     if (!this.isFocus) {
+      this.editableDom.classList.remove('start-editor-focused');
       this.editableDom.blur();
     }
   }

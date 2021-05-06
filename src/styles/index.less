@@ -45,6 +45,15 @@
     }
   }
 
+  .start-editor-focused {
+    .start-editor-node {
+      &::selection {
+        background: rgba(45, 170, 219, 0.3) !important;
+      }
+    }
+
+  }
+
   .start-editor-node {
     position: relative;
     line-height: 1.3;
@@ -52,7 +61,6 @@
     &::selection {
       background: transparent;
     }
-
 
     .start-editor-audio-content,
     .start-editor-video-content {
@@ -62,14 +70,6 @@
     }
   }
 
-  // root element will be add this class when PM is Focused
-  .ProseMirror-focused {
-    .start-editor-node {
-      &::selection {
-        background: rgba(45, 170, 219, 0.3);
-      }
-    }
-  }
 
   // the node be selected will be add this class by PM
   .ProseMirror-selectednode {
