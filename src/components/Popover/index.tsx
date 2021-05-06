@@ -1,6 +1,7 @@
 import React, { createRef } from 'jsx-dom';
 import { createPopper } from '@popperjs/core';
 import { classnames, animationShow, animationHide, setStyle } from '@/utils';
+import { shell } from '@/Editor';
 import './index.less';
 
 import type { BaseChildrenProps } from '@/@types';
@@ -44,13 +45,13 @@ export function Popover(props: PopoverProps) {
     </div>
   ) as HTMLElement;
   setStyle(contentElement, { display: 'none' });
-  document.body.appendChild(contentElement);
+  shell.appendChild(contentElement);
   props.ref && props.ref(contentElement);
 
   const maskElement = (
     <div class="start-ui-popover-mask" onClick={(e) => e.stopPropagation()}></div>
   ) as HTMLElement;
-  document.body.appendChild(maskElement);
+  shell.appendChild(maskElement);
 
   let instance: Popper.Instance;
 

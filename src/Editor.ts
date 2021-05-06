@@ -25,6 +25,8 @@ export interface EditorOptions {
 
 export type MountTarget = HTMLElement | string;
 
+export const shell = document.createElement('div');
+
 export class StartEditor {
   options: EditorOptions;
   view: EditorView;
@@ -33,7 +35,7 @@ export class StartEditor {
   plugins: Map<string, PluginInterface> = new Map();
   container: HTMLDivElement = document.createElement('div');
   wrap: HTMLDivElement = document.createElement('div');
-  shell: HTMLDivElement = document.createElement('div');
+  shell: HTMLDivElement = shell;
   editableDom: HTMLElement = document.createElement('div');
   isFocus: boolean = false;
 
@@ -49,7 +51,14 @@ export class StartEditor {
         mount: this.editableDom,
       },
       {
-        ...options.props,
+        handleDOMEvents: {
+          blur: () => {
+            if (this.isFocus) {
+              this.view.focus();
+            }
+            return false;
+          },
+        },
         state: this.createState(),
         attributes: this.docAttributes,
       },
@@ -139,6 +148,9 @@ export class StartEditor {
         tr.setSelection(TextSelection.create(this.state.doc, 0));
       }
       this.view.dispatch(tr);
+    }
+    if (!this.isFocus) {
+      this.editableDom.blur();
     }
   }
 

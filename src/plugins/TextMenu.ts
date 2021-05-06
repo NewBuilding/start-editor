@@ -5,19 +5,24 @@ import { createTextMenu } from '@/components';
 import { throttle } from 'lodash';
 import { EditorView } from 'prosemirror-view';
 import type { NodeCursorAnchorPlugin, PopperInstance } from './NodeCursorAnchor';
+import { isTextSelection } from '@/utils';
 export class TextMenuPlugin extends PluginInterface {
   ID: string = PluginIDEnum.TEXT_MENU;
   textMenuPopper!: PopperInstance;
   throttleShowTextMenu = throttle(
     (view: EditorView) => {
-      const sel = view.state.selection;
-      if (!sel.empty) {
+      if (this.isShow(view)) {
         this.textMenuPopper?.show();
       }
     },
-    600,
+    400,
     { leading: false, trailing: true },
   );
+
+  isShow(view: EditorView) {
+    const sel = view.state.selection;
+    return isTextSelection(sel) && !sel.empty && this.editor.isFocus;
+  }
 
   get plugins(): Plugin[] {
     return [
@@ -25,11 +30,10 @@ export class TextMenuPlugin extends PluginInterface {
         view: () => {
           return {
             update: (view) => {
-              const sel = view.state.selection;
-              if (sel.empty) {
-                this.textMenuPopper?.hide();
-              } else {
+              if (this.isShow(view)) {
                 this.throttleShowTextMenu(view);
+              } else {
+                this.textMenuPopper?.hide();
               }
             },
           };

@@ -2,7 +2,8 @@ import React, { createRef } from 'jsx-dom';
 import './index.less';
 import Popper, { createPopper } from '@popperjs/core';
 import { classnames, animationShow, animationHide, setStyle } from '@/utils';
-import { BaseChildrenProps } from '@/@types';
+import { shell } from '@/Editor';
+import type { BaseChildrenProps } from '@/@types';
 
 export interface TooltipProps extends BaseChildrenProps {
   title: string | HTMLElement;
@@ -39,7 +40,7 @@ export function Tooltip(props: TooltipProps) {
     </div>
   ) as HTMLElement;
   setStyle(titleContent, { display: 'none' });
-  document.body.appendChild(titleContent);
+  shell.appendChild(titleContent);
 
   let instance: Popper.Instance | null = null;
   const onEnter = () => {
