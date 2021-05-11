@@ -1,15 +1,16 @@
 import { Plugin, EditorState } from 'prosemirror-state';
 import { NodeInterface } from '../interface/NodeInterface';
-import { NodeSpec, Dispatch, Command, StyleObject, NodeNameEnum } from '@/@types';
-import { objToStyleString, styleStringToObj } from '@/utils';
+import { NodeSpec, Dispatch, Command, StyleObject, NodeNameEnum, Attrs, Schema } from '@/@types';
+import { objToStyleString, styleStringToObj, toggleInlineNode } from '@/utils';
 
-interface LinkAttrs {
+export interface LinkAttrs extends Attrs {
   href: string;
   target?: '_blank' | '_self';
 }
 
 export interface LinkCommand<T = boolean> {
   add(attrs: LinkAttrs): T;
+  toggle(attrs: LinkAttrs): T;
 }
 
 export class LinkNode extends NodeInterface<LinkCommand<Command>> {
@@ -85,9 +86,10 @@ export class LinkNode extends NodeInterface<LinkCommand<Command>> {
     };
   }
 
-  commands(): LinkCommand<Command> {
+  commands(schema: Schema): LinkCommand<Command> {
     const { add } = this;
-    return { add };
+
+    return { add, toggle: (attrs) => toggleInlineNode(schema.nodes[NodeNameEnum.LINK], attrs) };
   }
   plugins(): Plugin[] {
     return [];

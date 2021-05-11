@@ -1,7 +1,7 @@
-import React, { useText, ClassList } from 'jsx-dom';
+import React, { useText, ClassList, createRef } from 'jsx-dom';
 import './index.less';
 import { Tooltip, Icon, Divider, Popover } from '@/components';
-import { getCtrlChar, getRangeStyle, rangeHasStyle, useClassList } from '@/utils';
+import { getCtrlChar, getRangeStyle, rangeHasStyle, useClassList, isUrl, animationHide } from '@/utils';
 
 import type { IconName } from '../Icon';
 import type { StartEditor } from '@/Editor';
@@ -128,10 +128,58 @@ export function createTextMenu(props: TextMenuProps): TextMenu {
       update();
     };
   };
+  let hidePopover: Function | null = null;
+  const input = createRef<HTMLInputElement>();
+  const linkClassList = useClassList('start-ui-link-content');
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    const inputVal = input.current?.value || '';
+    if (!isUrl(inputVal)) {
+      linkClassList.add('start-ui-link-content-error');
+      return;
+    }
+    hidePopover?.();
+    editor.commandMap.link.toggle({ href: inputVal, target: '_blank' });
+    e.preventDefault();
+    editor.view.focus();
+  };
+
+  const onInput = () => {
+    const inputVal = input.current?.value;
+    if (inputVal && !isUrl(inputVal)) {
+      linkClassList.add('start-ui-link-content-error');
+    } else {
+      linkClassList.remove('start-ui-link-content-error');
+    }
+  };
+
+  const linkContent = (
+    <div class={linkClassList}>
+      <input type="text" ref={input} onKeyDown={onKeyDown} onInput={onInput} />
+      <span class="msg">非法url</span>
+    </div>
+  );
 
   const element = (
     <div class="start-ui-text-menu">
-      <Popover content={<div>hello world</div>}>
+      <Popover
+        popoverRef={(ele: HTMLElement, hide) => {
+          hidePopover = hide;
+        }}
+        content={linkContent}
+        placement="bottom-start"
+        onHide={() => {
+          editor.view.focus();
+        }}
+        onClick={(e) => {
+          editor.isFocus = false;
+          editor.editableDom.blur();
+          e.stopPropagation();
+          editor.isFocus = true;
+          input.current?.focus();
+        }}
+      >
         <Tooltip title={`增加链接 ${getCtrlChar()}+k`} class="item">
           <Icon name="link" class="icon" />
           <Icon name="down" class="icon-down" />
@@ -181,6 +229,9 @@ export function createTextMenu(props: TextMenuProps): TextMenu {
         classList.remove(ITEM_ACTIVE_CLASS);
       }
     });
+    if (input.current) {
+      input.current.value = '';
+    }
   };
   return {
     element,

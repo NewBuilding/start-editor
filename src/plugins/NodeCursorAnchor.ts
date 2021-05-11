@@ -137,6 +137,7 @@ export class NodeCursorAnchorPlugin extends PluginInterface<NodeCursorAnchorOpti
         instance.update();
       },
       hide() {
+        options?.doBeforeHide && options.doBeforeHide();
         animationHide(tooltip);
       },
     };

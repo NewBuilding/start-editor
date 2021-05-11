@@ -16,7 +16,8 @@ export interface PopoverProps extends BaseChildrenProps {
   onClick?: (e: Event) => void;
   popoverClass?: string;
   popoverStyle?: CSSProperties;
-  ref?: (popover: HTMLElement) => void;
+  popoverRef?: (popover: HTMLElement, hideFun: Function) => void;
+  onHide?: () => void;
 }
 
 export function Popover(props: PopoverProps) {
@@ -46,17 +47,14 @@ export function Popover(props: PopoverProps) {
   ) as HTMLElement;
   setStyle(contentElement, { display: 'none' });
   shell.appendChild(contentElement);
-  props.ref && props.ref(contentElement);
 
-  const maskElement = (
-    <div class="start-ui-popover-mask" onClick={(e) => e.stopPropagation()}></div>
-  ) as HTMLElement;
+  const maskElement = (<div class="start-ui-popover-mask"></div>) as HTMLElement;
   shell.appendChild(maskElement);
 
   let instance: Popper.Instance;
 
-  const onMaskClick = (e: Event) => {
-    if (e.target !== contentElement && !contentElement.contains(e.target as HTMLElement)) hide();
+  const onMaskClick = () => {
+    hide();
   };
 
   const show = () => {
@@ -76,7 +74,10 @@ export function Popover(props: PopoverProps) {
     setStyle(maskElement, { display: 'none' });
     animationHide(contentElement);
     maskElement.removeEventListener('click', onMaskClick);
+    props.onHide && props.onHide();
   };
+
+  props.popoverRef && props.popoverRef(contentElement, hide);
 
   const onClick = (e: Event) => {
     show();

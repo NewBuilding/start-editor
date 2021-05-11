@@ -43,7 +43,6 @@ export class StartEditor {
     this.options = options;
     this.options.plugins = options.plugins || [];
     this.schema = this.createSchema();
-    this.commandMap = this.createCommand();
     this.setupDom();
     this.setStartPlugins(this.options.plugins);
     this.view = new EditorView(
@@ -67,6 +66,7 @@ export class StartEditor {
         attributes: this.docAttributes,
       },
     );
+    this.commandMap = this.createCommand();
   }
 
   get state(): EditorState {
@@ -123,9 +123,9 @@ export class StartEditor {
     });
   }
 
-  getPlugin<T extends PluginInterface>(id: PluginIDEnum | string): T {
+  getPlugin<T extends PluginInterface>(id: PluginIDEnum | string): T | null {
     if (!this.plugins.has(id)) {
-      throw new Error('not exist the plugin which id is ' + id);
+      return null;
     }
     return this.plugins.get(id) as T;
   }
@@ -201,9 +201,11 @@ export class StartEditor {
     };
     [...allNodes, ...allMarks].forEach((nm) => {
       const nmCommands = (commands[nm.name] = {} as Record<string, Function>);
-      Object.entries<Function>(nm.commands() as Record<string, any>).forEach(([key, val]) => {
-        nmCommands[key] = decorate(val);
-      });
+      Object.entries<Function>(nm.commands(this.state.schema) as Record<string, any>).forEach(
+        ([key, val]) => {
+          nmCommands[key] = decorate(val);
+        },
+      );
     });
     return (commands as any) as CommandMap;
   }

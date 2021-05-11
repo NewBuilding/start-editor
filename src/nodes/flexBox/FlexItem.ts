@@ -2,6 +2,7 @@ import { Plugin } from 'prosemirror-state';
 import { NodeInterface } from '../../interface/NodeInterface';
 import { NodeSpec, Command, StyleObject, NodeNameEnum } from '@/@types';
 import { objToStyleString, styleStringToObj } from '@/utils';
+import { Schema } from 'prosemirror-model';
 
 export interface FlexItemCommand<T = boolean> {}
 
@@ -55,7 +56,7 @@ export class FlexItemNode extends NodeInterface<FlexItemCommand<Command>> {
     };
   }
 
-  commands(): FlexItemCommand<Command> {
+  commands(schema: Schema): FlexItemCommand<Command> {
     return {};
   }
   plugins(): Plugin<any, any>[] {

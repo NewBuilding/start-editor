@@ -30,6 +30,7 @@ export interface CreatePopperOptions {
   modifiers?: Popper.Options['modifiers'];
   offset?: [number, number];
   doBeforeShow?: () => void;
+  doBeforeHide?: () => void;
 }
 
 /**

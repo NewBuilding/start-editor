@@ -8,7 +8,7 @@ import type { NodeCursorAnchorPlugin, PopperInstance } from './NodeCursorAnchor'
 import { isTextSelection } from '@/utils';
 export class TextMenuPlugin extends PluginInterface {
   ID: string = PluginIDEnum.TEXT_MENU;
-  textMenuPopper!: PopperInstance;
+  textMenuPopper!: PopperInstance | undefined;
   throttleShowTextMenu = throttle(
     (view: EditorView) => {
       if (this.isShow(view)) {
@@ -49,7 +49,7 @@ export class TextMenuPlugin extends PluginInterface {
   mountTextMenu() {
     const textMenu = createTextMenu({ editor: this.editor });
     const anchorPlugin = this.editor.getPlugin<NodeCursorAnchorPlugin>(PluginIDEnum.NODE_CURSOR_ANCHOR);
-    this.textMenuPopper = anchorPlugin.createCursorPopper(textMenu.element, {
+    this.textMenuPopper = anchorPlugin?.createCursorPopper(textMenu.element, {
       placement: 'top-start',
       doBeforeShow: textMenu.update,
     });

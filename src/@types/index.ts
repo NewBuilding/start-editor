@@ -14,6 +14,10 @@ export interface Command<S extends Schema = any> {
   (state: EditorState<S>, dispatch: Dispatch): boolean;
 }
 
+export interface Attrs {
+  style?: StyleObject;
+}
+
 export type CommandMap = NodeCommandsMap & MarkCommandMap;
 
 export type StyleObject = Partial<CSSStyleDeclaration>;
@@ -91,6 +95,7 @@ export enum PluginIDEnum {
   HOVER_NODE_ANCHOR = 'HOVER_NODE_ANCHOR',
   NODE_CURSOR_ANCHOR = 'NODE_CURSOR_ANCHOR',
   TEXT_MENU = 'TEXT_MENU',
+  LINK_MENU = 'LINK_MENU',
 }
 
 export interface BaseProps {
